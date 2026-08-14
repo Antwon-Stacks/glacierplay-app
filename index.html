@@ -3,152 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GlacierPlay Game Hub</title>
+    <title>GlacierPlay Hub</title>
     <style>
-        /* --- CORE APP STYLING --- */
+        /* Base Styling */
         body {
             margin: 0;
             padding: 0;
-            background-color: #020813; /* Deep midnight navy */
+            background-color: #0B1320; /* Deep midnight navy blue */
             color: white;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
+            user-select: none; /* Prevents text highlighting on mobile taps */
+            -webkit-touch-callout: none;
         }
 
-        /* --- SPLASH SCREEN (VIDEO) --- */
+        /* -------------------------------------
+           Splash Screen Overlay
+        -------------------------------------- */
         #splash-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-color: #020813;
-            z-index: 9999;
+            background-color: #0B1320;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.8s ease-out; /* Smooth fade-out effect */
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
         }
 
-        #splash-video {
+        #splashVideo {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ensures the video fills the screen beautifully */
+            object-fit: cover;
         }
 
-        /* --- MAIN HUB DASHBOARD --- */
-        #main-hub {
-            display: none; /* Hidden until the video finishes */
-            padding-bottom: 80px; /* Space for a future bottom nav bar */
+        /* -------------------------------------
+           Main Hub Architecture
+        -------------------------------------- */
+        #hub-container {
+            display: none; /* Hidden until splash screen timer finishes */
+            padding: 20px;
+            padding-bottom: 80px; 
         }
 
-        /* The Top Header */
+        /* Header / Nav */
         header {
-            width: 100%;
-            padding: 20px 0;
-            text-align: center;
-            background: linear-gradient(180deg, #020813 0%, rgba(2,8,19,0) 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
-        .header-logo {
-            max-height: 45px; /* Keeps the logo cleanly sized on mobile */
+        .logo {
+            height: 45px;
             width: auto;
         }
 
-        /* Placeholder layout so you can see where things go next */
-        .app-container {
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: #e0f2fe; /* Light icy blue text */
-        }
-
-        /* Placeholder Game Grid */
-        .game-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .game-card-placeholder {
-            background-color: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 16px;
-            height: 160px;
+        .user-profile {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); /* Electric cyan-to-blue gradient */
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #475569;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-weight: 800;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Rewards Section */
+        .rewards-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .check-in-btn {
+            width: 100%;
+            max-width: 320px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .check-in-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Game Grid Library */
+        h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #E2E8F0;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .game-card {
+            background-color: #1A2639; /* Subtle contrast to the midnight background */
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .game-card:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        .game-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-bottom: 2px solid #233550;
+        }
+
+        .game-title {
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            background-color: #1A2639;
         }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <video id="splash-video" autoplay muted playsinline>
-            <source src="Glacier Play loading screen.mp4" type="video/mp4">
+        <video id="splashVideo" autoplay muted playsinline>
+            <source src="splash.mp4" type="video/mp4">
+            <img src="1786404293997.png" alt="GlacierPlay" style="width: 150px;">
         </video>
     </div>
 
-    <div id="main-hub">
+    <div id="hub-container">
         
         <header>
-            <img src="header-logo.png" alt="GlacierPlay" class="header-logo">
+            <img src="1786404293997.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'45\'><rect width=\'150\' height=\'45\' rx=\'5\' fill=\'%231A2639\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'16\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
+            <div class="user-profile">U</div>
         </header>
 
-        <div class="app-container">
-            <div class="section-title">Featured Arcade</div>
-            
-            <div class="game-grid">
-                <div class="game-card-placeholder">Thumbnail slot</div>
-                <div class="game-card-placeholder">Thumbnail slot</div>
-                <div class="game-card-placeholder">Thumbnail slot</div>
-                <div class="game-card-placeholder">Thumbnail slot</div>
-            </div>
-        </div>
+        <section class="rewards-section">
+            <img src="check-in-button.png" alt="Claim Daily Check-In" class="check-in-btn" onclick="alert('Check-In Claimed! Integrating with backend...')" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'320\' height=\'70\'><rect width=\'320\' height=\'70\' rx=\'12\' fill=\'%2300f2fe\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%230B1320\' font-family=\'sans-serif\' font-size=\'18\' font-weight=\'bold\'>+ CLAIM DAILY REWARD</text></svg>'">
+        </section>
 
+        <h2>Arcade Library</h2>
+        
+        <div class="game-grid">
+            
+            <a href="track.html" class="game-card">
+                <img src="track-thumb.png" alt="8-Bit Track" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>8-Bit Thumb</text></svg>'">
+                <div class="game-title">8-Bit Track</div>
+            </a>
+
+            <a href="#" class="game-card">
+                <img src="game2-thumb.png" alt="Glacier Dash" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Game 2 Thumb</text></svg>'">
+                <div class="game-title">Glacier Dash</div>
+            </a>
+
+            <a href="#" class="game-card">
+                <img src="game3-thumb.png" alt="Frost Defense" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Game 3 Thumb</text></svg>'">
+                <div class="game-title">Frost Defense</div>
+            </a>
+
+            <a href="#" class="game-card">
+                <img src="game4-thumb.png" alt="Avalanche Run" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Game 4 Thumb</text></svg>'">
+                <div class="game-title">Avalanche Run</div>
+            </a>
+
+        </div>
     </div>
 
     <script>
-        const splashScreen = document.getElementById('splash-screen');
-        const mainHub = document.getElementById('main-hub');
-        const splashVideo = document.getElementById('splash-video');
+        document.addEventListener('DOMContentLoaded', () => {
+            const splashScreen = document.getElementById('splash-screen');
+            const hubContainer = document.getElementById('hub-container');
 
-        // Function to smoothly transition from Splash to Hub
-        function enterApp() {
-            // First, make the hub visible in the background
-            mainHub.style.display = 'block';
-            
-            // Fade out the splash screen
-            splashScreen.style.opacity = '0';
-            
-            // Wait 800ms for the fade out to finish, then delete it to save memory
+            // Exact 4.5 second JavaScript timer for the cinematic splash sequence
             setTimeout(() => {
-                splashScreen.style.display = 'none';
-            }, 800);
-        }
-
-        // TRIGGER 1: When the MP4 video naturally finishes playing
-        splashVideo.onended = () => {
-            enterApp();
-        };
-
-        // TRIGGER 2: Fallback safety net
-        // Just in case a specific mobile browser blocks video autoplay, 
-        // this will force the app to open after 4.5 seconds anyway.
-        setTimeout(() => {
-            if (splashScreen.style.opacity !== '0') {
-                enterApp();
-            }
-        }, 4500); 
-
+                splashScreen.style.opacity = '0'; // Trigger fade out
+                
+                setTimeout(() => {
+                    splashScreen.style.display = 'none'; // Remove from layout
+                    hubContainer.style.display = 'block'; // Reveal the game hub
+                }, 500); // 0.5s CSS transition allowance
+            }, 4500); 
+        });
     </script>
 </body>
 </html>
