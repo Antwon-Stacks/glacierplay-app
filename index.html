@@ -74,14 +74,57 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        /* Daily Check-in Item Inside Box */
+        /* Infinite Streak Banner Inside Box */
+        .streak-banner {
+            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
+        }
+        .streak-info h3 { margin: 0; font-size: 16px; font-weight: 800; }
+        .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
+        .streak-flame { font-size: 28px; }
+
+        /* 7-Day Timeline Visuals */
+        .streak-timeline {
+            display: flex; justify-content: space-between; gap: 6px;
+            margin-bottom: 16px;
+        }
+        .streak-day {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #233550;
+            border-radius: 8px;
+            padding: 8px 0;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+            font-size: 11px; color: #A0AEC0;
+            transition: all 0.2s;
+        }
+        .streak-day.completed {
+            background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #00f2fe;
+        }
+        .streak-day.active {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);
+            border-color: #00f2fe; color: #fff;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); transform: scale(1.05);
+        }
+        .streak-day.day-7 { border-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
+        .streak-day.day-7.completed, .streak-day.day-7.active {
+            background: rgba(255, 215, 0, 0.2); border-color: #FFD700; color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+        .streak-val { font-weight: 800; font-size: 13px; }
+
+        /* Daily Check-in Button Inside Box */
         .mission-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 14px;
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 0;
         }
         .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
         .mission-text p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
@@ -93,22 +136,7 @@
             cursor: pointer; transition: transform 0.1s;
         }
         .mission-btn:active { transform: scale(0.95); }
-        .mission-btn.claimed {
-            background: #233550; color: #A0AEC0; cursor: not-allowed;
-        }
-
-        /* Infinite Streak Banner Inside Box */
-        .streak-banner {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
-            border-radius: 12px;
-            padding: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 0;
-            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
-        }
-        .streak-info h3 { margin: 0; font-size: 16px; font-weight: 800; }
-        .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
-        .streak-flame { font-size: 28px; }
+        .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; }
 
         /* Rewards Store Page Styling */
         .back-nav-btn {
@@ -176,7 +204,7 @@
         <header>
             <img src="header-logo.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'38\'><rect width=\'140\' height=\'38\' rx=\'6\' fill=\'%23121C2B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
             <div class="vault-pill" onclick="openRewardsPage()">
-                🗝️ <span id="keys-balance">0</span> ▾
+                🗝️ <span id="keys-balance">0</span>
             </div>
         </header>
 
@@ -185,14 +213,6 @@
                 <div class="section-title">Daily Check-in</div>
                 <div class="section-subtitle">Resets at Midnight EST</div>
             </div>
-            
-            <div class="mission-card">
-                <div class="mission-text">
-                    <h4>Daily Vault Check-in</h4>
-                    <p id="mission-timer">Reward available now</p>
-                </div>
-                <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">+1 Key</button>
-            </div>
 
             <div class="streak-banner">
                 <div class="streak-info">
@@ -200,6 +220,17 @@
                     <p>Keep the flame alive daily.</p>
                 </div>
                 <div class="streak-flame">🔥</div>
+            </div>
+
+            <div class="streak-timeline" id="streak-timeline">
+                </div>
+            
+            <div class="mission-card">
+                <div class="mission-text">
+                    <h4>Daily Vault Check-in</h4>
+                    <p id="mission-timer">Reward available now</p>
+                </div>
+                <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">Claim +1 Key</button>
             </div>
         </div>
 
@@ -275,7 +306,7 @@
             document.getElementById('splash-fallback').style.display = 'block';
         }
 
-        // 1. Splash Screen Timing Sequence (4.5s)
+        // 1. Splash Screen Timing Sequence
         document.addEventListener('DOMContentLoaded', () => {
             const splashScreen = document.getElementById('splash-screen');
             const hubContainer = document.getElementById('hub-container');
@@ -318,30 +349,19 @@
             const now = new Date();
             const estString = new Intl.DateTimeFormat('en-US', {
                 timeZone: 'America/New_York',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
             }).format(now);
 
             const parts = estString.match(/(\d+)\/(\d+)\/(\d+),\s*(\d+):(\d+):(\d+)/);
             if (!parts) return { dateStr: "", msToMidnight: 0 };
 
-            const month = parts[1];
-            const day = parts[2];
-            const year = parts[3];
-            const hour = parseInt(parts[4], 10);
-            const minute = parseInt(parts[5], 10);
-            const second = parseInt(parts[6], 10);
-
+            const month = parts[1], day = parts[2], year = parts[3];
+            const hour = parseInt(parts[4], 10), minute = parseInt(parts[5], 10), second = parseInt(parts[6], 10);
             const currentDateStr = `${year}-${month}-${day}`;
 
             const currentSecondsInDay = (hour * 3600) + (minute * 60) + second;
-            const secondsToMidnight = 86400 - currentSecondsInDay;
-            const msToMidnight = secondsToMidnight * 1000;
+            const msToMidnight = (86400 - currentSecondsInDay) * 1000;
 
             return { dateStr: currentDateStr, msToMidnight: msToMidnight };
         }
@@ -351,17 +371,6 @@
             if (saved) {
                 try { vaultData = JSON.parse(saved); } catch(e) {}
             }
-            
-            const est = getESTDetails();
-            if (vaultData.lastCheckInDate) {
-                const lastDate = new Date(vaultData.lastCheckInDate);
-                const currDate = new Date(est.dateStr);
-                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
-
-                if (diffDays > 2) {
-                    vaultData.streakCount = 0;
-                }
-            }
             updateCheckInUI();
         }
 
@@ -369,85 +378,140 @@
             localStorage.setItem('glacier_vault', JSON.stringify(vaultData));
         }
 
-        function claimDailyCheckIn() {
-            const est = getESTDetails();
-
-            if (vaultData.lastCheckInDate === est.dateStr) {
-                return; // Already checked in today EST
-            }
-
+        // Calculate if user missed a day and reset streak if needed
+        function getCalculatedNextStreak(est) {
+            let nextStreak = 1;
             if (vaultData.lastCheckInDate) {
                 const lastDate = new Date(vaultData.lastCheckInDate);
                 const currDate = new Date(est.dateStr);
                 const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
 
-                if (diffDays > 2) {
-                    vaultData.streakCount = 1;
-                } else {
-                    vaultData.streakCount += 1;
+                // If difference is 1 day, it's sequential. If 2, we might allow it depending on timezone leniency, 
+                // but let's reset if strictly > 2 days since last claim date.
+                if (diffDays <= 2) {
+                    nextStreak = vaultData.streakCount + 1;
                 }
-            } else {
-                vaultData.streakCount = 1;
             }
+            return nextStreak;
+        }
 
-            vaultData.keys += 1;
+        function claimDailyCheckIn() {
+            const est = getESTDetails();
+            if (vaultData.lastCheckInDate === est.dateStr) return; // Already claimed
+
+            const newStreak = getCalculatedNextStreak(est);
+            const isSeventhDay = (newStreak % 7 === 0);
+            const keysToAward = isSeventhDay ? 2 : 1;
+
+            vaultData.streakCount = newStreak;
+            vaultData.keys += keysToAward;
             vaultData.lastCheckInDate = est.dateStr;
 
-            alert(`🗝️ +1 Key Added to Vault!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
+            alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
             
             saveVaultState();
             updateCheckInUI();
         }
 
-        // 3. Chest Opening Gacha Logic
+        // 3. Render the Crypto.com Style 7-Day Visual Timeline
+        function renderTimeline(est) {
+            const timelineEl = document.getElementById('streak-timeline');
+            if (!timelineEl) return;
+            timelineEl.innerHTML = '';
+
+            const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
+            let cycleDay = vaultData.streakCount % 7;
+            
+            // Determine how many boxes in the current 7-day row should be checked
+            let completedDays = cycleDay;
+            if (hasClaimedToday && cycleDay === 0 && vaultData.streakCount > 0) {
+                completedDays = 7; // They just claimed Day 7 today
+            } else if (!hasClaimedToday && cycleDay === 0) {
+                completedDays = 0; // It's a brand new week for tomorrow
+            }
+
+            for (let i = 1; i <= 7; i++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'streak-day';
+                if (i === 7) dayDiv.classList.add('day-7');
+
+                if (i <= completedDays) {
+                    dayDiv.classList.add('completed');
+                } else if (i === completedDays + 1 && !hasClaimedToday) {
+                    dayDiv.classList.add('active'); // The very next bubble waiting to be claimed
+                }
+
+                const valDiv = document.createElement('div');
+                valDiv.className = 'streak-val';
+                valDiv.innerText = (i === 7) ? '+2' : '+1';
+
+                const iconDiv = document.createElement('div');
+                if (i <= completedDays) {
+                    iconDiv.innerText = '✓';
+                } else {
+                    iconDiv.innerText = (i === 7) ? '🎁' : '🗝️';
+                }
+
+                dayDiv.appendChild(valDiv);
+                dayDiv.appendChild(iconDiv);
+                timelineEl.appendChild(dayDiv);
+            }
+        }
+
+        // 4. Chest Opening Logic
         function openChest(tierName, cost) {
             if (vaultData.keys < cost) {
                 alert(`Not enough Keys! You need ${cost} Keys to open the ${tierName} Chest.`);
                 return;
             }
-
             if(confirm(`Spend ${cost} Keys to open the ${tierName} Chest?`)) {
                 vaultData.keys -= cost;
                 saveVaultState();
                 updateCheckInUI();
-                
                 alert(`✨ OPENING ${tierName.toUpperCase()} CHEST (${cost} Keys)... ✨\n\n🎉 Congratulations! You unlocked a Mystery Reward!`);
             }
         }
 
-        // 4. UI Real-time Updates with Midnight EST Countdown
+        // 5. UI Real-time Updates
         function updateCheckInUI() {
             document.getElementById('keys-balance').innerText = vaultData.keys;
             document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
-            document.getElementById('streak-count').innerText = vaultData.streakCount || 0;
+            
+            const est = getESTDetails();
+            let displayStreak = vaultData.streakCount || 0;
+            
+            // Visual reset on the dashboard if they missed a day (diff > 2) and haven't claimed yet
+            if (vaultData.lastCheckInDate && vaultData.lastCheckInDate !== est.dateStr) {
+                const lastDate = new Date(vaultData.lastCheckInDate);
+                const currDate = new Date(est.dateStr);
+                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
+                if (diffDays > 2) displayStreak = 0;
+            }
+            document.getElementById('streak-count').innerText = displayStreak;
 
             const btn = document.getElementById('checkInBtn');
             const timerText = document.getElementById('mission-timer');
 
-            const est = getESTDetails();
+            renderTimeline(est);
 
             if (vaultData.lastCheckInDate === est.dateStr) {
                 if (btn) {
                     btn.classList.add('claimed');
                     btn.innerText = "Claimed ✓";
                 }
-                
                 const remainingMs = est.msToMidnight;
                 const hoursLeft = Math.floor(remainingMs / (1000 * 60 * 60));
                 const minsLeft = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
                 const secsLeft = Math.floor((remainingMs % (1000 * 60)) / 1000);
-                
-                if (timerText) {
-                    timerText.innerText = `Resets in ${hoursLeft}h ${minsLeft}m ${secsLeft}s`;
-                }
+                if (timerText) timerText.innerText = `Resets in ${hoursLeft}h ${minsLeft}m ${secsLeft}s`;
             } else {
                 if (btn) {
                     btn.classList.remove('claimed');
-                    btn.innerText = "+1 Key";
+                    const nextStreak = getCalculatedNextStreak(est);
+                    const isSeventh = (nextStreak % 7 === 0);
+                    btn.innerText = isSeventh ? "Claim +2 Keys" : "Claim +1 Key";
                 }
-                if (timerText) {
-                    timerText.innerText = "Reward available now";
-                }
+                if (timerText) timerText.innerText = "Reward available now";
             }
         }
     </script>
