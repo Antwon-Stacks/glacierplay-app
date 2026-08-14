@@ -64,7 +64,7 @@
         .section-title { font-size: 18px; font-weight: 700; color: #E2E8F0; }
         .section-subtitle { font-size: 12px; color: #A0AEC0; font-weight: 600; }
 
-        /* Unified Daily Check-in & Streak Box */
+        /* Unified Daily Check-in Box */
         .daily-wrapper-card {
             background-color: #121C2B;
             border: 1px solid #233550;
@@ -73,19 +73,6 @@
             margin-bottom: 24px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-
-        /* Infinite Streak Banner Inside Box - UPDATED MARGINS FOR BOTTOM LAYOUT */
-        .streak-banner {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
-            border-radius: 12px;
-            padding: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 0; 
-            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
-        }
-        .streak-info h3 { margin: 0; font-size: 16px; font-weight: 800; }
-        .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
-        .streak-flame { font-size: 28px; }
 
         /* 7-Day Timeline Visuals */
         .streak-timeline {
@@ -117,7 +104,7 @@
         }
         .streak-val { font-weight: 800; font-size: 13px; }
 
-        /* Daily Check-in Button Inside Box - UPDATED MARGINS FOR TOP LAYOUT */
+        /* Check-In Mission Card */
         .mission-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -138,6 +125,19 @@
         .mission-btn:active { transform: scale(0.95); }
         .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; }
 
+        /* Infinite Streak Banner */
+        .streak-banner {
+            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            border-radius: 12px;
+            padding: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 0; 
+            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
+        }
+        .streak-info h3 { margin: 0; font-size: 16px; font-weight: 800; }
+        .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
+        .streak-flame { font-size: 28px; }
+
         /* Rewards Store Page Styling */
         .back-nav-btn {
             background: #121C2B; border: 1px solid #233550; color: #00f2fe;
@@ -147,9 +147,33 @@
         }
         .back-nav-btn:active { transform: scale(0.95); }
 
+        .wallet-card {
+            background: #121C2B; border: 1px solid #233550; border-radius: 14px;
+            padding: 16px; margin-bottom: 20px;
+        }
+        .wallet-input {
+            width: 100%; background: #050B14; border: 1px solid #3A4E6C;
+            color: #00f2fe; padding: 10px 12px; border-radius: 8px; font-size: 12px;
+            font-family: monospace; margin-top: 8px; outline: none;
+        }
+
+        .balance-summary-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 14px;
+            padding: 16px; margin-bottom: 20px; text-align: center;
+        }
+        .balance-val { font-size: 24px; font-weight: 800; color: #00f2fe; margin: 4px 0; }
+
+        .claim-dapp-btn {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #050B14; border: none; padding: 12px 20px; border-radius: 10px;
+            font-size: 14px; font-weight: 800; cursor: pointer; width: 100%;
+            margin-top: 10px; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        }
+
         .store-grid {
             display: grid; grid-template-columns: repeat(1, 1fr); gap: 14px;
-            margin-top: 15px;
+            margin-top: 15px; margin-bottom: 25px;
         }
         .chest-card {
             background-color: #121C2B; border: 1px solid #233550;
@@ -158,7 +182,6 @@
             transition: transform 0.1s; cursor: pointer;
         }
         .chest-card:active { transform: scale(0.98); }
-
         .chest-left { display: flex; align-items: center; gap: 14px; }
         .chest-icon { font-size: 36px; }
         .chest-info h4 { margin: 0; font-size: 16px; color: #E2E8F0; }
@@ -169,10 +192,6 @@
             color: #00f2fe; padding: 8px 14px; border-radius: 10px;
             font-size: 13px; font-weight: 800; white-space: nowrap;
         }
-
-        .tier-basic { border-left: 4px solid #CD7F32; }   /* 20 Keys */
-        .tier-rare { border-left: 4px solid #C0C0C0; }    /* 50 Keys */
-        .tier-epic { border-left: 4px solid #FFD700; }    /* 100 Keys */
 
         /* Game Grid Styling */
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -188,6 +207,7 @@
 </head>
 <body>
 
+    <!-- Splash Screen Loader -->
     <div id="splash-screen">
         <video id="splashVideo" autoplay muted playsinline onerror="handleVideoError()">
             <source src="Glacier Play loading screen.mp4" type="video/mp4">
@@ -199,6 +219,7 @@
         </div>
     </div>
 
+    <!-- Main Game Hub View -->
     <div id="hub-container" class="app-view">
 
         <header>
@@ -222,8 +243,7 @@
                 <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">Claim +1 Key</button>
             </div>
 
-            <div class="streak-timeline" id="streak-timeline">
-            </div>
+            <div class="streak-timeline" id="streak-timeline"></div>
 
             <div class="streak-banner">
                 <div class="streak-info">
@@ -249,6 +269,7 @@
         </div>
     </div>
 
+    <!-- Rewards Store Page View -->
     <div id="rewards-container" class="app-view">
         <button class="back-nav-btn" onclick="closeRewardsPage()">← Back to Hub</button>
 
@@ -259,39 +280,62 @@
             </div>
         </header>
 
-        <p style="color: #A0AEC0; font-size: 13px; margin-top: 0; margin-bottom: 24px;">
-            Spend your collected Keys to unlock mysterious vault chests and rewards.
-        </p>
+        <!-- Registered Receive Wallet Registration -->
+        <div class="wallet-card">
+            <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">EVM Receive Address (0x...)</div>
+            <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Used to map your off-chain payouts & NFT permits for Web3 claiming.</div>
+            <input type="text" id="walletInput" class="wallet-input" placeholder="Paste 0x... EVM Address" onchange="saveWalletAddress()">
+        </div>
+
+        <!-- Pending Unclaimed Balance Card -->
+        <div class="balance-summary-card">
+            <div style="font-size: 12px; color: #A0AEC0; text-transform: uppercase; font-weight: 700;">Unclaimed Balance</div>
+            <div class="balance-val">$<span id="unclaimed-usd-balance">0.0000</span> USD</div>
+            <div style="font-size: 11px; color: #94a3b8;">Converted to $ICED dynamically at claim time. Min claim: $3.14 USD.</div>
+            <button class="claim-dapp-btn" onclick="redirectToClaimDapp()">Claim on Polar Portal dApp ↗</button>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title">Mystery Chest</div>
+            <div class="section-subtitle">20 Keys Trade-In</div>
+        </div>
 
         <div class="store-grid">
-            <div class="chest-card tier-basic" onclick="openChest('Basic', 20)">
+            <div class="chest-card" onclick="openMysteryChest()">
                 <div class="chest-left">
-                    <div class="chest-icon">📦</div>
+                    <div class="chest-icon">🎁</div>
                     <div class="chest-info">
-                        <h4>Basic Chest</h4>
-                        <p>Common Vault Rewards</p>
+                        <h4>Mystery Chest</h4>
+                        <p>Common (88%) | Rare (11%) | Legendary (1%)</p>
                     </div>
                 </div>
                 <div class="chest-price">20 Keys</div>
             </div>
+        </div>
 
-            <div class="chest-card tier-rare" onclick="openChest('Rare', 50)">
+        <div class="section-header">
+            <div class="section-title">NFT Redemptions</div>
+            <div class="section-subtitle">Reserve On-Chain Permits</div>
+        </div>
+
+        <div class="store-grid">
+            <div class="chest-card" onclick="reserveNFT('arcade_badge', 'Glacier Arcade Badge', 50)">
                 <div class="chest-left">
-                    <div class="chest-icon">🧰</div>
+                    <div class="chest-icon">🛡️</div>
                     <div class="chest-info">
-                        <h4>Rare Chest</h4>
-                        <p>Enhanced Payouts</p>
+                        <h4>Glacier Arcade Badge</h4>
+                        <p>Commemorative Player Holder NFT</p>
                     </div>
                 </div>
                 <div class="chest-price">50 Keys</div>
             </div>
 
-            <div class="chest-card tier-epic" onclick="openChest('Epic', 100)">
+            <div class="chest-card" onclick="reserveNFT('iceberg_key', 'Iceberg Access Key', 100)">
                 <div class="chest-left">
-                    <div class="chest-icon">👑</div>
+                    <div class="chest-icon">🔑</div>
                     <div class="chest-info">
-                        <h4>Epic Chest</h4>
-                        <p>Maximum Tier Loot</p>
+                        <h4>Iceberg Access Key NFT</h4>
+                        <p>Unlocks Staking Boosts on dApp</p>
                     </div>
                 </div>
                 <div class="chest-price">100 Keys</div>
@@ -301,12 +345,10 @@
 
     <script>
         function handleVideoError() {
-            console.warn("Splash video failed to load. Showing fallback view.");
             document.getElementById('splashVideo').style.display = 'none';
             document.getElementById('splash-fallback').style.display = 'block';
         }
 
-        // 1. Splash Screen Timing Sequence
         document.addEventListener('DOMContentLoaded', () => {
             const splashScreen = document.getElementById('splash-screen');
             const hubContainer = document.getElementById('hub-container');
@@ -324,7 +366,6 @@
             setInterval(updateCheckInUI, 1000);
         });
 
-        // Navigation between Hub and Rewards Store
         function openRewardsPage() {
             document.getElementById('hub-container').style.display = 'none';
             document.getElementById('rewards-container').style.display = 'block';
@@ -337,14 +378,16 @@
             updateCheckInUI();
         }
 
-        // 2. Vault Engine
+        // Vault Data Engine State
         let vaultData = {
             keys: 0,
             streakCount: 0,
-            lastCheckInDate: "" // YYYY-MM-DD format in EST
+            lastCheckInDate: "",
+            walletAddress: "",
+            unclaimedUsd: 0.0,
+            reservedNFTs: []
         };
 
-        // Helper to get current EST date string and ms remaining until midnight EST
         function getESTDetails() {
             const now = new Date();
             const estString = new Intl.DateTimeFormat('en-US', {
@@ -367,27 +410,37 @@
         }
 
         function loadVaultState() {
-            const saved = localStorage.getItem('glacier_vault');
+            const saved = localStorage.getItem('glacier_vault_v2');
             if (saved) {
                 try { vaultData = JSON.parse(saved); } catch(e) {}
+            }
+            if(document.getElementById('walletInput') && vaultData.walletAddress) {
+                document.getElementById('walletInput').value = vaultData.walletAddress;
             }
             updateCheckInUI();
         }
 
         function saveVaultState() {
-            localStorage.setItem('glacier_vault', JSON.stringify(vaultData));
+            localStorage.setItem('glacier_vault_v2', JSON.stringify(vaultData));
         }
 
-        // Calculate if user missed a day and reset streak if needed
+        function saveWalletAddress() {
+            const input = document.getElementById('walletInput').value.trim();
+            if(input && !/^0x[a-fA-F0-9]{40}$/.test(input)) {
+                alert("Please enter a valid 42-character EVM address (0x...)");
+                return;
+            }
+            vaultData.walletAddress = input;
+            saveVaultState();
+            alert("EVM Receive Address updated successfully!");
+        }
+
         function getCalculatedNextStreak(est) {
             let nextStreak = 1;
             if (vaultData.lastCheckInDate) {
                 const lastDate = new Date(vaultData.lastCheckInDate);
                 const currDate = new Date(est.dateStr);
                 const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
-
-                // If difference is 1 day, it's sequential. If 2, we might allow it depending on timezone leniency, 
-                // but let's reset if strictly > 2 days since last claim date.
                 if (diffDays <= 2) {
                     nextStreak = vaultData.streakCount + 1;
                 }
@@ -397,7 +450,7 @@
 
         function claimDailyCheckIn() {
             const est = getESTDetails();
-            if (vaultData.lastCheckInDate === est.dateStr) return; // Already claimed
+            if (vaultData.lastCheckInDate === est.dateStr) return;
 
             const newStreak = getCalculatedNextStreak(est);
             const isSeventhDay = (newStreak % 7 === 0);
@@ -413,7 +466,6 @@
             updateCheckInUI();
         }
 
-        // 3. Render the Crypto.com Style 7-Day Visual Timeline
         function renderTimeline(est) {
             const timelineEl = document.getElementById('streak-timeline');
             if (!timelineEl) return;
@@ -422,12 +474,11 @@
             const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
             let cycleDay = vaultData.streakCount % 7;
 
-            // Determine how many boxes in the current 7-day row should be checked
             let completedDays = cycleDay;
             if (hasClaimedToday && cycleDay === 0 && vaultData.streakCount > 0) {
-                completedDays = 7; // They just claimed Day 7 today
+                completedDays = 7;
             } else if (!hasClaimedToday && cycleDay === 0) {
-                completedDays = 0; // It's a brand new week for tomorrow
+                completedDays = 0;
             }
 
             for (let i = 1; i <= 7; i++) {
@@ -438,7 +489,7 @@
                 if (i <= completedDays) {
                     dayDiv.classList.add('completed');
                 } else if (i === completedDays + 1 && !hasClaimedToday) {
-                    dayDiv.classList.add('active'); // The very next bubble waiting to be claimed
+                    dayDiv.classList.add('active');
                 }
 
                 const valDiv = document.createElement('div');
@@ -446,11 +497,7 @@
                 valDiv.innerText = (i === 7) ? '+2' : '+1';
 
                 const iconDiv = document.createElement('div');
-                if (i <= completedDays) {
-                    iconDiv.innerText = '✓';
-                } else {
-                    iconDiv.innerText = (i === 7) ? '🗝️' : '🗝️';
-                }
+                iconDiv.innerText = (i <= completedDays) ? '✓' : '🗝️';
 
                 dayDiv.appendChild(valDiv);
                 dayDiv.appendChild(iconDiv);
@@ -458,29 +505,87 @@
             }
         }
 
-        // 4. Chest Opening Logic
-        function openChest(tierName, cost) {
-            if (vaultData.keys < cost) {
-                alert(`Not enough Keys! You need ${cost} Keys to open the ${tierName} Chest.`);
+        // 20-Key Mystery Chest Weighted Roll Engine
+        function openMysteryChest() {
+            const CHEST_COST = 20;
+            if (vaultData.keys < CHEST_COST) {
+                alert(`Not enough Keys! You need ${CHEST_COST} Keys to trade for a Mystery Chest.`);
                 return;
             }
-            if(confirm(`Spend ${cost} Keys to open the ${tierName} Chest?`)) {
-                vaultData.keys -= cost;
+
+            if (confirm(`Spend ${CHEST_COST} Keys to trade for a Mystery Chest?`)) {
+                vaultData.keys -= CHEST_COST;
+
+                // Weighted Probability Roll (0.00 to 99.99)
+                const roll = Math.random() * 100;
+                let tier = "";
+                let usdAward = 0.0;
+
+                if (roll < 88.0) {
+                    // 88.0% Common ($0.0314)
+                    tier = "Common Chest 📦";
+                    usdAward = 0.0314;
+                } else if (roll < 99.0) {
+                    // 11.0% Rare ($0.314)
+                    tier = "Rare Chest 🧰";
+                    usdAward = 0.3140;
+                } else {
+                    // 1.0% Legendary ($3.14)
+                    tier = "Legendary Chest 👑";
+                    usdAward = 3.1400;
+                }
+
+                vaultData.unclaimedUsd += usdAward;
                 saveVaultState();
                 updateCheckInUI();
-                alert(`✨ OPENING ${tierName.toUpperCase()} CHEST (${cost} Keys)... ✨\n\n🎉 Congratulations! You unlocked a Mystery Reward!`);
+
+                alert(`✨ MYSTERY CHEST UNLOCKED! ✨\n\n🎉 Outcome: [${tier}]\n💰 Payout: +$${usdAward.toFixed(4)} USD in $ICED\n\nYour unclaimed USD balance has been updated!`);
             }
         }
 
-        // 5. UI Real-time Updates
+        // NFT Key Reservation Engine
+        function reserveNFT(itemKey, itemName, cost) {
+            if (vaultData.keys < cost) {
+                alert(`Not enough Keys! You need ${cost} Keys to reserve the ${itemName}.`);
+                return;
+            }
+
+            if(!vaultData.walletAddress) {
+                alert("Please save your EVM Receive Address (0x...) above before reserving an NFT!");
+                return;
+            }
+
+            if (confirm(`Spend ${cost} Keys to reserve an on-chain permit for [${itemName}]?`)) {
+                vaultData.keys -= cost;
+                if(!vaultData.reservedNFTs.includes(itemKey)) {
+                    vaultData.reservedNFTs.push(itemKey);
+                }
+                saveVaultState();
+                updateCheckInUI();
+                alert(`🎟️ PERMIT RESERVED!\n\nYour registered wallet (${vaultData.walletAddress.substring(0,6)}...${vaultData.walletAddress.substring(38)}) has been flagged eligible to mint [${itemName}] on the Polar Portal dApp!`);
+            }
+        }
+
+        function redirectToClaimDapp() {
+            if(!vaultData.walletAddress) {
+                alert("Please enter and save your EVM Receive Address first!");
+                return;
+            }
+            if(vaultData.unclaimedUsd < 3.14) {
+                alert(`Minimum claim threshold is $3.14 USD. Your current balance is $${vaultData.unclaimedUsd.toFixed(4)} USD. Keep opening chests to reach the threshold!`);
+                return;
+            }
+            window.open(`https://claim.icedether.com?address=${vaultData.walletAddress}`, '_blank');
+        }
+
         function updateCheckInUI() {
             document.getElementById('keys-balance').innerText = vaultData.keys;
             document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
+            document.getElementById('unclaimed-usd-balance').innerText = vaultData.unclaimedUsd.toFixed(4);
 
             const est = getESTDetails();
             let displayStreak = vaultData.streakCount || 0;
 
-            // Visual reset on the dashboard if they missed a day (diff > 2) and haven't claimed yet
             if (vaultData.lastCheckInDate && vaultData.lastCheckInDate !== est.dateStr) {
                 const lastDate = new Date(vaultData.lastCheckInDate);
                 const currDate = new Date(est.dateStr);
