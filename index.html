@@ -110,7 +110,7 @@
             font-weight: 600;
         }
 
-        /* Reward Container Layout Update */
+        /* Reward Container Layout Update: Check-In Top, Streak Bottom */
         .reward-container {
             display: flex;
             flex-direction: column;
@@ -149,6 +149,40 @@
             color: #94a3b8;
             box-shadow: none;
             cursor: default;
+        }
+
+        /* 7-Day Timeline UI */
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .timeline-day {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px 2px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .timeline-day.active {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+        }
+
+        .timeline-day.completed {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0284c7;
         }
 
         /* Game Library Grid */
@@ -228,15 +262,19 @@
         </header>
 
         <div class="reward-container">
-            <div style="width: 100%; text-align: center; margin-bottom: 20px;">
+            <div style="width: 100%; text-align: center;">
                 <div style="font-size: 0.85rem; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Daily Mission</div>
+                
+                <div id="timeline-container" class="timeline-grid">
+                    </div>
+
                 <button id="checkInBtn" class="check-in-btn" onclick="handleCheckIn()">
                     Claim +1 Key
                 </button>
                 <div id="mission-timer" style="font-size: 0.75rem; color: #94a3b8; margin-top: 8px;">Resets in 24h 00m 00s</div>
             </div>
 
-            <div style="width: 100%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 15px; margin-top: auto;">
+            <div style="width: 100%; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 15px; margin-top: 15px;">
                 <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Active Streak</div>
                 <div style="font-size: 1.25rem; font-weight: bold; color: #38bdf8; margin-top: 4px;">
                     🔥 <span id="streak-count">0</span> Days
@@ -305,8 +343,7 @@
         function getEstTime() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            // EST offset: -5 hours (simplified local check-in baseline)
-            const est = new Date(utc - (5 * 3600000));
+            const est = new Date(utc - (5 * 3600000)); // EST baseline
             const dateStr = est.toISOString().split('T')[0];
             const midnight = new Date(est);
             midnight.setHours(24, 0, 0, 0);
@@ -327,24 +364,63 @@
             updateUI();
         }
 
-        function handleCheckIn() {
-            const est = getEstTime();
-            if (vaultData.lastCheckInDate === est.dateStr) return;
+        function getCalculatedNextStreak(est) {
+            if (!vaultData.lastCheckInDate) return 1;
+            const lastDate = new Date(vaultData.lastCheckInDate);
+            const currDate = new Date(est.dateStr);
+            const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
+            if (diffDays === 1) {
+                return vaultData.streak + 1;
+            } else if (diffDays > 1) {
+                return 1;
+            }
+            return vaultData.streak;
+        }
 
-            // Check streak continuity
+        function renderTimeline(est) {
+            const container = document.getElementById('timeline-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let displayStreak = vaultData.streak;
             if (vaultData.lastCheckInDate) {
                 const lastDate = new Date(vaultData.lastCheckInDate);
                 const currDate = new Date(est.dateStr);
                 const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
-                if (diffDays === 1) {
-                    vaultData.streak += 1;
-                } else if (diffDays > 1) {
-                    vaultData.streak = 1;
-                }
-            } else {
-                vaultData.streak = 1;
+                if (diffDays > 2) displayStreak = 0;
             }
 
+            const activeDayInCycle = (displayStreak % 7) || (vaultData.lastCheckInDate === est.dateStr ? 7 : 0);
+
+            for (let i = 1; i <= 7; i++) {
+                const dayBox = document.createElement('div');
+                dayBox.className = 'timeline-day';
+                
+                let isDone = false;
+                if (vaultData.lastCheckInDate === est.dateStr) {
+                    if (i <= activeDayInCycle) isDone = true;
+                } else {
+                    if (i < activeDayInCycle + 1) isDone = true;
+                }
+
+                if (isDone) {
+                    dayBox.classList.add('completed');
+                    dayBox.innerHTML = `<span>D${i}</span><span>✓</span>`;
+                } else if (i === activeDayInCycle + 1 && vaultData.lastCheckInDate !== est.dateStr) {
+                    dayBox.classList.add('active');
+                    dayBox.innerHTML = `<span>D${i}</span><span>🔑</span>`;
+                } else {
+                    dayBox.innerHTML = `<span>D${i}</span><span>+1</span>`;
+                }
+                container.appendChild(dayBox);
+            }
+        }
+
+        function handleCheckIn() {
+            const est = getEstTime();
+            if (vaultData.lastCheckInDate === est.dateStr) return;
+
+            vaultData.streak = getCalculatedNextStreak(est);
             vaultData.keys += (vaultData.streak % 7 === 0) ? 2 : 1;
             vaultData.lastCheckInDate = est.dateStr;
             saveVault();
@@ -353,24 +429,37 @@
         function updateUI() {
             const est = getEstTime();
             document.getElementById('key-count').innerText = vaultData.keys;
-            document.getElementById('streak-count').innerText = vaultData.streak;
+
+            let displayStreak = vaultData.streak;
+            if (vaultData.lastCheckInDate) {
+                const lastDate = new Date(vaultData.lastCheckInDate);
+                const currDate = new Date(est.dateStr);
+                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
+                if (diffDays > 2) displayStreak = 0;
+            }
+            document.getElementById('streak-count').innerText = displayStreak;
 
             const btn = document.getElementById('checkInBtn');
             const timerText = document.getElementById('mission-timer');
 
+            renderTimeline(est);
+
             if (vaultData.lastCheckInDate === est.dateStr) {
-                btn.classList.add('claimed');
-                btn.innerText = "Claimed ✓";
-                
+                if (btn) {
+                    btn.classList.add('claimed');
+                    btn.innerText = "Claimed ✓";
+                }
                 const hrs = Math.floor(est.msToMidnight / (1000 * 60 * 60));
                 const mins = Math.floor((est.msToMidnight % (1000 * 60 * 60)) / (1000 * 60));
                 const secs = Math.floor((est.msToMidnight % (1000 * 60)) / 1000);
-                timerText.innerText = `Resets in ${hrs}h ${mins}m ${secs}s`;
+                if (timerText) timerText.innerText = `Resets in ${hrs}h ${mins}m ${secs}s`;
             } else {
-                btn.classList.remove('claimed');
-                const nextStreak = vaultData.lastCheckInDate ? vaultData.streak + 1 : 1;
-                btn.innerText = (nextStreak % 7 === 0) ? "Claim +2 Keys" : "Claim +1 Key";
-                timerText.innerText = "Available Now!";
+                if (btn) {
+                    btn.classList.remove('claimed');
+                    const nextStreak = getCalculatedNextStreak(est);
+                    btn.innerText = (nextStreak % 7 === 0) ? "Claim +2 Keys" : "Claim +1 Key";
+                }
+                if (timerText) timerText.innerText = "Available Now!";
             }
         }
 
