@@ -138,7 +138,7 @@
         .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
         .streak-flame { font-size: 28px; }
 
-        /* Rewards Store Page Styling */
+        /* Rewards Page Styling */
         .back-nav-btn {
             background: #121C2B; border: 1px solid #233550; color: #00f2fe;
             padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 13px;
@@ -183,7 +183,7 @@
         }
         .chest-card:active { transform: scale(0.98); }
         .chest-left { display: flex; align-items: center; gap: 14px; }
-        .chest-icon { font-size: 36px; }
+        .chest-icon-img { width: 44px; height: 44px; object-fit: contain; }
         .chest-info h4 { margin: 0; font-size: 16px; color: #E2E8F0; }
         .chest-info p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
 
@@ -269,29 +269,32 @@
         </div>
     </div>
 
-    <!-- Rewards Store Page View -->
+    <!-- Rewards Page View -->
     <div id="rewards-container" class="app-view">
         <button class="back-nav-btn" onclick="closeRewardsPage()">← Back to Hub</button>
 
         <header>
-            <div class="section-title" style="font-size: 22px;">Rewards Store</div>
+            <div class="section-title" style="font-size: 22px;">Rewards</div>
             <div class="vault-pill">
                 🗝️ <span id="rewards-keys-balance">0</span>
             </div>
         </header>
 
-        <!-- Registered Receive Wallet Registration -->
+        <!-- Profile & Receive Address Registration -->
         <div class="wallet-card">
             <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">EVM Receive Address (0x...)</div>
-            <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Used to map your off-chain payouts & NFT permits for Web3 claiming.</div>
+            <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Saved to your profile to map off-chain rewards & NFT permits.</div>
             <input type="text" id="walletInput" class="wallet-input" placeholder="Paste 0x... EVM Address" onchange="saveWalletAddress()">
+            <div style="font-size: 10px; color: #FFD700; margin-top: 6px; line-height: 1.3;">
+                ⚠️ <strong>Sync Delay Notice:</strong> Updating your receive address triggers a 24-hour waiting period before claims can be processed on the dApp to prevent sync exploits.
+            </div>
         </div>
 
         <!-- Pending Unclaimed Balance Card -->
         <div class="balance-summary-card">
             <div style="font-size: 12px; color: #A0AEC0; text-transform: uppercase; font-weight: 700;">Unclaimed Balance</div>
-            <div class="balance-val">$<span id="unclaimed-usd-balance">0.0000</span> USD</div>
-            <div style="font-size: 11px; color: #94a3b8;">Converted to $ICED dynamically at claim time. Min claim: $3.14 USD.</div>
+            <div class="balance-val"><span id="unclaimed-iced-balance">0.00</span> $ICED</div>
+            <div style="font-size: 11px; color: #94a3b8;">Redeemable via external smart contract claim.</div>
             <button class="claim-dapp-btn" onclick="redirectToClaimDapp()">Claim on Polar Portal dApp ↗</button>
         </div>
 
@@ -303,7 +306,7 @@
         <div class="store-grid">
             <div class="chest-card" onclick="openMysteryChest()">
                 <div class="chest-left">
-                    <div class="chest-icon">🎁</div>
+                    <img src="MysteryChest.png" alt="Mystery Chest" class="chest-icon-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\'><rect width=\'44\' height=\'44\' rx=\'8\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'22\'>🎁</text></svg>';">
                     <div class="chest-info">
                         <h4>Mystery Chest</h4>
                         <p>Common (88%) | Rare (11%) | Legendary (1%)</p>
@@ -321,7 +324,7 @@
         <div class="store-grid">
             <div class="chest-card" onclick="reserveNFT('arcade_badge', 'Glacier Arcade Badge', 50)">
                 <div class="chest-left">
-                    <div class="chest-icon">🛡️</div>
+                    <div style="font-size: 32px;">🛡️</div>
                     <div class="chest-info">
                         <h4>Glacier Arcade Badge</h4>
                         <p>Commemorative Player Holder NFT</p>
@@ -332,7 +335,7 @@
 
             <div class="chest-card" onclick="reserveNFT('iceberg_key', 'Iceberg Access Key', 100)">
                 <div class="chest-left">
-                    <div class="chest-icon">🔑</div>
+                    <div style="font-size: 32px;">🔑</div>
                     <div class="chest-info">
                         <h4>Iceberg Access Key NFT</h4>
                         <p>Unlocks Staking Boosts on dApp</p>
@@ -378,13 +381,14 @@
             updateCheckInUI();
         }
 
-        // Vault Data Engine State
+        // User Profile & Vault Engine State
         let vaultData = {
             keys: 0,
             streakCount: 0,
             lastCheckInDate: "",
             walletAddress: "",
-            unclaimedUsd: 0.0,
+            lastAddressChangeTimestamp: 0,
+            unclaimedIced: 0.0,
             reservedNFTs: []
         };
 
@@ -410,7 +414,7 @@
         }
 
         function loadVaultState() {
-            const saved = localStorage.getItem('glacier_vault_v2');
+            const saved = localStorage.getItem('glacier_vault_v3');
             if (saved) {
                 try { vaultData = JSON.parse(saved); } catch(e) {}
             }
@@ -421,18 +425,33 @@
         }
 
         function saveVaultState() {
-            localStorage.setItem('glacier_vault_v2', JSON.stringify(vaultData));
+            localStorage.setItem('glacier_vault_v3', JSON.stringify(vaultData));
         }
 
         function saveWalletAddress() {
             const input = document.getElementById('walletInput').value.trim();
             if(input && !/^0x[a-fA-F0-9]{40}$/.test(input)) {
                 alert("Please enter a valid 42-character EVM address (0x...)");
+                document.getElementById('walletInput').value = vaultData.walletAddress || "";
                 return;
             }
+
+            if (input === vaultData.walletAddress) return;
+
+            const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 Hours
+            const now = Date.now();
+
+            if (vaultData.lastAddressChangeTimestamp && (now - vaultData.lastAddressChangeTimestamp < COOLDOWN_MS)) {
+                const hoursLeft = Math.ceil((COOLDOWN_MS - (now - vaultData.lastAddressChangeTimestamp)) / (1000 * 60 * 60));
+                alert(`Address updates are rate-limited to prevent exploits. Please wait ${hoursLeft} hour(s) before changing your receive address again.`);
+                document.getElementById('walletInput').value = vaultData.walletAddress || "";
+                return;
+            }
+
             vaultData.walletAddress = input;
+            vaultData.lastAddressChangeTimestamp = now;
             saveVaultState();
-            alert("EVM Receive Address updated successfully!");
+            alert("Receive Address saved to your profile!\n\nNote: A 24-hour sync period is required before rewards can be claimed on the dApp for this updated address.");
         }
 
         function getCalculatedNextStreak(est) {
@@ -519,27 +538,27 @@
                 // Weighted Probability Roll (0.00 to 99.99)
                 const roll = Math.random() * 100;
                 let tier = "";
-                let usdAward = 0.0;
+                let icedAward = 0.0;
 
                 if (roll < 88.0) {
-                    // 88.0% Common ($0.0314)
-                    tier = "Common Chest 📦";
-                    usdAward = 0.0314;
+                    // 88.0% Common ($0.0314 peg)
+                    tier = "Common Chest";
+                    icedAward = 0.0314;
                 } else if (roll < 99.0) {
-                    // 11.0% Rare ($0.314)
-                    tier = "Rare Chest 🧰";
-                    usdAward = 0.3140;
+                    // 11.0% Rare ($0.314 peg)
+                    tier = "Rare Chest";
+                    icedAward = 0.3140;
                 } else {
-                    // 1.0% Legendary ($3.14)
-                    tier = "Legendary Chest 👑";
-                    usdAward = 3.1400;
+                    // 1.0% Legendary ($3.14 peg)
+                    tier = "Legendary Chest";
+                    icedAward = 3.1400;
                 }
 
-                vaultData.unclaimedUsd += usdAward;
+                vaultData.unclaimedIced += icedAward;
                 saveVaultState();
                 updateCheckInUI();
 
-                alert(`✨ MYSTERY CHEST UNLOCKED! ✨\n\n🎉 Outcome: [${tier}]\n💰 Payout: +$${usdAward.toFixed(4)} USD in $ICED\n\nYour unclaimed USD balance has been updated!`);
+                alert(`✨ MYSTERY CHEST UNLOCKED! ✨\n\n🎉 Outcome: [${tier}]\n💰 Payout: +${icedAward.toFixed(4)} $ICED\n\nYour unclaimed $ICED balance has been updated!`);
             }
         }
 
@@ -571,17 +590,22 @@
                 alert("Please enter and save your EVM Receive Address first!");
                 return;
             }
-            if(vaultData.unclaimedUsd < 3.14) {
-                alert(`Minimum claim threshold is $3.14 USD. Your current balance is $${vaultData.unclaimedUsd.toFixed(4)} USD. Keep opening chests to reach the threshold!`);
+
+            const COOLDOWN_MS = 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            if (vaultData.lastAddressChangeTimestamp && (now - vaultData.lastAddressChangeTimestamp < COOLDOWN_MS)) {
+                const hoursLeft = Math.ceil((COOLDOWN_MS - (now - vaultData.lastAddressChangeTimestamp)) / (1000 * 60 * 60));
+                alert(`Your receive address was updated recently. To prevent sync exploits, please wait ${hoursLeft} hour(s) before executing claims on the dApp.`);
                 return;
             }
+
             window.open(`https://claim.icedether.com?address=${vaultData.walletAddress}`, '_blank');
         }
 
         function updateCheckInUI() {
             document.getElementById('keys-balance').innerText = vaultData.keys;
             document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
-            document.getElementById('unclaimed-usd-balance').innerText = vaultData.unclaimedUsd.toFixed(4);
+            document.getElementById('unclaimed-iced-balance').innerText = vaultData.unclaimedIced.toFixed(4);
 
             const est = getESTDetails();
             let displayStreak = vaultData.streakCount || 0;
