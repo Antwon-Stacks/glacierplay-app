@@ -110,3 +110,256 @@
             display: flex;
             justify-content: center;
             margin-bottom: 30px;
+        }
+
+        .check-in-btn-active {
+            width: 100%;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #0B1320;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.35);
+            transition: transform 0.1s, opacity 0.2s, background 0.3s;
+            text-align: center;
+        }
+
+        .check-in-btn-active:active {
+            transform: scale(0.97);
+        }
+
+        .check-in-btn-disabled {
+            background: #233550 !important;
+            color: #A0AEC0 !important;
+            cursor: not-allowed;
+            box-shadow: none !important;
+        }
+
+        /* Game Grid Section */
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #E2E8F0;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .game-card {
+            background-color: #1A2639;
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #233550;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s;
+        }
+
+        .game-card:active {
+            transform: scale(0.95);
+        }
+
+        .game-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-bottom: 1px solid #233550;
+        }
+
+        .game-title {
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            background-color: #1A2639;
+            color: #E2E8F0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen">
+        <video id="splashVideo" autoplay muted playsinline>
+            <source src="splash.mp4" type="video/mp4">
+            <img src="1786404293997.png" alt="GlacierPlay" style="width: 140px;">
+        </video>
+    </div>
+
+    <div id="hub-container">
+        
+        <header>
+            <img src="1786404293997.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'42\'><rect width=\'150\' height=\'42\' rx=\'6\' fill=\'%231A2639\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'15\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
+            <div class="user-profile">U</div>
+        </header>
+
+        <div class="reward-stats-bar">
+            <div class="stat-box">❄️ <span id="snowflakes-count" class="stat-val">0</span> Snowflakes</div>
+            <div class="stat-box">🗝️ <span id="keys-count" class="stat-val">0</span> Keys</div>
+            <div class="stat-box">🔥 Day <span id="streak-count" class="stat-val">1</span>/7</div>
+        </div>
+
+        <section class="rewards-section">
+            <button id="checkInBtn" class="check-in-btn-active" onclick="claimDailyReward()">
+                <div id="btn-text">+ CLAIM DAILY REWARD</div>
+                <div id="btn-subtext" style="font-size: 11px; opacity: 0.85; margin-top: 4px;">Earn 1 Snowflake ❄️</div>
+            </button>
+        </section>
+
+        <div class="section-title">Arcade Library</div>
+        
+        <div class="game-grid">
+            
+            <a href="track.html" class="game-card">
+                <img src="track-thumb.png" alt="8-Bit Track" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300f2fe\' font-family=\'sans-serif\' font-size=\'16\' font-weight=\'bold\'>8-BIT TRACK</text></svg>'">
+                <div class="game-title">8-Bit Track</div>
+            </a>
+
+            <a href="#" class="game-card" onclick="alert('Game launching soon!')">
+                <img src="game2-thumb.png" alt="Glacier Dash" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Glacier Dash</text></svg>'">
+                <div class="game-title">Glacier Dash</div>
+            </a>
+
+            <a href="#" class="game-card" onclick="alert('Game launching soon!')">
+                <img src="game3-thumb.png" alt="Frost Defense" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Frost Defense</text></svg>'">
+                <div class="game-title">Frost Defense</div>
+            </a>
+
+            <a href="#" class="game-card" onclick="alert('Game launching soon!')">
+                <img src="game4-thumb.png" alt="Avalanche Run" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Avalanche Run</text></svg>'">
+                <div class="game-title">Avalanche Run</div>
+            </a>
+
+        </div>
+    </div>
+
+    <script>
+        // -----------------------------------------------------
+        // 1. Splash Screen Timing Sequence (4.5s)
+        // -----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const splashScreen = document.getElementById('splash-screen');
+            const hubContainer = document.getElementById('hub-container');
+
+            loadRewardState();
+
+            // Execute exact 4.5 second delay before transitioning into hub
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    hubContainer.style.display = 'block';
+                }, 500);
+            }, 4500); 
+
+            // Live update countdown timer every second
+            setInterval(updateUI, 1000);
+        });
+
+        // -----------------------------------------------------
+        // 2. Reward State Tracking Engine
+        // -----------------------------------------------------
+        let rewardData = {
+            snowflakes: 0,
+            skeletonKeys: 0,
+            streakCount: 0,
+            lastCheckIn: 0
+        };
+
+        function loadRewardState() {
+            const saved = localStorage.getItem('glacier_rewards');
+            if (saved) {
+                try {
+                    rewardData = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Error parsing saved reward state", e);
+                }
+            }
+            updateUI();
+        }
+
+        function saveRewardState() {
+            localStorage.setItem('glacier_rewards', JSON.stringify(rewardData));
+        }
+
+        function claimDailyReward() {
+            const now = Date.now();
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            const timePassed = now - rewardData.lastCheckIn;
+
+            // Block claim if within 24-hour cooldown
+            if (rewardData.lastCheckIn !== 0 && timePassed < oneDayMs) {
+                return;
+            }
+
+            // Frost Drip Mechanic: Streak Validation
+            if (timePassed > (oneDayMs * 2)) {
+                // More than 48 hours passed: Reset streak
+                rewardData.streakCount = 1;
+            } else {
+                // Consecutive day check-in: Increment streak
+                rewardData.streakCount = (rewardData.streakCount % 7) + 1;
+            }
+
+            // Award base Snowflake
+            rewardData.snowflakes += 1;
+            rewardData.lastCheckIn = now;
+
+            // 7-Day Skeleton Key Forging Trigger
+            if (rewardData.streakCount === 7) {
+                rewardData.skeletonKeys += 1;
+                alert("🎉 CONGRATULATIONS! You completed a 7-day streak and forged 1 Skeleton Key 🗝️!");
+            } else {
+                alert(`❄️ Claimed +1 Snowflake! Current Streak: Day ${rewardData.streakCount}/7`);
+            }
+
+            saveRewardState();
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('snowflakes-count').innerText = rewardData.snowflakes;
+            document.getElementById('keys-count').innerText = rewardData.skeletonKeys;
+            document.getElementById('streak-count').innerText = rewardData.streakCount || 1;
+
+            const btn = document.getElementById('checkInBtn');
+            const btnText = document.getElementById('btn-text');
+            const btnSubtext = document.getElementById('btn-subtext');
+
+            const now = Date.now();
+            const oneDayMs = 24 * 60 * 60 * 1000;
+            const timePassed = now - rewardData.lastCheckIn;
+
+            if (rewardData.lastCheckIn !== 0 && timePassed < oneDayMs) {
+                // Active Cooldown State
+                btn.classList.add('check-in-btn-disabled');
+                btnText.innerText = "CHECKED IN TODAY ✓";
+                
+                // Calculate remaining hours/minutes/seconds
+                const remainingMs = oneDayMs - timePassed;
+                const hoursLeft = Math.floor(remainingMs / (1000 * 60 * 60));
+                const minsLeft = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+                const secsLeft = Math.floor((remainingMs % (1000 * 60)) / 1000);
+                
+                btnSubtext.innerText = `Next reward in ${hoursLeft}h ${minsLeft}m ${secsLeft}s`;
+            } else {
+                // Available Claim State
+                btn.classList.remove('check-in-btn-disabled');
+                btnText.innerText = "+ CLAIM DAILY REWARD";
+                btnSubtext.innerText = "Earn 1 Snowflake ❄️";
+            }
+        }
+    </script>
+</body>
+</html>
