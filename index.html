@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GlacierPlay Hub</title>
     <style>
-        /* Base Styling */
+        /* Base Styling & Theme */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
             background-color: #0B1320; /* Deep midnight navy blue */
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #FFFFFF;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow-x: hidden;
-            user-select: none; /* Prevents text highlighting on mobile taps */
+            user-select: none;
             -webkit-touch-callout: none;
         }
 
         /* -------------------------------------
-           Splash Screen Overlay
+           1. Splash Screen Overlay
         -------------------------------------- */
         #splash-screen {
             position: fixed;
@@ -41,169 +45,68 @@
         }
 
         /* -------------------------------------
-           Main Hub Architecture
+           2. Main App Hub Architecture
         -------------------------------------- */
         #hub-container {
-            display: none; /* Hidden until splash screen timer finishes */
+            display: none; /* Hidden during splash screen timer */
+            max-width: 480px;
+            margin: 0 auto;
             padding: 20px;
-            padding-bottom: 80px; 
+            padding-bottom: 80px;
         }
 
-        /* Header / Nav */
+        /* Header Navigation */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
         .logo {
-            height: 45px;
+            height: 42px;
             width: auto;
         }
 
         .user-profile {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); /* Electric cyan-to-blue gradient */
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 800;
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+            color: #0B1320;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
         }
 
-        /* Rewards Section */
+        /* Reward HUD Bar */
+        .reward-stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #1A2639;
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            border: 1px solid #233550;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-val {
+            color: #00f2fe;
+        }
+
+        /* Daily Reward Action Section */
         .rewards-section {
             display: flex;
             justify-content: center;
-            margin-bottom: 35px;
-        }
-
-        .check-in-btn {
-            width: 100%;
-            max-width: 320px;
-            cursor: pointer;
-            transition: transform 0.1s;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        .check-in-btn:active {
-            transform: scale(0.96);
-        }
-
-        /* Game Grid Library */
-        h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #E2E8F0;
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .game-card {
-            background-color: #1A2639; /* Subtle contrast to the midnight background */
-            border-radius: 16px;
-            overflow: hidden;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .game-card:active {
-            transform: scale(0.95);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-        }
-
-        .game-thumb {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            border-bottom: 2px solid #233550;
-        }
-
-        .game-title {
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: center;
-            background-color: #1A2639;
-        }
-    </style>
-</head>
-<body>
-
-    <div id="splash-screen">
-        <video id="splashVideo" autoplay muted playsinline>
-            <source src="splash.mp4" type="video/mp4">
-            <img src="1786404293997.png" alt="GlacierPlay" style="width: 150px;">
-        </video>
-    </div>
-
-    <div id="hub-container">
-        
-        <header>
-            <img src="1786404293997.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'45\'><rect width=\'150\' height=\'45\' rx=\'5\' fill=\'%231A2639\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'16\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
-            <div class="user-profile">U</div>
-        </header>
-
-        <section class="rewards-section">
-            <img src="check-in-button.png" alt="Claim Daily Check-In" class="check-in-btn" onclick="alert('Check-In Claimed! Integrating with backend...')" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'320\' height=\'70\'><rect width=\'320\' height=\'70\' rx=\'12\' fill=\'%2300f2fe\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%230B1320\' font-family=\'sans-serif\' font-size=\'18\' font-weight=\'bold\'>+ CLAIM DAILY REWARD</text></svg>'">
-        </section>
-
-        <h2>Arcade Library</h2>
-        
-        <div class="game-grid">
-            
-            <a href="track.html" class="game-card">
-                <img src="track-thumb.png" alt="8-Bit Track" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>8-Bit Thumb</text></svg>'">
-                <div class="game-title">8-Bit Track</div>
-            </a>
-
-            <a href="#" class="game-card">
-                <img src="game2-thumb.png" alt="Glacier Dash" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Game 2 Thumb</text></svg>'">
-                <div class="game-title">Glacier Dash</div>
-            </a>
-
-            <a href="#" class="game-card">
-                <img src="game3-thumb.png" alt="Frost Defense" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Game 3 Thumb</text></svg>'">
-                <div class="game-title">Frost Defense</div>
-            </a>
-
-            <a href="#" class="game-card">
-                <img src="game4-thumb.png" alt="Avalanche Run" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Game 4 Thumb</text></svg>'">
-                <div class="game-title">Avalanche Run</div>
-            </a>
-
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const splashScreen = document.getElementById('splash-screen');
-            const hubContainer = document.getElementById('hub-container');
-
-            // Exact 4.5 second JavaScript timer for the cinematic splash sequence
-            setTimeout(() => {
-                splashScreen.style.opacity = '0'; // Trigger fade out
-                
-                setTimeout(() => {
-                    splashScreen.style.display = 'none'; // Remove from layout
-                    hubContainer.style.display = 'block'; // Reveal the game hub
-                }, 500); // 0.5s CSS transition allowance
-            }, 4500); 
-        });
-    </script>
-</body>
-</html>
+            margin-bottom: 30px;
