@@ -37,7 +37,7 @@
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 24px;
         }
-        .logo { height: 38px; width: auto; }
+        .logo { height: 38px; width: auto; object-fit: contain; }
         
         .vault-pill {
             background: linear-gradient(90deg, #1A2639 0%, #233550 100%);
@@ -51,35 +51,22 @@
         }
         .vault-pill span { color: #00f2fe; }
 
-        /* Infinite Streak Banner */
-        .streak-banner {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
-            border-radius: 14px;
-            padding: 16px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
-        }
-        .streak-info h3 { margin: 0; font-size: 18px; font-weight: 800; }
-        .streak-info p { margin: 4px 0 0 0; font-size: 12px; opacity: 0.9; }
-        .streak-flame { font-size: 32px; }
-
         /* Section Headers */
         .section-header {
             display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 12px; margin-top: 10px;
+            margin-bottom: 12px; margin-top: 15px;
         }
         .section-title { font-size: 18px; font-weight: 700; color: #E2E8F0; }
         .section-subtitle { font-size: 12px; color: #A0AEC0; font-weight: 600; }
 
-        /* Mission Card */
+        /* Daily Check-in Card */
         .mission-card {
             background-color: #121C2B;
             border: 1px solid #233550;
             border-radius: 14px;
             padding: 16px;
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 14px;
         }
         .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
         .mission-text p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
@@ -94,6 +81,19 @@
         .mission-btn.claimed {
             background: #233550; color: #A0AEC0; cursor: not-allowed;
         }
+
+        /* Infinite Streak Banner (Positioned Directly Under Check-In) */
+        .streak-banner {
+            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.3);
+        }
+        .streak-info h3 { margin: 0; font-size: 18px; font-weight: 800; }
+        .streak-info p { margin: 4px 0 0 0; font-size: 12px; opacity: 0.9; }
+        .streak-flame { font-size: 32px; }
 
         /* Rewards Store (3 Tiers: 20, 50, 100 Keys) */
         .store-grid {
@@ -140,7 +140,7 @@
             <source src="Glacier%20Play%20loading%20screen.mp4" type="video/mp4">
         </video>
         <div id="splash-fallback" style="display:none; text-align:center;">
-            <img src="1786404293997.png" alt="GlacierPlay" style="width: 150px; margin-bottom: 20px;" onerror="this.style.display='none'">
+            <img src="header-logo.png" alt="GlacierPlay" style="width: 150px; margin-bottom: 20px;" onerror="this.style.display='none'">
             <div style="font-weight: 700; color: #00f2fe; letter-spacing: 1px;">GLACIERPLAY HUB</div>
         </div>
     </div>
@@ -148,11 +148,24 @@
     <div id="hub-container">
         
         <header>
-            <img src="1786404293997.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'38\'><rect width=\'140\' height=\'38\' rx=\'6\' fill=\'%23121C2B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
+            <img src="header-logo.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'38\'><rect width=\'140\' height=\'38\' rx=\'6\' fill=\'%23121C2B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
             <div class="vault-pill">
                 🗝️ <span id="keys-balance">0</span>
             </div>
         </header>
+
+        <div class="section-header">
+            <div class="section-title">Daily Check-in</div>
+            <div class="section-subtitle">Resets at Midnight EST</div>
+        </div>
+        
+        <div class="mission-card">
+            <div class="mission-text">
+                <h4>Daily Vault Check-in</h4>
+                <p id="mission-timer">Reward available now</p>
+            </div>
+            <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">+1 Key</button>
+        </div>
 
         <div class="streak-banner">
             <div class="streak-info">
@@ -160,19 +173,6 @@
                 <p>Keep the flame alive daily.</p>
             </div>
             <div class="streak-flame">🔥</div>
-        </div>
-
-        <div class="section-header">
-            <div class="section-title">Missions</div>
-            <div class="section-subtitle">Resets at Midnight</div>
-        </div>
-        
-        <div class="mission-card">
-            <div class="mission-text">
-                <h4>Status Check-in</h4>
-                <p id="mission-timer">Reward available now</p>
-            </div>
-            <button id="checkInBtn" class="mission-btn" onclick="claimMission()">+1 Key</button>
         </div>
 
         <div class="section-header">
@@ -203,7 +203,7 @@
         </div>
         <div class="game-grid">
             <a href="track.html" class="game-card">
-                <img src="track-thumb.png" alt="8-Bit Track" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'00f2fe\' font-family=\'sans-serif\' font-size=\'16\' font-weight=\'bold\'>8-BIT TRACK</text></svg>'">
+                <img src="track-thumb.png" alt="8-Bit Track" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300f2fe\' font-family=\'sans-serif\' font-size=\'16\' font-weight=\'bold\'>8-BIT TRACK</text></svg>'">
                 <div class="game-title">8-Bit Track</div>
             </a>
             <a href="#" class="game-card">
@@ -235,49 +235,101 @@
                 }, 500);
             }, 4500); 
 
-            setInterval(updateMissionUI, 1000);
+            setInterval(updateCheckInUI, 1000);
         });
 
         // 2. Vault Engine
         let vaultData = {
             keys: 0,
             streakCount: 0,
-            lastCheckIn: 0
+            lastCheckInDate: "" // YYYY-MM-DD format in EST
         };
+
+        // Helper to get current EST date string and ms remaining until midnight EST
+        function getESTDetails() {
+            const now = new Date();
+            const estString = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/New_York',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).format(now);
+
+            const parts = estString.match(/(\d+)\/(\d+)\/(\d+),\s*(\d+):(\d+):(\d+)/);
+            if (!parts) return { dateStr: "", msToMidnight: 0 };
+
+            const month = parts[1];
+            const day = parts[2];
+            const year = parts[3];
+            const hour = parseInt(parts[4], 10);
+            const minute = parseInt(parts[5], 10);
+            const second = parseInt(parts[6], 10);
+
+            const currentDateStr = `${year}-${month}-${day}`;
+
+            const currentSecondsInDay = (hour * 3600) + (minute * 60) + second;
+            const secondsToMidnight = 86400 - currentSecondsInDay;
+            const msToMidnight = secondsToMidnight * 1000;
+
+            return { dateStr: currentDateStr, msToMidnight: msToMidnight };
+        }
 
         function loadVaultState() {
             const saved = localStorage.getItem('glacier_vault');
             if (saved) {
                 try { vaultData = JSON.parse(saved); } catch(e) {}
             }
-            updateMissionUI();
+            
+            const est = getESTDetails();
+            if (vaultData.lastCheckInDate) {
+                const lastDate = new Date(vaultData.lastCheckInDate);
+                const currDate = new Date(est.dateStr);
+                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays > 2) {
+                    // Missed more than 48 hours -> Reset streak
+                    vaultData.streakCount = 0;
+                }
+            }
+            updateCheckInUI();
         }
 
         function saveVaultState() {
             localStorage.setItem('glacier_vault', JSON.stringify(vaultData));
         }
 
-        function claimMission() {
-            const now = Date.now();
-            const oneDayMs = 24 * 60 * 60 * 1000;
-            const timePassed = now - vaultData.lastCheckIn;
+        function claimDailyCheckIn() {
+            const est = getESTDetails();
 
-            if (vaultData.lastCheckIn !== 0 && timePassed < oneDayMs) return;
+            if (vaultData.lastCheckInDate === est.dateStr) {
+                return; // Already checked in today EST
+            }
 
-            // Infinite Streak Logic (Frost Drip / 48-hour window grace period)
-            if (vaultData.lastCheckIn !== 0 && timePassed > (oneDayMs * 2)) {
-                vaultData.streakCount = 1; // Missed 48 hours -> reset streak
+            if (vaultData.lastCheckInDate) {
+                const lastDate = new Date(vaultData.lastCheckInDate);
+                const currDate = new Date(est.dateStr);
+                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays > 2) {
+                    vaultData.streakCount = 1;
+                } else {
+                    vaultData.streakCount += 1;
+                }
             } else {
-                vaultData.streakCount += 1; // Counts up indefinitely into thousands
+                vaultData.streakCount = 1;
             }
 
             vaultData.keys += 1;
-            vaultData.lastCheckIn = now;
+            vaultData.lastCheckInDate = est.dateStr;
 
             alert(`🗝️ +1 Key Added to Vault!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
             
             saveVaultState();
-            updateMissionUI();
+            updateCheckInUI();
         }
 
         // 3. Chest Opening Gacha Logic
@@ -290,32 +342,32 @@
             if(confirm(`Spend ${cost} Keys to open the ${tierName} Chest?`)) {
                 vaultData.keys -= cost;
                 saveVaultState();
-                updateMissionUI();
+                updateCheckInUI();
                 
                 alert(`✨ OPENING ${tierName.toUpperCase()} CHEST (${cost} Keys)... ✨\n\n🎉 Congratulations! You unlocked a Mystery Reward!`);
             }
         }
 
-        // 4. UI Real-time Updates
-        function updateMissionUI() {
+        // 4. UI Real-time Updates with Midnight EST Countdown
+        function updateCheckInUI() {
             document.getElementById('keys-balance').innerText = vaultData.keys;
             document.getElementById('streak-count').innerText = vaultData.streakCount || 0;
 
             const btn = document.getElementById('checkInBtn');
             const timerText = document.getElementById('mission-timer');
 
-            const now = Date.now();
-            const oneDayMs = 24 * 60 * 60 * 1000;
-            const timePassed = now - vaultData.lastCheckIn;
+            const est = getESTDetails();
 
-            if (vaultData.lastCheckIn !== 0 && timePassed < oneDayMs) {
+            if (vaultData.lastCheckInDate === est.dateStr) {
                 btn.classList.add('claimed');
                 btn.innerText = "Claimed ✓";
                 
-                const remainingMs = oneDayMs - timePassed;
+                const remainingMs = est.msToMidnight;
                 const hoursLeft = Math.floor(remainingMs / (1000 * 60 * 60));
                 const minsLeft = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-                timerText.innerText = `Resets in ${hoursLeft}h ${minsLeft}m`;
+                const secsLeft = Math.floor((remainingMs % (1000 * 60)) / 1000);
+                
+                timerText.innerText = `Resets in ${hoursLeft}h ${minsLeft}m ${secsLeft}s`;
             } else {
                 btn.classList.remove('claimed');
                 btn.innerText = "+1 Key";
