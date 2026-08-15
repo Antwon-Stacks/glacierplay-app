@@ -64,14 +64,31 @@
         .section-title { font-size: 18px; font-weight: 700; color: #E2E8F0; }
         .section-subtitle { font-size: 12px; color: #A0AEC0; font-weight: 600; }
 
-        /* Unified Daily Check-in Box */
+        /* Collapsible Daily Check-in Box */
         .daily-wrapper-card {
             background-color: #121C2B;
             border: 1px solid #233550;
             border-radius: 16px;
-            padding: 16px;
+            padding: 14px 16px;
             margin-bottom: 24px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+        .daily-summary-header {
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+        }
+        .daily-summary-title {
+            font-size: 16px; font-weight: 700; color: #E2E8F0;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .daily-status-badge {
+            font-size: 11px; font-weight: 800; color: #050B14;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            padding: 3px 8px; border-radius: 6px;
+        }
+        .daily-status-badge.claimed {
+            background: #233550; color: #A0AEC0;
         }
 
         /* 7-Day Timeline Visuals */
@@ -290,28 +307,40 @@
             </div>
         </header>
 
-        <div class="daily-wrapper-card">
-            <div class="section-header" style="margin-top: 0; margin-bottom: 16px;">
-                <div class="section-title">Daily Check-in</div>
-                <div class="section-subtitle">Resets at Midnight EST</div>
+        <!-- Collapsible Daily Check-In Box -->
+        <div class="daily-wrapper-card" id="daily-wrapper-card">
+            <!-- Summary Header (Click to Toggle Collapse) -->
+            <div class="daily-summary-header" onclick="toggleDailyCard()">
+                <div class="daily-summary-title">
+                    <span>Daily Check-in</span>
+                    <span id="daily-status-badge" class="daily-status-badge">Ready to Claim!</span>
+                </div>
+                <span id="daily-toggle-arrow" class="toggle-arrow">▲</span>
             </div>
 
-            <div class="mission-card">
-                <div class="mission-text">
-                    <h4>Daily Vault Check-in</h4>
-                    <p id="mission-timer">Reward available now</p>
+            <!-- Expandable Body Content -->
+            <div id="daily-card-body" style="display: block; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
+                <div class="section-header" style="margin-top: 0; margin-bottom: 12px;">
+                    <div class="section-subtitle">Resets at Midnight EST</div>
                 </div>
-                <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">Claim +1 Key</button>
-            </div>
 
-            <div class="streak-timeline" id="streak-timeline"></div>
-
-            <div class="streak-banner">
-                <div class="streak-info">
-                    <h3><span id="streak-count">0</span> Day Streak!</h3>
-                    <p>Keep the flame alive daily.</p>
+                <div class="mission-card">
+                    <div class="mission-text">
+                        <h4>Claim Keys Daily</h4>
+                        <p id="mission-timer">Reward available now</p>
+                    </div>
+                    <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">Claim +1 Key</button>
                 </div>
-                <div class="streak-flame">🔥</div>
+
+                <div class="streak-timeline" id="streak-timeline"></div>
+
+                <div class="streak-banner">
+                    <div class="streak-info">
+                        <h3><span id="streak-count">0</span> Day Streak!</h3>
+                        <p>Keep the flame alive daily.</p>
+                    </div>
+                    <div class="streak-flame">🔥</div>
+                </div>
             </div>
         </div>
 
@@ -518,8 +547,41 @@
             reservedNFTs: []
         };
 
+        let isDailyCardCollapsed = false;
         let isWalletCardCollapsed = true;
 
+        // Daily Check-In Collapsible Toggle
+        function toggleDailyCard() {
+            isDailyCardCollapsed = !isDailyCardCollapsed;
+            renderDailyCardState();
+        }
+
+        function renderDailyCardState() {
+            const body = document.getElementById('daily-card-body');
+            const arrow = document.getElementById('daily-toggle-arrow');
+            const badge = document.getElementById('daily-status-badge');
+
+            const est = getESTDetails();
+            const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
+
+            if (hasClaimedToday) {
+                badge.innerText = "Claimed ✓";
+                badge.className = "daily-status-badge claimed";
+            } else {
+                badge.innerText = "Ready to Claim!";
+                badge.className = "daily-status-badge";
+            }
+
+            if (isDailyCardCollapsed) {
+                body.style.display = 'none';
+                arrow.innerText = '▼';
+            } else {
+                body.style.display = 'block';
+                arrow.innerText = '▲';
+            }
+        }
+
+        // Wallet Card Collapsible Toggle & Format
         function formatAbbreviatedAddress(addr) {
             if (!addr || addr.length < 10) return "Not Set";
             return addr.substring(0, 4) + "....." + addr.substring(addr.length - 5);
@@ -607,7 +669,6 @@
             vaultData.lastAddressChangeTimestamp = now;
             saveVaultState();
 
-            // Collapse container on successful save
             isWalletCardCollapsed = true;
             updateCheckInUI();
             alert("Receive Address saved to your profile!\n\nNote: A 24-hour sync period is required before rewards can be claimed on the dApp for this updated address.");
@@ -785,7 +846,8 @@
             document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
             document.getElementById('unclaimed-iced-balance').innerText = vaultData.unclaimedIced.toFixed(4);
 
-            // Handle Profile Address UI & Collapsed State Toggle
+            // Update Collapsible Card UI States
+            renderDailyCardState();
             renderWalletCardState();
 
             if (vaultData.walletAddress) {
