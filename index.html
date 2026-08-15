@@ -583,13 +583,12 @@
         <div class="modal-card">
             <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">🌐 How Glacier Impact Works</h3>
             <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding: 14px 0; margin-bottom: 16px;">
-                <p style="margin-top: 0;"><strong>⚡ 5 Points Per Ad Watched:</strong> Ads are where the community directly drives value! Every completed ad view awards exactly <strong>+5 Thermal Energy</strong> to your profile.</p>
-                <p><strong>📺 Earn Thermal Energy Via:</strong>
-                    <br>• 📅 <strong>Daily Check-in Ad:</strong> +5 Thermal Energy
-                    <br>• 🎮 <strong>Arcade Interstitial / Rewarded Ad:</strong> +5 Thermal Energy
-                </p>
-                <p><strong>🏔️ Powering Glacial Surges:</strong> Ad views generate real ad revenue for the community reserve pool. Individual energy fills the shared progress bar toward active surge goals.</p>
-                <p style="margin-bottom: 0;"><strong>🛡️ Unlocking Supporter Ranks:</strong> Earn Thermal Energy to level up across 10 supporter tiers—from <i>Ice Scout</i> all the way to <strong>⚡ Glacial Titan (10,000 Energy)</strong>!</p>
+                <p style="margin-top: 0; font-weight: 700; color: #00f2fe;">Generating Thermal Energy:</p>
+                <p>📅 <strong>Daily Check-ins:</strong> Earn +10 Thermal Energy per daily check-in ad.</p>
+                <p>📺 <strong>Watching Ads:</strong> Earn +5 Thermal Energy per ad watched.</p>
+                <p>🏔️ <strong>Powering Glacial Surges:</strong> All player energy feeds into a global progress bar. When the community hits 100%, the active Glacial Surge cycle completes.</p>
+                <p>💎 <strong>Fueling the Ecosystem Reserve:</strong> Completed surges route ad revenue directly into the community reserve pool.</p>
+                <p style="margin-bottom: 0;">🛡️ <strong>Unlocking Supporter Ranks:</strong> Personal Thermal Energy levels up your profile badge across 10 supporter tiers—all the way to Glacial Titan!</p>
             </div>
             <button class="claim-dapp-btn" onclick="closeImpactInfoModal()">Got It!</button>
         </div>
@@ -969,10 +968,10 @@
 
             vaultData.streakCount = newStreak;
             vaultData.keys += keysToAward;
-            vaultData.personalThermalEnergy += 5; // 5 Thermal Energy per Ad View Rule!
+            vaultData.personalThermalEnergy += 10;
             vaultData.lastCheckInDate = est.dateStr;
 
-            alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n⚡ +5 Thermal Energy Generated (Ad Watched)!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
+            alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n⚡ +10 Thermal Energy Generated (Daily Check-in Ad)!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
             saveVaultState();
             updateCheckInUI();
         }
@@ -1026,7 +1025,6 @@
                 else { tierTitle = "LEGENDARY CHEST"; chestImageSrc = "LegendaryChest.png"; icedAward = 3.1400; }
 
                 vaultData.unclaimedIced += icedAward;
-                // Note: Mystery Chests do NOT award Thermal Energy (points are strictly ad-driven)
                 saveVaultState();
                 updateCheckInUI();
 
@@ -1152,7 +1150,6 @@
                 phaseBadge.style.borderColor = "rgba(0, 242, 254, 0.3)";
             }
 
-            // Expanded 10-Tier Badge Progression UI Updates
             const energy = vaultData.personalThermalEnergy || 140;
             const badgeData = getTierBadgeData(energy);
 
