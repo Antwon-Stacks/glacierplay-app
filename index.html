@@ -355,20 +355,20 @@
 
         <!-- Global Glacier Meter -->
         <div class="impact-hero-card">
-            <div class="impact-subtext">Total Ice Units Melted</div>
-            <div class="impact-stat-number" id="global-ice-melted">1,245,800</div>
+            <div class="impact-subtext">Total Thermal Energy Generated</div>
+            <div class="impact-stat-number" id="global-thermal-energy">1,245,800</div>
             
             <div class="progress-bar-container">
                 <div class="progress-bar-fill" id="batch-progress-bar" style="width: 68%;"></div>
             </div>
             
             <div style="display: flex; justify-content: space-between; font-size: 11px; color: #A0AEC0; margin-top: 6px;">
-                <span>Batch #5 Cycle Goal</span>
+                <span>Glacial Surge #5 Goal</span>
                 <span id="progress-percent-text" style="color: #00f2fe; font-weight: 700;">68% Complete</span>
             </div>
 
             <div style="margin-top: 12px;">
-                <span class="phase-badge">⚡ BATCH PHASE: ACCUMULATING YIELD</span>
+                <span class="phase-badge">⚡ SURGE PHASE: GATHERING MOMENTUM</span>
             </div>
         </div>
 
@@ -379,38 +379,38 @@
 
         <div class="personal-impact-card">
             <div>
-                <div style="font-size: 16px; font-weight: 800; color: #E2E8F0;"><span id="personal-ice-units">140</span> Ice Units</div>
-                <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Contributed through daily gameplay & check-ins</div>
+                <div style="font-size: 16px; font-weight: 800; color: #E2E8F0;"><span id="personal-thermal-energy">140</span> Thermal Energy</div>
+                <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Generated via daily check-ins & gameplay</div>
             </div>
             <div class="tier-badge-pill" id="personal-tier-badge">🛡️ Ice Breaker</div>
         </div>
 
-        <!-- Batch History & Milestones -->
+        <!-- Community Milestones (Surge History) -->
         <div class="section-header">
             <div class="section-title">Community Milestones</div>
-            <div class="section-subtitle">Batch History</div>
+            <div class="section-subtitle">Surge History</div>
         </div>
 
         <div class="milestone-item">
             <div>
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Batch #4 Injection</div>
-                <div style="font-size: 10px; color: #A0AEC0;">250,000 Ice Units Melted</div>
+                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Glacial Surge #4</div>
+                <div style="font-size: 10px; color: #A0AEC0;">250,000 Thermal Energy Reached</div>
             </div>
             <span style="font-size: 11px; font-weight: 800; color: #00f2fe;">Completed ✓</span>
         </div>
 
         <div class="milestone-item">
             <div>
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Batch #3 Injection</div>
-                <div style="font-size: 10px; color: #A0AEC0;">200,000 Ice Units Melted</div>
+                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Glacial Surge #3</div>
+                <div style="font-size: 10px; color: #A0AEC0;">200,000 Thermal Energy Reached</div>
             </div>
             <span style="font-size: 11px; font-weight: 800; color: #00f2fe;">Completed ✓</span>
         </div>
 
         <div class="milestone-item">
             <div>
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Batch #2 Injection</div>
-                <div style="font-size: 10px; color: #A0AEC0;">150,000 Ice Units Melted</div>
+                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Glacial Surge #2</div>
+                <div style="font-size: 10px; color: #A0AEC0;">150,000 Thermal Energy Reached</div>
             </div>
             <span style="font-size: 11px; font-weight: 800; color: #00f2fe;">Completed ✓</span>
         </div>
@@ -732,7 +732,7 @@
             keys: 0, streakCount: 0, lastCheckInDate: "",
             walletAddress: "", lastAddressChangeTimestamp: 0,
             unclaimedIced: 0.0, reservedNFTs: [],
-            personalIceUnits: 140
+            personalThermalEnergy: 140
         };
 
         let isDailyCardCollapsed = true; // Collapsed by default
@@ -802,7 +802,7 @@
         function loadVaultState() {
             const saved = localStorage.getItem('glacier_vault_v3');
             if (saved) { try { vaultData = JSON.parse(saved); } catch(e) {} }
-            if(!vaultData.personalIceUnits) vaultData.personalIceUnits = 140;
+            if(!vaultData.personalThermalEnergy) vaultData.personalThermalEnergy = 140;
             updateCheckInUI();
         }
 
@@ -867,10 +867,10 @@
 
             vaultData.streakCount = newStreak;
             vaultData.keys += keysToAward;
-            vaultData.personalIceUnits += 10; // Award Ice Units on Check-In
+            vaultData.personalThermalEnergy += 10; // Award Thermal Energy on Check-In
             vaultData.lastCheckInDate = est.dateStr;
 
-            alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n❄️ +10 Ice Units Earned!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
+            alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n🔥 +10 Thermal Energy Generated!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
             saveVaultState();
             updateCheckInUI();
         }
@@ -924,7 +924,7 @@
                 else { tierTitle = "LEGENDARY CHEST"; chestImageSrc = "LegendaryChest.png"; icedAward = 3.1400; }
 
                 vaultData.unclaimedIced += icedAward;
-                vaultData.personalIceUnits += 25; // Award Ice Units on chest unlock
+                vaultData.personalThermalEnergy += 25; // Award Thermal Energy on chest unlock
                 saveVaultState();
                 updateCheckInUI();
 
@@ -964,13 +964,17 @@
 
         function updateImpactUI() {
             document.getElementById('impact-keys-balance').innerText = vaultData.keys;
-            document.getElementById('personal-ice-units').innerText = vaultData.personalIceUnits || 140;
+            document.getElementById('personal-thermal-energy').innerText = vaultData.personalThermalEnergy || 140;
 
-            const units = vaultData.personalIceUnits || 140;
+            const energy = vaultData.personalThermalEnergy || 140;
             const badgeEl = document.getElementById('personal-tier-badge');
-            if (units >= 300) badgeEl.innerText = "⚡ Frost Titan";
-            else if (units >= 100) badgeEl.innerText = "🛡️ Ice Breaker";
-            else badgeEl.innerText = "❄️ Frost Guard";
+            
+            // Expanded 5-Tier Badge Progression Logic
+            if (energy >= 1000) badgeEl.innerText = "⚡ Glacial Titan";
+            else if (energy >= 500) badgeEl.innerText = "🏔️ Glacial Warden";
+            else if (energy >= 200) badgeEl.innerText = "🛡️ Ice Breaker";
+            else if (energy >= 50) badgeEl.innerText = "❄️ Glacier Guard";
+            else badgeEl.innerText = "🧊 Ice Scout";
         }
 
         function updateCheckInUI() {
