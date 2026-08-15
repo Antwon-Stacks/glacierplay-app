@@ -204,11 +204,18 @@
 
         /* Impact Screen Specific Styling */
         .impact-hero-card {
+            position: relative;
             background: linear-gradient(135deg, #121C2B 0%, #1A293E 100%);
             border: 1px solid #233550; border-radius: 18px; padding: 20px;
             text-align: center; margin-bottom: 20px;
             box-shadow: 0 6px 20px rgba(0, 242, 254, 0.08);
         }
+        .hero-info-btn {
+            position: absolute; top: 14px; right: 14px;
+            cursor: pointer; font-size: 16px; opacity: 0.85; transition: transform 0.1s;
+        }
+        .hero-info-btn:active { transform: scale(0.9); }
+
         .impact-stat-number { font-size: 32px; font-weight: 800; color: #00f2fe; letter-spacing: -0.5px; }
         .impact-subtext { font-size: 11px; color: #A0AEC0; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
         
@@ -217,7 +224,7 @@
             border-radius: 10px; height: 14px; overflow: hidden; margin: 12px 0 6px 0;
         }
         .progress-bar-fill {
-            height: 100%; width: 68%;
+            height: 100%; width: 0%;
             background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
             border-radius: 10px; transition: width 0.5s ease;
         }
@@ -231,16 +238,41 @@
         .personal-impact-card {
             background: #121C2B; border: 1px solid #233550; border-radius: 14px;
             padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; transition: transform 0.1s, border-color 0.2s;
         }
+        .personal-impact-card:active { transform: scale(0.98); border-color: #00f2fe; }
+
         .tier-badge-pill {
             background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
             color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;
         }
 
+        .badge-tier-item {
+            background: #050B14; border: 1px solid #233550; border-radius: 12px;
+            padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .badge-tier-item.current {
+            border-color: #00f2fe; background: rgba(0, 242, 254, 0.08);
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+        }
+        .badge-tier-item.unlocked { border-color: #233550; opacity: 0.95; }
+        .badge-tier-item.locked { opacity: 0.5; filter: grayscale(0.5); }
+
         .milestone-item {
             background: #121C2B; border: 1px solid #233550; border-radius: 12px;
             padding: 12px 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
         }
+
+        .supporter-list {
+            background: #121C2B; border: 1px solid #233550; border-radius: 14px;
+            padding: 8px 14px; margin-bottom: 20px;
+        }
+        .supporter-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 12px;
+        }
+        .supporter-row:last-child { border-bottom: none; }
+        .supporter-rank { font-weight: 800; color: #00f2fe; width: 24px; }
 
         /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px; }
@@ -353,36 +385,67 @@
             </div>
         </header>
 
-        <!-- Global Glacier Meter -->
+        <!-- Global Glacier Meter Hero Card with Info Icon -->
         <div class="impact-hero-card">
+            <span class="hero-info-btn" onclick="openImpactInfoModal()">ℹ️</span>
             <div class="impact-subtext">Total Thermal Energy Generated</div>
             <div class="impact-stat-number" id="global-thermal-energy">1,245,800</div>
             
             <div class="progress-bar-container">
-                <div class="progress-bar-fill" id="batch-progress-bar" style="width: 68%;"></div>
+                <div class="progress-bar-fill" id="batch-progress-bar" style="width: 0%;"></div>
             </div>
             
             <div style="display: flex; justify-content: space-between; font-size: 11px; color: #A0AEC0; margin-top: 6px;">
-                <span>Glacial Surge #5 Goal</span>
-                <span id="progress-percent-text" style="color: #00f2fe; font-weight: 700;">68% Complete</span>
+                <span id="surge-goal-title">Glacial Surge #5 Goal</span>
+                <span id="progress-percent-text" style="color: #00f2fe; font-weight: 700;">0% Complete</span>
             </div>
 
             <div style="margin-top: 12px;">
-                <span class="phase-badge">⚡ SURGE PHASE: GATHERING MOMENTUM</span>
+                <span class="phase-badge" id="surge-phase-badge">⚡ SURGE PHASE: GATHERING MOMENTUM</span>
             </div>
         </div>
 
-        <!-- Personal Contribution Card -->
+        <!-- Personal Contribution Card (Interactive Modal Trigger) -->
         <div class="section-header">
             <div class="section-title">Your Personal Impact</div>
         </div>
 
-        <div class="personal-impact-card">
+        <div class="personal-impact-card" onclick="openBadgeProgressionModal()">
             <div>
                 <div style="font-size: 16px; font-weight: 800; color: #E2E8F0;"><span id="personal-thermal-energy">140</span> Thermal Energy</div>
-                <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Generated via daily check-ins & gameplay</div>
+                <div style="font-size: 11px; color: #00f2fe; font-weight: 700; margin-top: 4px;" id="next-tier-hint">⚡ 60 Energy to Glacial Warden ➔</div>
             </div>
-            <div class="tier-badge-pill" id="personal-tier-badge">🛡️ Ice Breaker</div>
+            <div class="tier-badge-pill" id="personal-tier-badge">🧊 Ice Scout</div>
+        </div>
+
+        <!-- Top Community Supporters -->
+        <div class="section-header">
+            <div class="section-title">Top Surge Supporters</div>
+            <div class="section-subtitle">Surge #5 Leaders</div>
+        </div>
+
+        <div class="supporter-list">
+            <div class="supporter-row">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="supporter-rank">1.</span>
+                    <span style="font-weight:700; color:#fff;">FrostKing_99</span>
+                </div>
+                <span style="color:#00f2fe; font-weight:800;">4,820 Energy</span>
+            </div>
+            <div class="supporter-row">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="supporter-rank">2.</span>
+                    <span style="font-weight:700; color:#fff;">YetiMaster</span>
+                </div>
+                <span style="color:#00f2fe; font-weight:800;">3,910 Energy</span>
+            </div>
+            <div class="supporter-row">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="supporter-rank">3.</span>
+                    <span style="font-weight:700; color:#fff;">PolarGamer</span>
+                </div>
+                <span style="color:#00f2fe; font-weight:800;">3,150 Energy</span>
+            </div>
         </div>
 
         <!-- Community Milestones (Surge History) -->
@@ -513,6 +576,31 @@
         </div>
 
         <button class="terms-link-btn" onclick="openTermsModal()">📜 View Rewards Program Terms & Conditions</button>
+    </div>
+
+    <!-- Impact Screen Info Modal -->
+    <div id="impact-info-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">🌐 How Glacier Impact Works</h3>
+            <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding: 14px 0; margin-bottom: 16px;">
+                <p style="margin-top: 0;"><strong>⚡ Earn Thermal Energy:</strong> Complete daily check-ins, play arcade games, and unlock chests to generate Thermal Energy for your profile.</p>
+                <p><strong>🌊 Glacial Surges:</strong> Every point of Thermal Energy generated by the community fills the global progress meter toward the active Glacial Surge goal.</p>
+                <p style="margin-bottom: 0;"><strong>🛡️ Supporter Badges:</strong> Rank up across 5 supporter tiers based on your personal Thermal Energy contribution and climb the community leaderboards.</p>
+            </div>
+            <button class="claim-dapp-btn" onclick="closeImpactInfoModal()">Got It!</button>
+        </div>
+    </div>
+
+    <!-- Supporter Badge Progression Modal -->
+    <div id="badge-progression-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">🛡️ Supporter Badges</h3>
+            <p style="font-size: 11px; color: #A0AEC0; text-align: center; margin-top: -8px; margin-bottom: 16px;">Earn Thermal Energy to unlock higher community badges.</p>
+
+            <div id="badge-tiers-list"></div>
+
+            <button class="claim-dapp-btn" style="margin-top: 16px;" onclick="closeBadgeProgressionModal()">Close Ranks</button>
+        </div>
     </div>
 
     <!-- Chest Reveal Modal -->
@@ -704,6 +792,15 @@
         function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; }
         function closeChestModal() { document.getElementById('chest-reveal-modal').style.display = 'none'; }
 
+        function openImpactInfoModal() { document.getElementById('impact-info-modal').style.display = 'flex'; }
+        function closeImpactInfoModal() { document.getElementById('impact-info-modal').style.display = 'none'; }
+
+        function openBadgeProgressionModal() {
+            renderBadgeProgressionModal();
+            document.getElementById('badge-progression-modal').style.display = 'flex';
+        }
+        function closeBadgeProgressionModal() { document.getElementById('badge-progression-modal').style.display = 'none'; }
+
         function submitDeveloperGame() {
             const title = document.getElementById('subGameTitle').value.trim();
             const dev = document.getElementById('subDevName').value.trim();
@@ -733,6 +830,13 @@
             walletAddress: "", lastAddressChangeTimestamp: 0,
             unclaimedIced: 0.0, reservedNFTs: [],
             personalThermalEnergy: 140
+        };
+
+        // Surge Engine Dynamic Config
+        let surgeConfig = {
+            surgeNumber: 5,
+            currentGlobalEnergy: 1245800,
+            targetSurgeEnergy: 1800000
         };
 
         let isDailyCardCollapsed = true; // Collapsed by default
@@ -962,19 +1066,97 @@
             window.open(`https://claim.icedether.com?address=${vaultData.walletAddress}`, '_blank');
         }
 
+        function renderBadgeProgressionModal() {
+            const energy = vaultData.personalThermalEnergy || 140;
+            const container = document.getElementById('badge-tiers-list');
+            
+            const tiers = [
+                { name: 'Ice Scout', icon: '🧊', min: 0, max: 49 },
+                { name: 'Glacier Guard', icon: '❄️', min: 50, max: 199 },
+                { name: 'Ice Breaker', icon: '🛡️', min: 200, max: 499 },
+                { name: 'Glacial Warden', icon: '🏔️', min: 500, max: 999 },
+                { name: 'Glacial Titan', icon: '⚡', min: 1000, max: Infinity }
+            ];
+
+            let html = '';
+            tiers.forEach(t => {
+                let statusClass = 'locked';
+                let statusLabel = `<span style="font-size: 10px; color: #A0AEC0;">🔒 ${t.min.toLocaleString()} Energy</span>`;
+                
+                if (energy >= t.min) {
+                    if (energy <= t.max || t.max === Infinity) {
+                        statusClass = 'current';
+                        statusLabel = `<span style="font-size: 10px; font-weight: 800; color: #00f2fe; background: rgba(0,242,254,0.15); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(0,242,254,0.3);">CURRENT RANK</span>`;
+                    } else {
+                        statusClass = 'unlocked';
+                        statusLabel = `<span style="font-size: 10px; color: #00f2fe; font-weight: 700;">✓ Unlocked</span>`;
+                    }
+                }
+
+                const rangeText = (t.max === Infinity) ? `${t.min.toLocaleString()}+ Thermal Energy` : `${t.min.toLocaleString()} – ${t.max.toLocaleString()} Energy`;
+
+                html += `
+                    <div class="badge-tier-item ${statusClass}">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 24px;">${t.icon}</div>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">${t.name}</div>
+                                <div style="font-size: 10px; color: #A0AEC0;">${rangeText}</div>
+                            </div>
+                        </div>
+                        ${statusLabel}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
         function updateImpactUI() {
             document.getElementById('impact-keys-balance').innerText = vaultData.keys;
-            document.getElementById('personal-thermal-energy').innerText = vaultData.personalThermalEnergy || 140;
+            document.getElementById('personal-thermal-energy').innerText = (vaultData.personalThermalEnergy || 140).toLocaleString();
 
+            // Compute Global Progress and Dynamic Phase Badges
+            const currentEnergy = surgeConfig.currentGlobalEnergy;
+            const targetEnergy = surgeConfig.targetSurgeEnergy;
+            const progressPercent = Math.min(100, Math.round((currentEnergy / targetEnergy) * 100));
+
+            document.getElementById('global-thermal-energy').innerText = currentEnergy.toLocaleString();
+            document.getElementById('batch-progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-percent-text').innerText = `${progressPercent}% Complete`;
+            document.getElementById('surge-goal-title').innerText = `Glacial Surge #${surgeConfig.surgeNumber} Goal`;
+
+            const phaseBadge = document.getElementById('surge-phase-badge');
+            if (progressPercent >= 100) {
+                phaseBadge.innerText = "⌛ SURGE PHASE: SETTLEMENT IN PROGRESS";
+                phaseBadge.style.color = "#FFD700";
+                phaseBadge.style.borderColor = "rgba(255, 215, 0, 0.4)";
+            } else {
+                phaseBadge.innerText = "⚡ SURGE PHASE: GATHERING MOMENTUM";
+                phaseBadge.style.color = "#00f2fe";
+                phaseBadge.style.borderColor = "rgba(0, 242, 254, 0.3)";
+            }
+
+            // Expanded 5-Tier Badge Progression Logic & Progress Subtext Hint
             const energy = vaultData.personalThermalEnergy || 140;
             const badgeEl = document.getElementById('personal-tier-badge');
+            const hintEl = document.getElementById('next-tier-hint');
             
-            // Expanded 5-Tier Badge Progression Logic
-            if (energy >= 1000) badgeEl.innerText = "⚡ Glacial Titan";
-            else if (energy >= 500) badgeEl.innerText = "🏔️ Glacial Warden";
-            else if (energy >= 200) badgeEl.innerText = "🛡️ Ice Breaker";
-            else if (energy >= 50) badgeEl.innerText = "❄️ Glacier Guard";
-            else badgeEl.innerText = "🧊 Ice Scout";
+            if (energy >= 1000) {
+                badgeEl.innerText = "⚡ Glacial Titan";
+                hintEl.innerText = "⚡ Max Rank Reached! ➔";
+            } else if (energy >= 500) {
+                badgeEl.innerText = "🏔️ Glacial Warden";
+                hintEl.innerText = `⚡ ${1000 - energy} Energy to Glacial Titan ➔`;
+            } else if (energy >= 200) {
+                badgeEl.innerText = "🛡️ Ice Breaker";
+                hintEl.innerText = `⚡ ${500 - energy} Energy to Glacial Warden ➔`;
+            } else if (energy >= 50) {
+                badgeEl.innerText = "❄️ Glacier Guard";
+                hintEl.innerText = `⚡ ${200 - energy} Energy to Ice Breaker ➔`;
+            } else {
+                badgeEl.innerText = "🧊 Ice Scout";
+                hintEl.innerText = `⚡ ${50 - energy} Energy to Glacier Guard ➔`;
+            }
         }
 
         function updateCheckInUI() {
