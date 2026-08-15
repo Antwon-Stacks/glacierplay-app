@@ -87,189 +87,63 @@
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             padding: 3px 8px; border-radius: 6px;
         }
-        .daily-status-badge.claimed {
-            background: #233550; color: #A0AEC0;
-        }
+        .daily-status-badge.claimed { background: #233550; color: #A0AEC0; }
 
         /* 7-Day Timeline Visuals */
-        .streak-timeline {
-            display: flex; justify-content: space-between; gap: 6px;
-            margin-bottom: 16px;
-        }
+        .streak-timeline { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 16px; }
         .streak-day {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid #233550;
-            border-radius: 8px;
-            padding: 8px 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            font-size: 11px; color: #A0AEC0;
-            transition: all 0.2s;
+            flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid #233550;
+            border-radius: 8px; padding: 8px 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #A0AEC0;
         }
-        .streak-day.completed {
-            background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #00f2fe;
-        }
+        .streak-day.completed { background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #00f2fe; }
         .streak-day.active {
             background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);
-            border-color: #00f2fe; color: #fff;
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); transform: scale(1.05);
+            border-color: #00f2fe; color: #fff; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); transform: scale(1.05);
         }
         .streak-day.day-7 { border-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
         .streak-day.day-7.completed, .streak-day.day-7.active {
-            background: rgba(255, 215, 0, 0.2); border-color: #FFD700; color: #FFD700;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            background: rgba(255, 215, 0, 0.2); border-color: #FFD700; color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
         }
         .streak-val { font-weight: 800; font-size: 13px; }
 
         /* Check-In Mission Card */
         .mission-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 16px; 
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
         }
         .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
         .mission-text p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
-
         .mission-btn {
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #050B14; border: none; padding: 10px 16px;
-            border-radius: 10px; font-size: 14px; font-weight: 800;
-            cursor: pointer; transition: transform 0.1s;
+            color: #050B14; border: none; padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer;
         }
-        .mission-btn:active { transform: scale(0.95); }
         .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; }
 
-        /* Infinite Streak Banner */
+        /* Streak Banner */
         .streak-banner {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
-            border-radius: 12px;
-            padding: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 0; 
-            box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
+            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%); border-radius: 12px; padding: 14px;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
         }
         .streak-info h3 { margin: 0; font-size: 16px; font-weight: 800; }
         .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
-        .streak-flame { font-size: 28px; }
 
-        /* Rewards Page Styling */
-        .back-nav-btn {
-            background: #121C2B; border: 1px solid #233550; color: #00f2fe;
-            padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 13px;
-            cursor: pointer; display: flex; align-items: center; gap: 6px;
-            margin-bottom: 20px; transition: transform 0.1s;
+        /* Search & Category Filter Section */
+        .arcade-search-box {
+            width: 100%; background: #121C2B; border: 1px solid #233550; color: #fff;
+            padding: 10px 14px; border-radius: 10px; font-size: 13px; outline: none; margin-bottom: 10px;
         }
-        .back-nav-btn:active { transform: scale(0.95); }
+        .arcade-search-box:focus { border-color: #00f2fe; }
 
-        /* Collapsible EVM Wallet Card */
-        .wallet-card {
-            background: #121C2B; border: 1px solid #233550; border-radius: 14px;
-            padding: 14px 16px; margin-bottom: 20px; transition: all 0.2s ease;
+        .category-pills {
+            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; scrollbar-width: none;
         }
-        .wallet-summary-header {
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; user-select: none;
+        .category-pills::-webkit-scrollbar { display: none; }
+        .pill {
+            background: #121C2B; border: 1px solid #233550; color: #A0AEC0; padding: 6px 14px;
+            border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: all 0.2s;
         }
-        .wallet-summary-title {
-            font-size: 13px; font-weight: 700; color: #E2E8F0;
-            display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-        }
-        .wallet-summary-addr {
-            font-family: monospace; font-size: 12px; color: #00f2fe; font-weight: 600;
-        }
-        .toggle-arrow {
-            font-size: 12px; color: #00f2fe; transition: transform 0.2s;
-        }
-
-        .wallet-input {
-            width: 100%; background: #050B14; border: 1px solid #3A4E6C;
-            color: #00f2fe; padding: 10px 12px; border-radius: 8px; font-size: 12px;
-            font-family: monospace; margin-top: 8px; outline: none;
-        }
-
-        /* Registered Address Profile Badge */
-        .address-display-box {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #050B14; border: 1px solid #00f2fe; border-radius: 10px;
-            padding: 10px 12px; margin-top: 8px;
-        }
-        .addr-text {
-            font-family: monospace; font-size: 12px; color: #00f2fe;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px;
-        }
-        .edit-addr-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid #3A4E6C; color: #A0AEC0;
-            padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer;
-            font-weight: 700; transition: background 0.2s;
-        }
-        .edit-addr-btn:hover { background: rgba(0, 242, 254, 0.1); color: #00f2fe; }
-
-        .balance-summary-card {
-            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%);
-            border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 14px;
-            padding: 16px; margin-bottom: 20px; text-align: center;
-        }
-        .balance-val { font-size: 24px; font-weight: 800; color: #00f2fe; margin: 4px 0; }
-
-        .claim-dapp-btn {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #050B14; border: none; padding: 12px 20px; border-radius: 10px;
-            font-size: 14px; font-weight: 800; cursor: pointer; width: 100%;
-            margin-top: 10px; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
-        }
-
-        .store-grid {
-            display: grid; grid-template-columns: repeat(1, 1fr); gap: 14px;
-            margin-top: 15px; margin-bottom: 25px;
-        }
-        .chest-card {
-            background-color: #121C2B; border: 1px solid #233550;
-            border-radius: 14px; padding: 16px;
-            display: flex; align-items: center; justify-content: space-between;
-            transition: transform 0.1s; cursor: pointer;
-        }
-        .chest-card:active { transform: scale(0.98); }
-        .chest-left { display: flex; align-items: center; gap: 14px; }
-        .chest-icon-img { width: 44px; height: 44px; object-fit: contain; }
-        .chest-info h4 { margin: 0; font-size: 16px; color: #E2E8F0; }
-        .chest-info p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
-
-        .chest-price {
-            background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3);
-            color: #00f2fe; padding: 8px 14px; border-radius: 10px;
-            font-size: 13px; font-weight: 800; white-space: nowrap;
-        }
-
-        .terms-link-btn {
-            background: transparent; border: none; color: #A0AEC0;
-            font-size: 12px; text-decoration: underline; cursor: pointer;
-            width: 100%; text-align: center; padding: 10px 0; margin-top: 10px;
-        }
-
-        /* Modal Overlays */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(8px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 10000; padding: 20px;
-        }
-        .modal-card {
-            background: #121C2B; border: 1px solid #233550; border-radius: 18px;
-            padding: 24px; max-width: 420px; width: 100%; text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6); max-height: 85vh; overflow-y: auto;
-        }
-        .reveal-chest-img {
-            width: 130px; height: 130px; object-fit: contain; margin: 16px auto;
-            filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.5));
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes popIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        .pill.active { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #050B14; border-color: #00f2fe; }
 
         /* Game Grid Styling */
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -280,7 +154,57 @@
         }
         .game-card:active { transform: scale(0.95); }
         .game-thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-bottom: 1px solid #233550; }
-        .game-title { padding: 10px; font-size: 13px; font-weight: 700; text-align: center; color: #E2E8F0; }
+        .game-info { padding: 10px; text-align: center; }
+        .game-title { font-size: 13px; font-weight: 700; color: #E2E8F0; }
+        .game-dev { font-size: 10px; color: #00f2fe; margin-top: 2px; }
+
+        /* Empty Search State */
+        .empty-search-state {
+            text-align: center; padding: 30px 10px; background: #121C2B;
+            border: 1px dashed #233550; border-radius: 14px; grid-column: span 2;
+        }
+
+        /* Submit Game Banner Button */
+        .submit-game-banner {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
+            border: 1px dashed #3A4E6C; border-radius: 14px; padding: 14px; text-align: center;
+            margin-top: 20px; cursor: pointer; transition: border-color 0.2s;
+        }
+        .submit-game-banner:hover { border-color: #00f2fe; }
+
+        /* Rewards Page Styling */
+        .back-nav-btn {
+            background: #121C2B; border: 1px solid #233550; color: #00f2fe;
+            padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .wallet-card { background: #121C2B; border: 1px solid #233550; border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; }
+        .wallet-summary-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .wallet-summary-addr { font-family: monospace; font-size: 12px; color: #00f2fe; }
+        .wallet-input { width: 100%; background: #050B14; border: 1px solid #3A4E6C; color: #00f2fe; padding: 10px 12px; border-radius: 8px; font-size: 12px; margin-top: 8px; outline: none; }
+        .address-display-box { display: flex; justify-content: space-between; align-items: center; background: #050B14; border: 1px solid #00f2fe; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+        .addr-text { font-family: monospace; font-size: 12px; color: #00f2fe; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
+        .edit-addr-btn { background: rgba(255,255,255,0.05); border: 1px solid #3A4E6C; color: #A0AEC0; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+        .balance-summary-card { background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 14px; padding: 16px; margin-bottom: 20px; text-align: center; }
+        .balance-val { font-size: 24px; font-weight: 800; color: #00f2fe; margin: 4px 0; }
+        .claim-dapp-btn { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #050B14; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; }
+        .store-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 14px; margin-top: 15px; margin-bottom: 25px; }
+        .chest-card { background-color: #121C2B; border: 1px solid #233550; border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .chest-left { display: flex; align-items: center; gap: 14px; }
+        .chest-icon-img { width: 44px; height: 44px; object-fit: contain; }
+        .chest-info h4 { margin: 0; font-size: 16px; color: #E2E8F0; }
+        .chest-info p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
+        .chest-price { background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; }
+        .terms-link-btn { background: transparent; border: none; color: #A0AEC0; font-size: 12px; text-decoration: underline; cursor: pointer; width: 100%; text-align: center; padding: 10px 0; }
+
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px; }
+        .modal-card { background: #121C2B; border: 1px solid #233550; border-radius: 18px; padding: 24px; max-width: 420px; width: 100%; max-height: 85vh; overflow-y: auto; }
+        .reveal-chest-img { width: 130px; height: 130px; object-fit: contain; margin: 16px auto; display: block; filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.5)); }
+        .submit-form-group { text-align: left; margin-bottom: 12px; }
+        .submit-form-group label { display: block; font-size: 11px; font-weight: 700; color: #A0AEC0; margin-bottom: 4px; }
+        .submit-form-input { width: 100%; background: #050B14; border: 1px solid #3A4E6C; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; outline: none; }
+        .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #CBD5E1; margin-bottom: 6px; text-align: left; }
     </style>
 </head>
 <body>
@@ -299,7 +223,6 @@
 
     <!-- Main Game Hub View -->
     <div id="hub-container" class="app-view">
-
         <header>
             <img src="header-logo.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'38\'><rect width=\'140\' height=\'38\' rx=\'6\' fill=\'%23121C2B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
             <div class="vault-pill" onclick="openRewardsPage()">
@@ -309,16 +232,14 @@
 
         <!-- Collapsible Daily Check-In Box -->
         <div class="daily-wrapper-card" id="daily-wrapper-card">
-            <!-- Summary Header (Click to Toggle Collapse) -->
             <div class="daily-summary-header" onclick="toggleDailyCard()">
                 <div class="daily-summary-title">
                     <span>Daily Check-in</span>
                     <span id="daily-status-badge" class="daily-status-badge">Ready to Claim!</span>
                 </div>
-                <span id="daily-toggle-arrow" class="toggle-arrow">▲</span>
+                <span id="daily-toggle-arrow" style="font-size:12px; color:#00f2fe;">▲</span>
             </div>
 
-            <!-- Expandable Body Content -->
             <div id="daily-card-body" style="display: block; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
                 <div class="section-header" style="margin-top: 0; margin-bottom: 12px;">
                     <div class="section-subtitle">Resets at Midnight EST</div>
@@ -339,23 +260,35 @@
                         <h3><span id="streak-count">0</span> Day Streak!</h3>
                         <p>Keep the flame alive daily.</p>
                     </div>
-                    <div class="streak-flame">🔥</div>
+                    <div style="font-size:28px;">🔥</div>
                 </div>
             </div>
         </div>
 
+        <!-- Arcade Library Section -->
         <div class="section-header">
             <div class="section-title">Arcade Library</div>
         </div>
-        <div class="game-grid">
-            <a href="track.html" class="game-card">
-                <img src="track-thumb.png" alt="8-Bit Track" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%2300f2fe\' font-family=\'sans-serif\' font-size=\'16\' font-weight=\'bold\'>8-BIT TRACK</text></svg>'">
-                <div class="game-title">8-Bit Track</div>
-            </a>
-            <a href="#" class="game-card">
-                <img src="game2-thumb.png" alt="Glacier Dash" class="game-thumb" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'><rect width=\'200\' height=\'200\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23A0AEC0\' font-family=\'sans-serif\' font-size=\'14\'>Glacier Dash</text></svg>'">
-                <div class="game-title">Glacier Dash</div>
-            </a>
+
+        <!-- Search Bar -->
+        <input type="text" id="arcadeSearchInput" class="arcade-search-box" placeholder="🔍 Search games or creators..." oninput="handleSearchInput(this.value)">
+
+        <!-- Category Filter Pills -->
+        <div class="category-pills" id="categoryPills">
+            <div class="pill active" onclick="selectCategory('All', this)">All</div>
+            <div class="pill" onclick="selectCategory('Sports', this)">Sports</div>
+            <div class="pill" onclick="selectCategory('Action', this)">Action</div>
+            <div class="pill" onclick="selectCategory('Puzzle', this)">Puzzle</div>
+            <div class="pill" onclick="selectCategory('Community', this)">Community</div>
+        </div>
+
+        <!-- Dynamic Game Grid -->
+        <div class="game-grid" id="gameGrid"></div>
+
+        <!-- Developer Submission Callout Banner -->
+        <div class="submit-game-banner" onclick="openSubmitModal()">
+            <div style="font-size: 14px; font-weight: 800; color: #00f2fe;">🚀 Game Developer?</div>
+            <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Submit your HTML5 game to the GlacierPlay Hub</div>
         </div>
     </div>
 
@@ -372,25 +305,21 @@
 
         <!-- Collapsible Profile & Receive Address Container -->
         <div class="wallet-card" id="wallet-card">
-            <!-- Summary Header (Click to Toggle Collapse) -->
             <div class="wallet-summary-header" onclick="toggleWalletCard()">
-                <div class="wallet-summary-title">
+                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">
                     <span>Rewards Receive Address:</span>
                     <span id="collapsed-address-text" class="wallet-summary-addr">Not Set</span>
                 </div>
-                <span id="toggle-arrow" class="toggle-arrow">▼</span>
+                <span id="toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
             </div>
 
-            <!-- Expandable Body Content -->
             <div id="wallet-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
                 <div style="font-size: 11px; color: #A0AEC0; margin-bottom: 8px;">Saved to your profile to map off-chain rewards & NFT permits.</div>
                 
-                <!-- Input Section (Shown when editing or unconfigured) -->
                 <div id="wallet-input-section">
                     <input type="text" id="walletInput" class="wallet-input" placeholder="Paste 0x... EVM Address" onchange="saveWalletAddress()">
                 </div>
 
-                <!-- Display Section (Shown when address is saved) -->
                 <div id="wallet-display-section" style="display:none;">
                     <div class="address-display-box">
                         <span id="registered-address-text" class="addr-text">0x000...0000</span>
@@ -462,9 +391,9 @@
         <button class="terms-link-btn" onclick="openTermsModal()">📜 View Rewards Program Terms & Conditions</button>
     </div>
 
-    <!-- Chest Reveal Overlay Modal -->
+    <!-- Chest Reveal Modal -->
     <div id="chest-reveal-modal" class="modal-overlay">
-        <div class="modal-card">
+        <div class="modal-card" style="text-align: center;">
             <h3 style="margin: 0; color: #00f2fe; font-size: 18px;">✨ CHEST UNLOCKED! ✨</h3>
             <img id="reveal-chest-img" src="CommonChest.png" alt="Chest Revealed" class="reveal-chest-img" onerror="this.onerror=null; this.src='MysteryChest.png';">
             <h2 id="reveal-tier-title" style="margin: 0; font-size: 20px; color: #fff;">COMMON CHEST</h2>
@@ -474,11 +403,11 @@
         </div>
     </div>
 
-    <!-- Terms & Conditions Overlay Modal -->
+    <!-- Terms Modal -->
     <div id="terms-modal" class="modal-overlay">
-        <div class="modal-card" style="text-align: left;">
+        <div class="modal-card">
             <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">GlacierPlay Rewards Program<br><span style="font-size: 13px; color: #A0AEC0;">Terms & Conditions</span></h3>
-            <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5; max-height: 280px; overflow-y: auto; padding-right: 6px; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding-top: 10px; padding-bottom: 10px;">
+            <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5; max-height: 280px; overflow-y: auto; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding: 10px 0;">
                 <p><strong>1. PROGRAM OVERVIEW</strong><br>The GlacierPlay Rewards Program is a promotional engagement feature operating within the GlacierPlay application. Users accumulate promotional "Keys" through daily ad-gated check-ins and spend Keys to unlock virtual Mystery Chests or reserve NFT mint permits.</p>
                 <p><strong>2. VIRTUAL ASSET STATUS</strong><br>Keys, streak counters, and opened chest allocations are virtual off-chain ledger points only. They hold no fiat value, cannot be purchased, and cannot be exchanged for cash within the mobile application.</p>
                 <p><strong>3. RECEIVE ADDRESS & PRIVACY</strong><br>Users register an Ethereum Virtual Machine (EVM) public receive address ("0x...") to bind reward allocations off-chain. GlacierPlay collects zero Personally Identifiable Information (PII).</p>
@@ -489,17 +418,72 @@
         </div>
     </div>
 
+    <!-- Community Game Submission Modal -->
+    <div id="submit-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">🎮 Submit Your Game</h3>
+            <p style="font-size: 11px; color: #A0AEC0; margin-top: -8px; margin-bottom: 16px; text-align: center;">Submit your HTML5 game for review to join the GlacierPlay Arcade.</p>
+
+            <div class="submit-form-group">
+                <label>Game Title</label>
+                <input type="text" id="subGameTitle" class="submit-form-input" placeholder="e.g. Frost Runner">
+            </div>
+
+            <div class="submit-form-group">
+                <label>Developer / Studio Name</label>
+                <input type="text" id="subDevName" class="submit-form-input" placeholder="e.g. Yeti Studios">
+            </div>
+
+            <div class="submit-form-group">
+                <label>Category</label>
+                <select id="subCategory" class="submit-form-input">
+                    <option value="Action">Action</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Puzzle">Puzzle</option>
+                    <option value="Community">Community</option>
+                </select>
+            </div>
+
+            <div class="submit-form-group">
+                <label>Hosted Game URL / File Link (.zip)</label>
+                <input type="text" id="subGameUrl" class="submit-form-input" placeholder="https://...">
+            </div>
+
+            <div style="margin-top: 14px; margin-bottom: 16px;">
+                <div style="font-size: 11px; font-weight: 700; color: #E2E8F0; margin-bottom: 8px; text-align: left;">Developer Vetting Checklist</div>
+                <label class="checklist-item"><input type="checkbox" id="chk1"> 100% Mobile HTML5 / Touch Responsive</label>
+                <label class="checklist-item"><input type="checkbox" id="chk2"> Contains natural Game Over / Pause ad states</label>
+                <label class="checklist-item"><input type="checkbox" id="chk3"> Lightweight performance (< 15MB package)</label>
+            </div>
+
+            <button class="claim-dapp-btn" onclick="submitDeveloperGame()">Submit Game for Approval</button>
+            <button class="terms-link-btn" onclick="closeSubmitModal()">Cancel</button>
+        </div>
+    </div>
+
     <script>
         function handleVideoError() {
             document.getElementById('splashVideo').style.display = 'none';
             document.getElementById('splash-fallback').style.display = 'block';
         }
 
+        // Master Games Catalog Engine
+        let gamesCatalog = [
+            { id: 'track', title: '8-Bit Track', category: 'Sports', thumb: 'track-thumb.png', url: 'track.html', dev: 'GlacierPlay Studio' },
+            { id: 'dash', title: 'Glacier Dash', category: 'Action', thumb: 'game2-thumb.png', url: '#', dev: 'Yeti Interactive' },
+            { id: 'climb', title: 'Frost Climb', category: 'Action', thumb: 'game3-thumb.png', url: '#', dev: 'Community Studio' },
+            { id: 'breaker', title: 'Ice Breaker', category: 'Puzzle', thumb: 'game4-thumb.png', url: '#', dev: 'Polar Games' }
+        ];
+
+        let selectedCategoryFilter = 'All';
+        let currentSearchTerm = '';
+
         document.addEventListener('DOMContentLoaded', () => {
             const splashScreen = document.getElementById('splash-screen');
             const hubContainer = document.getElementById('hub-container');
 
             loadVaultState();
+            renderGameGrid();
 
             setTimeout(() => {
                 splashScreen.style.opacity = '0';
@@ -511,6 +495,86 @@
 
             setInterval(updateCheckInUI, 1000);
         });
+
+        // Filter and Render Arcade Library Grid
+        function renderGameGrid() {
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+
+            const filtered = gamesCatalog.filter(game => {
+                const matchesCategory = (selectedCategoryFilter === 'All') || (game.category === selectedCategoryFilter);
+                const matchesSearch = game.title.toLowerCase().includes(currentSearchTerm.toLowerCase()) || 
+                                      game.dev.toLowerCase().includes(currentSearchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-search-state">
+                        <div style="font-size:28px; margin-bottom:6px;">🧊</div>
+                        <div style="font-size:14px; font-weight:700; color:#E2E8F0;">No games found</div>
+                        <div style="font-size:11px; color:#A0AEC0; margin-top:4px;">Try searching another keyword or category.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(game => {
+                const card = document.createElement('a');
+                card.href = game.url;
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <img src="${game.thumb}" alt="${game.title}" class="game-thumb" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'200\\' height=\\'200\\'><rect width=\\'200\\' height=\\'200\\' fill=\\'%23233550\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%2300f2fe\\' font-family=\\'sans-serif\\' font-size=\\'14\\' font-weight=\\'bold\\'>${game.title.toUpperCase()}</text></svg>';">
+                    <div class="game-info">
+                        <div class="game-title">${game.title}</div>
+                        <div class="game-dev">by ${game.dev}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCategory(cat, el) {
+            selectedCategoryFilter = cat;
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            if(el) el.classList.add('active');
+            renderGameGrid();
+        }
+
+        function handleSearchInput(val) {
+            currentSearchTerm = val.trim();
+            renderGameGrid();
+        }
+
+        // Modals Management
+        function openSubmitModal() { document.getElementById('submit-modal').style.display = 'flex'; }
+        function closeSubmitModal() { document.getElementById('submit-modal').style.display = 'none'; }
+        function openTermsModal() { document.getElementById('terms-modal').style.display = 'flex'; }
+        function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; }
+        function closeChestModal() { document.getElementById('chest-reveal-modal').style.display = 'none'; }
+
+        function submitDeveloperGame() {
+            const title = document.getElementById('subGameTitle').value.trim();
+            const dev = document.getElementById('subDevName').value.trim();
+            const url = document.getElementById('subGameUrl').value.trim();
+            const chk1 = document.getElementById('chk1').checked;
+            const chk2 = document.getElementById('chk2').checked;
+
+            if(!title || !dev || !url) {
+                alert("Please fill in all game details!");
+                return;
+            }
+            if(!chk1 || !chk2) {
+                alert("Please confirm the developer vetting checklist before submitting!");
+                return;
+            }
+
+            alert(`🚀 SUBMISSION RECEIVED!\n\nThank you ${dev}! Your game "${title}" has been staged for review. Upon verification, it will go live on the Arcade Library.`);
+            closeSubmitModal();
+            document.getElementById('subGameTitle').value = '';
+            document.getElementById('subDevName').value = '';
+            document.getElementById('subGameUrl').value = '';
+        }
 
         function openRewardsPage() {
             document.getElementById('hub-container').style.display = 'none';
@@ -524,33 +588,16 @@
             updateCheckInUI();
         }
 
-        function openTermsModal() {
-            document.getElementById('terms-modal').style.display = 'flex';
-        }
-
-        function closeTermsModal() {
-            document.getElementById('terms-modal').style.display = 'none';
-        }
-
-        function closeChestModal() {
-            document.getElementById('chest-reveal-modal').style.display = 'none';
-        }
-
-        // User Profile & Vault Engine State
+        // User Vault & Streak Engine State
         let vaultData = {
-            keys: 0,
-            streakCount: 0,
-            lastCheckInDate: "",
-            walletAddress: "",
-            lastAddressChangeTimestamp: 0,
-            unclaimedIced: 0.0,
-            reservedNFTs: []
+            keys: 0, streakCount: 0, lastCheckInDate: "",
+            walletAddress: "", lastAddressChangeTimestamp: 0,
+            unclaimedIced: 0.0, reservedNFTs: []
         };
 
         let isDailyCardCollapsed = false;
         let isWalletCardCollapsed = true;
 
-        // Daily Check-In Collapsible Toggle
         function toggleDailyCard() {
             isDailyCardCollapsed = !isDailyCardCollapsed;
             renderDailyCardState();
@@ -560,28 +607,19 @@
             const body = document.getElementById('daily-card-body');
             const arrow = document.getElementById('daily-toggle-arrow');
             const badge = document.getElementById('daily-status-badge');
-
             const est = getESTDetails();
             const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
 
             if (hasClaimedToday) {
-                badge.innerText = "Claimed ✓";
-                badge.className = "daily-status-badge claimed";
+                badge.innerText = "Claimed ✓"; badge.className = "daily-status-badge claimed";
             } else {
-                badge.innerText = "Ready to Claim!";
-                badge.className = "daily-status-badge";
+                badge.innerText = "Ready to Claim!"; badge.className = "daily-status-badge";
             }
 
-            if (isDailyCardCollapsed) {
-                body.style.display = 'none';
-                arrow.innerText = '▼';
-            } else {
-                body.style.display = 'block';
-                arrow.innerText = '▲';
-            }
+            if (isDailyCardCollapsed) { body.style.display = 'none'; arrow.innerText = '▼'; } 
+            else { body.style.display = 'block'; arrow.innerText = '▲'; }
         }
 
-        // Wallet Card Collapsible Toggle & Format
         function formatAbbreviatedAddress(addr) {
             if (!addr || addr.length < 10) return "Not Set";
             return addr.substring(0, 4) + "....." + addr.substring(addr.length - 5);
@@ -597,26 +635,15 @@
             const arrow = document.getElementById('toggle-arrow');
             const summaryText = document.getElementById('collapsed-address-text');
 
-            if (vaultData.walletAddress) {
-                summaryText.innerText = formatAbbreviatedAddress(vaultData.walletAddress);
-            } else {
-                summaryText.innerText = "Not Set";
-            }
-
-            if (isWalletCardCollapsed) {
-                body.style.display = 'none';
-                arrow.innerText = '▼';
-            } else {
-                body.style.display = 'block';
-                arrow.innerText = '▲';
-            }
+            summaryText.innerText = vaultData.walletAddress ? formatAbbreviatedAddress(vaultData.walletAddress) : "Not Set";
+            if (isWalletCardCollapsed) { body.style.display = 'none'; arrow.innerText = '▼'; } 
+            else { body.style.display = 'block'; arrow.innerText = '▲'; }
         }
 
         function getESTDetails() {
             const now = new Date();
             const estString = new Intl.DateTimeFormat('en-US', {
-                timeZone: 'America/New_York',
-                year: 'numeric', month: '2-digit', day: '2-digit',
+                timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
                 hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
             }).format(now);
 
@@ -626,7 +653,6 @@
             const month = parts[1], day = parts[2], year = parts[3];
             const hour = parseInt(parts[4], 10), minute = parseInt(parts[5], 10), second = parseInt(parts[6], 10);
             const currentDateStr = `${year}-${month}-${day}`;
-
             const currentSecondsInDay = (hour * 3600) + (minute * 60) + second;
             const msToMidnight = (86400 - currentSecondsInDay) * 1000;
 
@@ -635,15 +661,11 @@
 
         function loadVaultState() {
             const saved = localStorage.getItem('glacier_vault_v3');
-            if (saved) {
-                try { vaultData = JSON.parse(saved); } catch(e) {}
-            }
+            if (saved) { try { vaultData = JSON.parse(saved); } catch(e) {} }
             updateCheckInUI();
         }
 
-        function saveVaultState() {
-            localStorage.setItem('glacier_vault_v3', JSON.stringify(vaultData));
-        }
+        function saveVaultState() { localStorage.setItem('glacier_vault_v3', JSON.stringify(vaultData)); }
 
         function saveWalletAddress() {
             const input = document.getElementById('walletInput').value.trim();
@@ -655,7 +677,7 @@
 
             if (input === vaultData.walletAddress) return;
 
-            const COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 Hours
+            const COOLDOWN_MS = 24 * 60 * 60 * 1000;
             const now = Date.now();
 
             if (vaultData.lastAddressChangeTimestamp && (now - vaultData.lastAddressChangeTimestamp < COOLDOWN_MS)) {
@@ -668,7 +690,6 @@
             vaultData.walletAddress = input;
             vaultData.lastAddressChangeTimestamp = now;
             saveVaultState();
-
             isWalletCardCollapsed = true;
             updateCheckInUI();
             alert("Receive Address saved to your profile!\n\nNote: A 24-hour sync period is required before rewards can be claimed on the dApp for this updated address.");
@@ -678,7 +699,6 @@
             if (event) event.stopPropagation();
             isWalletCardCollapsed = false;
             renderWalletCardState();
-
             document.getElementById('wallet-display-section').style.display = 'none';
             document.getElementById('wallet-input-section').style.display = 'block';
             document.getElementById('walletInput').value = vaultData.walletAddress || "";
@@ -691,9 +711,7 @@
                 const lastDate = new Date(vaultData.lastCheckInDate);
                 const currDate = new Date(est.dateStr);
                 const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
-                if (diffDays <= 2) {
-                    nextStreak = vaultData.streakCount + 1;
-                }
+                if (diffDays <= 2) nextStreak = vaultData.streakCount + 1;
             }
             return nextStreak;
         }
@@ -711,7 +729,6 @@
             vaultData.lastCheckInDate = est.dateStr;
 
             alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
-
             saveVaultState();
             updateCheckInUI();
         }
@@ -723,24 +740,17 @@
 
             const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
             let cycleDay = vaultData.streakCount % 7;
-
             let completedDays = cycleDay;
-            if (hasClaimedToday && cycleDay === 0 && vaultData.streakCount > 0) {
-                completedDays = 7;
-            } else if (!hasClaimedToday && cycleDay === 0) {
-                completedDays = 0;
-            }
+            if (hasClaimedToday && cycleDay === 0 && vaultData.streakCount > 0) completedDays = 7;
+            else if (!hasClaimedToday && cycleDay === 0) completedDays = 0;
 
             for (let i = 1; i <= 7; i++) {
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'streak-day';
                 if (i === 7) dayDiv.classList.add('day-7');
 
-                if (i <= completedDays) {
-                    dayDiv.classList.add('completed');
-                } else if (i === completedDays + 1 && !hasClaimedToday) {
-                    dayDiv.classList.add('active');
-                }
+                if (i <= completedDays) dayDiv.classList.add('completed');
+                else if (i === completedDays + 1 && !hasClaimedToday) dayDiv.classList.add('active');
 
                 const valDiv = document.createElement('div');
                 valDiv.className = 'streak-val';
@@ -755,7 +765,6 @@
             }
         }
 
-        // 20-Key Mystery Chest Weighted Roll Engine & Visual Reveal
         function openMysteryChest() {
             const CHEST_COST = 20;
             if (vaultData.keys < CHEST_COST) {
@@ -765,35 +774,17 @@
 
             if (confirm(`Spend ${CHEST_COST} Keys to trade for a Mystery Chest?`)) {
                 vaultData.keys -= CHEST_COST;
-
-                // Weighted Probability Roll (0.00 to 99.99)
                 const roll = Math.random() * 100;
-                let tierTitle = "";
-                let chestImageSrc = "";
-                let icedAward = 0.0;
+                let tierTitle = ""; let chestImageSrc = ""; let icedAward = 0.0;
 
-                if (roll < 88.0) {
-                    // 88.0% Common
-                    tierTitle = "COMMON CHEST";
-                    chestImageSrc = "CommonChest.png";
-                    icedAward = 0.0314;
-                } else if (roll < 99.0) {
-                    // 11.0% Rare
-                    tierTitle = "RARE CHEST";
-                    chestImageSrc = "RareChest.png";
-                    icedAward = 0.3140;
-                } else {
-                    // 1.0% Legendary
-                    tierTitle = "LEGENDARY CHEST";
-                    chestImageSrc = "LegendaryChest.png";
-                    icedAward = 3.1400;
-                }
+                if (roll < 88.0) { tierTitle = "COMMON CHEST"; chestImageSrc = "CommonChest.png"; icedAward = 0.0314; } 
+                else if (roll < 99.0) { tierTitle = "RARE CHEST"; chestImageSrc = "RareChest.png"; icedAward = 0.3140; } 
+                else { tierTitle = "LEGENDARY CHEST"; chestImageSrc = "LegendaryChest.png"; icedAward = 3.1400; }
 
                 vaultData.unclaimedIced += icedAward;
                 saveVaultState();
                 updateCheckInUI();
 
-                // Populate and trigger Chest Reveal Modal
                 document.getElementById('reveal-chest-img').src = chestImageSrc;
                 document.getElementById('reveal-tier-title').innerText = tierTitle;
                 document.getElementById('reveal-payout-amount').innerText = icedAward.toFixed(4);
@@ -801,23 +792,13 @@
             }
         }
 
-        // NFT Key Reservation Engine
         function reserveNFT(itemKey, itemName, cost) {
-            if (vaultData.keys < cost) {
-                alert(`Not enough Keys! You need ${cost} Keys to reserve the ${itemName}.`);
-                return;
-            }
-
-            if(!vaultData.walletAddress) {
-                alert("Please save your EVM Receive Address (0x...) above before reserving an NFT!");
-                return;
-            }
+            if (vaultData.keys < cost) { alert(`Not enough Keys! You need ${cost} Keys to reserve the ${itemName}.`); return; }
+            if(!vaultData.walletAddress) { alert("Please save your EVM Receive Address (0x...) above before reserving an NFT!"); return; }
 
             if (confirm(`Spend ${cost} Keys to reserve an on-chain permit for [${itemName}]?`)) {
                 vaultData.keys -= cost;
-                if(!vaultData.reservedNFTs.includes(itemKey)) {
-                    vaultData.reservedNFTs.push(itemKey);
-                }
+                if(!vaultData.reservedNFTs.includes(itemKey)) vaultData.reservedNFTs.push(itemKey);
                 saveVaultState();
                 updateCheckInUI();
                 alert(`🎟️ PERMIT RESERVED!\n\nYour registered wallet (${vaultData.walletAddress.substring(0,6)}...${vaultData.walletAddress.substring(38)}) has been flagged eligible to mint [${itemName}] on the Polar Portal dApp!`);
@@ -825,10 +806,7 @@
         }
 
         function redirectToClaimDapp() {
-            if(!vaultData.walletAddress) {
-                alert("Please enter and save your EVM Receive Address first!");
-                return;
-            }
+            if(!vaultData.walletAddress) { alert("Please enter and save your EVM Receive Address first!"); return; }
 
             const COOLDOWN_MS = 24 * 60 * 60 * 1000;
             const now = Date.now();
@@ -846,7 +824,6 @@
             document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
             document.getElementById('unclaimed-iced-balance').innerText = vaultData.unclaimedIced.toFixed(4);
 
-            // Update Collapsible Card UI States
             renderDailyCardState();
             renderWalletCardState();
 
@@ -872,14 +849,10 @@
 
             const btn = document.getElementById('checkInBtn');
             const timerText = document.getElementById('mission-timer');
-
             renderTimeline(est);
 
             if (vaultData.lastCheckInDate === est.dateStr) {
-                if (btn) {
-                    btn.classList.add('claimed');
-                    btn.innerText = "Claimed ✓";
-                }
+                if (btn) { btn.classList.add('claimed'); btn.innerText = "Claimed ✓"; }
                 const remainingMs = est.msToMidnight;
                 const hoursLeft = Math.floor(remainingMs / (1000 * 60 * 60));
                 const minsLeft = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
@@ -889,8 +862,7 @@
                 if (btn) {
                     btn.classList.remove('claimed');
                     const nextStreak = getCalculatedNextStreak(est);
-                    const isSeventh = (nextStreak % 7 === 0);
-                    btn.innerText = isSeventh ? "Claim +2 Keys" : "Claim +1 Key";
+                    btn.innerText = (nextStreak % 7 === 0) ? "Claim +2 Keys" : "Claim +1 Key";
                 }
                 if (timerText) timerText.innerText = "Reward available now";
             }
