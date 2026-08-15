@@ -73,7 +73,7 @@
             border: 1px solid #233550;
             border-radius: 16px;
             padding: 14px 16px;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: all 0.2s ease;
         }
@@ -110,10 +110,15 @@
         }
         .streak-val { font-weight: 800; font-size: 13px; }
 
-        /* Check-In Mission Card */
+        /* Mission Cards & Voluntary Ad Boost Card */
         .mission-card {
             background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
+        }
+        .mission-card.boost-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.06) 0%, rgba(79, 172, 254, 0.06) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            margin-bottom: 24px;
         }
         .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
         .mission-text p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
@@ -345,6 +350,15 @@
                     <div style="font-size:28px;">🔥</div>
                 </div>
             </div>
+        </div>
+
+        <!-- Quick Voluntary Ad Boost Card -->
+        <div class="mission-card boost-card">
+            <div class="mission-text">
+                <h4 style="color: #00f2fe;">⚡ Quick Thermal Boost</h4>
+                <p id="boost-ad-timer">Watch a rewarded ad (+5 Energy)</p>
+            </div>
+            <button id="boostAdBtn" class="mission-btn" onclick="watchBoostAd()">Watch Ad (+5 ⚡)</button>
         </div>
 
         <!-- Arcade Library Section -->
@@ -691,6 +705,7 @@
 
         let selectedCategoryFilter = 'All';
         let currentSearchTerm = '';
+        const BOOST_AD_COOLDOWN_MS = 2 * 60 * 1000; // 2 minutes cooldown between ad views
 
         document.addEventListener('DOMContentLoaded', () => {
             const splashScreen = document.getElementById('splash-screen');
@@ -827,7 +842,8 @@
             keys: 0, streakCount: 0, lastCheckInDate: "",
             walletAddress: "", lastAddressChangeTimestamp: 0,
             unclaimedIced: 0.0, reservedNFTs: [],
-            personalThermalEnergy: 140
+            personalThermalEnergy: 140,
+            lastBoostAdTimestamp: 0
         };
 
         let surgeConfig = {
@@ -904,6 +920,7 @@
             const saved = localStorage.getItem('glacier_vault_v3');
             if (saved) { try { vaultData = JSON.parse(saved); } catch(e) {} }
             if(!vaultData.personalThermalEnergy) vaultData.personalThermalEnergy = 140;
+            if(!vaultData.lastBoostAdTimestamp) vaultData.lastBoostAdTimestamp = 0;
             updateCheckInUI();
         }
 
@@ -945,6 +962,48 @@
             document.getElementById('wallet-input-section').style.display = 'block';
             document.getElementById('walletInput').value = vaultData.walletAddress || "";
             document.getElementById('walletInput').focus();
+        }
+
+        function watchBoostAd() {
+            const now = Date.now();
+            const lastBoost = vaultData.lastBoostAdTimestamp || 0;
+            const diff = now - lastBoost;
+
+            if (diff < BOOST_AD_COOLDOWN_MS) {
+                const secsLeft = Math.ceil((BOOST_AD_COOLDOWN_MS - diff) / 1000);
+                alert(`⏳ Ad cooldown active! Please wait ${secsLeft}s before watching another boost ad.`);
+                return;
+            }
+
+            vaultData.personalThermalEnergy = (vaultData.personalThermalEnergy || 140) + 5;
+            vaultData.lastBoostAdTimestamp = now;
+            saveVaultState();
+            updateCheckInUI();
+
+            alert("⚡ +5 Thermal Energy Generated! Thank you for supporting the Glacier Reserve Pool.");
+        }
+
+        function updateBoostAdUI() {
+            const btn = document.getElementById('boostAdBtn');
+            const timerText = document.getElementById('boost-ad-timer');
+            if (!btn || !timerText) return;
+
+            const now = Date.now();
+            const lastBoost = vaultData.lastBoostAdTimestamp || 0;
+            const diff = now - lastBoost;
+
+            if (diff < BOOST_AD_COOLDOWN_MS) {
+                const remainingSecs = Math.ceil((BOOST_AD_COOLDOWN_MS - diff) / 1000);
+                const mins = Math.floor(remainingSecs / 60);
+                const secs = remainingSecs % 60;
+                btn.classList.add('claimed');
+                btn.innerText = `⏳ ${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                timerText.innerText = "Ad cooldown active";
+            } else {
+                btn.classList.remove('claimed');
+                btn.innerText = "Watch Ad (+5 ⚡)";
+                timerText.innerText = "Watch a rewarded ad (+5 Energy)";
+            }
         }
 
         function getCalculatedNextStreak(est) {
@@ -1062,7 +1121,6 @@
             window.open(`https://claim.icedether.com?address=${vaultData.walletAddress}`, '_blank');
         }
 
-        // Expanded 10-Tier Badge Data Resolver
         function getTierBadgeData(energy) {
             if (energy >= 10000) return { name: "⚡ Glacial Titan", nextName: null, target: 10000 };
             if (energy >= 9000) return { name: "💠 Cryo Master", nextName: "Glacial Titan", target: 10000 };
@@ -1171,6 +1229,7 @@
 
             renderDailyCardState();
             renderWalletCardState();
+            updateBoostAdUI();
 
             if (vaultData.walletAddress) {
                 document.getElementById('wallet-input-section').style.display = 'none';
