@@ -230,17 +230,17 @@
             </div>
         </header>
 
-        <!-- Collapsible Daily Check-In Box -->
+        <!-- Collapsible Daily Check-In Box (Collapsed by default) -->
         <div class="daily-wrapper-card" id="daily-wrapper-card">
             <div class="daily-summary-header" onclick="toggleDailyCard()">
                 <div class="daily-summary-title">
                     <span>Daily Check-in</span>
                     <span id="daily-status-badge" class="daily-status-badge">Ready to Claim!</span>
                 </div>
-                <span id="daily-toggle-arrow" style="font-size:12px; color:#00f2fe;">▲</span>
+                <span id="daily-toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
             </div>
 
-            <div id="daily-card-body" style="display: block; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
+            <div id="daily-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
                 <div class="section-header" style="margin-top: 0; margin-bottom: 12px;">
                     <div class="section-subtitle">Resets at Midnight EST</div>
                 </div>
@@ -453,7 +453,7 @@
                 <div style="font-size: 11px; font-weight: 700; color: #E2E8F0; margin-bottom: 8px; text-align: left;">Developer Vetting Checklist</div>
                 <label class="checklist-item"><input type="checkbox" id="chk1"> 100% Mobile HTML5 / Touch Responsive</label>
                 <label class="checklist-item"><input type="checkbox" id="chk2"> Contains natural Game Over / Pause ad states</label>
-                <label class="checklist-item"><input type="checkbox" id="chk3"> Lightweight performance (< 15MB package)</label>
+                <label class="checklist-item"><input type="checkbox" id="chk3"> Lightweight performance (&lt; 15MB package)</label>
             </div>
 
             <button class="claim-dapp-btn" onclick="submitDeveloperGame()">Submit Game for Approval</button>
@@ -595,7 +595,7 @@
             unclaimedIced: 0.0, reservedNFTs: []
         };
 
-        let isDailyCardCollapsed = false;
+        let isDailyCardCollapsed = true; // Collapsed by default
         let isWalletCardCollapsed = true;
 
         function toggleDailyCard() {
