@@ -87,7 +87,7 @@
         }
         .daily-status-badge {
             font-size: 11px; font-weight: 800; color: #050B14;
-            background: linear-gradient(135deg, #65add7 0%, #4facfe 100%);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             padding: 3px 8px; border-radius: 6px;
         }
         .daily-status-badge.claimed { background: #233550; color: #A0AEC0; }
@@ -99,10 +99,10 @@
             border-radius: 8px; padding: 8px 0; display: flex; flex-direction: column;
             align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #A0AEC0;
         }
-        .streak-day.completed { background: rgba(101, 173, 215, 0.1); border-color: rgba(101, 173, 215, 0.3); color: #65add7; }
+        .streak-day.completed { background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #00f2fe; }
         .streak-day.active {
-            background: linear-gradient(135deg, rgba(101, 173, 215, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);
-            border-color: #65add7; color: #fff; box-shadow: 0 0 10px rgba(101, 173, 215, 0.4); transform: scale(1.05);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);
+            border-color: #00f2fe; color: #fff; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); transform: scale(1.05);
         }
         .streak-day.day-7 { border-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
         .streak-day.day-7.completed, .streak-day.day-7.active {
@@ -127,7 +127,7 @@
         .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
         .mission-text p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
         .mission-btn {
-            background: linear-gradient(135deg, #65add7 0%, #4facfe 100%);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             color: #050B14; border: none; padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer;
         }
         .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; }
@@ -316,7 +316,7 @@
                     🌐 Impact
                 </div>
                 <div class="nav-pill" onclick="openRewardsPage()">
-                    🗝️ <span id="keys-balance">5000</span>
+                    🗝️ <span id="keys-balance">0</span>
                 </div>
             </div>
         </header>
@@ -328,7 +328,7 @@
                     <span>Daily Check-in</span>
                     <span id="daily-status-badge" class="daily-status-badge">Ready to Claim!</span>
                 </div>
-                <span id="daily-toggle-arrow" style="font-size:12px; color:#65add7;">▼</span>
+                <span id="daily-toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
             </div>
 
             <div id="daily-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
@@ -355,7 +355,7 @@
         <!-- Quick Voluntary Ad Boost Card -->
         <div class="mission-card boost-card">
             <div class="mission-text">
-                <h4 style="color: #65add7;">⚡ Quick Thermal Boost</h4>
+                <h4 id="boost-card-title" style="color: #00f2fe;">⚡ Quick Thermal Boost</h4>
                 <p id="boost-ad-timer">Watch a rewarded ad (+5 Energy)</p>
             </div>
             <button id="boostAdBtn" class="mission-btn" onclick="watchBoostAd()">Watch Ad (+5 ⚡)</button>
@@ -395,7 +395,7 @@
         <header>
             <div class="section-title" style="font-size: 22px;">Glacier Impact</div>
             <div class="nav-pill" onclick="openRewardsPage()">
-                🗝️ <span id="impact-keys-balance">0</span>
+                🗝️ <span id="impact-keys-balance">5000</span>
             </div>
         </header>
 
@@ -529,7 +529,7 @@
                 </div>
 
                 <div style="font-size: 10px; color: #FFD700; margin-top: 8px; line-height: 1.3;">
-                    ⚠️ <strong>Sync Delay Notice:</strong> Updating your receive address triggers a 24-hour waiting period before claims can be processed on the dApp to prevent sync exploits.
+                    ⚠️ <strong>Sync Delay Notice:</strong> When you add/change your receive address, please wait 24 hours to allow the change to reflect on our on-chain claim dashboard.
                 </div>
             </div>
         </div>
@@ -705,6 +705,7 @@
 
         let selectedCategoryFilter = 'All';
         let currentSearchTerm = '';
+        let isEditingAddress = false;
         const BOOST_AD_COOLDOWN_MS = 2 * 60 * 1000;
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -882,8 +883,10 @@
 
             if (hasClaimedToday) {
                 badge.innerText = "Claimed ✓"; badge.className = "daily-status-badge claimed";
+                if (arrow) arrow.style.color = '#A0AEC0';
             } else {
                 badge.innerText = "Ready to Claim!"; badge.className = "daily-status-badge";
+                if (arrow) arrow.style.color = '#00f2fe';
             }
 
             if (isDailyCardCollapsed) { body.style.display = 'none'; arrow.innerText = '▼'; } 
@@ -947,7 +950,11 @@
                 return;
             }
 
-            if (input === vaultData.walletAddress) return;
+            if (input === vaultData.walletAddress) {
+                isEditingAddress = false;
+                updateCheckInUI();
+                return;
+            }
 
             const COOLDOWN_MS = 24 * 60 * 60 * 1000;
             const now = Date.now();
@@ -956,11 +963,14 @@
                 const hoursLeft = Math.ceil((COOLDOWN_MS - (now - vaultData.lastAddressChangeTimestamp)) / (1000 * 60 * 60));
                 alert(`Address updates are rate-limited to prevent exploits. Please wait ${hoursLeft} hour(s) before changing your receive address again.`);
                 document.getElementById('walletInput').value = vaultData.walletAddress || "";
+                isEditingAddress = false;
+                updateCheckInUI();
                 return;
             }
 
             vaultData.walletAddress = input;
             vaultData.lastAddressChangeTimestamp = now;
+            isEditingAddress = false;
             saveVaultState();
             isWalletCardCollapsed = true;
             updateCheckInUI();
@@ -969,6 +979,7 @@
 
         function enableAddressEdit(event) {
             if (event) event.stopPropagation();
+            isEditingAddress = true;
             isWalletCardCollapsed = false;
             renderWalletCardState();
             document.getElementById('wallet-display-section').style.display = 'none';
@@ -999,6 +1010,7 @@
         function updateBoostAdUI() {
             const btn = document.getElementById('boostAdBtn');
             const timerText = document.getElementById('boost-ad-timer');
+            const title = document.getElementById('boost-card-title');
             if (!btn || !timerText) return;
 
             const now = Date.now();
@@ -1012,10 +1024,12 @@
                 btn.classList.add('claimed');
                 btn.innerText = `⏳ ${mins}:${secs < 10 ? '0' : ''}${secs}`;
                 timerText.innerText = "Ad cooldown active";
+                if (title) title.style.color = "#A0AEC0";
             } else {
                 btn.classList.remove('claimed');
                 btn.innerText = "Watch Ad (+5 ⚡)";
                 timerText.innerText = "Watch a rewarded ad (+5 Energy)";
+                if (title) title.style.color = "#00f2fe";
             }
         }
 
@@ -1244,13 +1258,15 @@
             renderWalletCardState();
             updateBoostAdUI();
 
-            if (vaultData.walletAddress) {
-                document.getElementById('wallet-input-section').style.display = 'none';
-                document.getElementById('wallet-display-section').style.display = 'block';
-                document.getElementById('registered-address-text').innerText = vaultData.walletAddress;
-            } else {
-                document.getElementById('wallet-input-section').style.display = 'block';
-                document.getElementById('wallet-display-section').style.display = 'none';
+            if (!isEditingAddress) {
+                if (vaultData.walletAddress) {
+                    document.getElementById('wallet-input-section').style.display = 'none';
+                    document.getElementById('wallet-display-section').style.display = 'block';
+                    document.getElementById('registered-address-text').innerText = vaultData.walletAddress;
+                } else {
+                    document.getElementById('wallet-input-section').style.display = 'block';
+                    document.getElementById('wallet-display-section').style.display = 'none';
+                }
             }
 
             const est = getESTDetails();
