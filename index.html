@@ -3,1263 +3,883 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GlacierPlay Hub</title>
+    <title>GlacierPlay — Arcade Hub</title>
     <style>
-        /* Base Styling & Theme */
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            margin: 0; padding: 0;
             background-color: #050B14;
             color: #FFFFFF;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 12px;
             user-select: none;
-            -webkit-touch-callout: none;
+            overflow-x: hidden;
         }
 
-        /* Splash Screen Overlay */
+        /* ---------------- SPLASH SCREEN ---------------- */
         #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background-color: #050B14;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999; transition: opacity 0.5s ease-out;
-        }
-        #splashVideo { width: 100%; height: 100%; object-fit: cover; }
-
-        /* App Container Architecture */
-        .app-view {
-            max-width: 480px; margin: 0 auto;
-            padding: 20px; padding-bottom: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
         }
 
-        #hub-container { display: none; }
-        #rewards-container { display: none; }
-        #missions-container { display: none; }
-
-        /* App Header & Navigation Pills */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 24px;
+        #splashVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .logo { height: 38px; width: auto; object-fit: contain; }
 
-        .header-pills-group { display: flex; gap: 8px; align-items: center; }
-
-        .nav-pill {
-            background: linear-gradient(90deg, #1A2639 0%, #233550 100%);
-            border: 1px solid #3A4E6C;
-            padding: 8px 12px;
-            border-radius: 20px;
+        .splash-fallback-text {
+            position: absolute;
+            bottom: 40px;
+            font-size: 14px;
             font-weight: 800;
-            font-size: 13px;
-            display: flex; align-items: center; gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            cursor: pointer; transition: transform 0.1s;
+            letter-spacing: 2px;
+            color: #00F2FE;
+            text-transform: uppercase;
         }
-        .nav-pill:active { transform: scale(0.95); }
-        .nav-pill span { color: #65add7; }
 
-        /* Section Headers */
-        .section-header {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 12px; margin-top: 15px;
+        /* ---------------- APP VIEW CONTAINERS ---------------- */
+        .app-container {
+            width: 100%;
+            max-width: 440px;
+            background: #08101D;
+            border: 1px solid #1E2D42;
+            border-radius: 20px;
+            padding: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: none; /* Controlled via showView() */
         }
-        .section-title { font-size: 18px; font-weight: 700; color: #E2E8F0; }
-        .section-subtitle { font-size: 12px; color: #A0AEC0; font-weight: 600; }
 
-        /* Collapsible Daily Check-in Box */
-        .daily-wrapper-card {
-            background-color: #121C2B;
-            border: 1px solid #233550;
-            border-radius: 16px;
-            padding: 14px 16px;
+        .app-container.active {
+            display: block;
+        }
+
+        /* ---------------- HEADER BARS ---------------- */
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #1E2D42;
             margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
         }
-        .daily-summary-header {
-            display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; user-select: none;
-        }
-        .daily-summary-title {
-            font-size: 16px; font-weight: 700; color: #E2E8F0;
-            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-        }
-        .daily-status-badge {
-            font-size: 11px; font-weight: 800; color: #050B14;
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            padding: 3px 8px; border-radius: 6px;
-        }
-        .daily-status-badge.claimed { background: #233550; color: #A0AEC0; }
 
-        /* 7-Day Timeline Visuals */
-        .streak-timeline { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 16px; }
-        .streak-day {
-            flex: 1; background: rgba(255, 255, 255, 0.03); border: 1px solid #233550;
-            border-radius: 8px; padding: 8px 0; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; gap: 4px; font-size: 11px; color: #A0AEC0;
+        .header-title {
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            color: #FFFFFF;
+            text-transform: uppercase;
         }
-        .streak-day.completed { background: rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.3); color: #00f2fe; }
-        .streak-day.active {
-            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.2) 100%);
-            border-color: #00f2fe; color: #fff; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); transform: scale(1.05);
-        }
-        .streak-day.day-7 { border-color: #FFD700; background: rgba(255, 215, 0, 0.05); }
-        .streak-day.day-7.completed, .streak-day.day-7.active {
-            background: rgba(255, 215, 0, 0.2); border-color: #FFD700; color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-        }
-        .streak-val { font-weight: 800; font-size: 13px; }
 
-        /* Mission Cards & Voluntary Ad Boost Card */
-        .mission-card {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
-        }
-        .mission-card.boost-card {
-            background-color: #121C2B;
+        .nav-btn {
+            background: rgba(18, 28, 43, 0.8);
             border: 1px solid #233550;
-            border-radius: 16px;
-            padding: 14px 16px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            color: #38BDF8;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-        .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
-        .mission-text p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
-        .mission-btn {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #050B14; border: none; padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer;
-        }
-        .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; }
 
-        /* Streak Banner */
-        .streak-banner {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%); border-radius: 12px; padding: 14px;
-            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(255, 65, 108, 0.25);
-        }
-        .streak-info h3 { margin: 0; font-size: 16px; font-weight: 800; }
-        .streak-info p { margin: 2px 0 0 0; font-size: 11px; opacity: 0.9; }
-
-        /* Search & Category Filter Section */
-        .arcade-search-box {
-            width: 100%; background: #121C2B; border: 1px solid #233550; color: #fff;
-            padding: 10px 14px; border-radius: 10px; font-size: 13px; outline: none; margin-bottom: 10px;
-        }
-        .arcade-search-box:focus { border-color: #65add7; }
-
-        .category-pills {
-            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; scrollbar-width: none;
-        }
-        .category-pills::-webkit-scrollbar { display: none; }
-        .pill {
-            background: #121C2B; border: 1px solid #233550; color: #A0AEC0; padding: 6px 14px;
-            border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: all 0.2s;
-        }
-        .pill.active { background: linear-gradient(135deg, #65add7 0%, #4facfe 100%); color: #050B14; border-color: #65add7; }
-
-        /* Game Grid Styling */
-        .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-        .game-card {
-            background-color: #121C2B; border-radius: 16px; overflow: hidden;
-            text-decoration: none; color: white; display: flex; flex-direction: column;
-            border: 1px solid #233550; transition: transform 0.1s;
-        }
-        .game-card:active { transform: scale(0.95); }
-        .game-thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-bottom: 1px solid #233550; }
-        .game-info { padding: 10px; text-align: center; }
-        .game-title { font-size: 13px; font-weight: 700; color: #E2E8F0; }
-        .game-dev { font-size: 10px; color: #65add7; margin-top: 2px; }
-
-        /* Empty Search State */
-        .empty-search-state {
-            text-align: center; padding: 30px 10px; background: #121C2B;
-            border: 1px dashed #233550; border-radius: 14px; grid-column: span 2;
+        .nav-btn:active {
+            transform: scale(0.95);
+            background: #233550;
         }
 
-        /* Submit Game Banner Button */
-        .submit-game-banner {
-            background: linear-gradient(135deg, rgba(101, 173, 215, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
-            border: 1px dashed #3A4E6C; border-radius: 14px; padding: 14px; text-align: center;
-            margin-top: 20px; cursor: pointer; transition: border-color 0.2s;
-        }
-        .submit-game-banner:hover { border-color: #65add7; }
-
-        /* Common Back Button */
-        .back-nav-btn {
-            background: #121C2B; border: 1px solid #233550; color: #65add7;
-            padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        /* Rewards Page Styling */
-        .wallet-card { background: #121C2B; border: 1px solid #233550; border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; }
-        .wallet-summary-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .wallet-summary-addr { font-family: monospace; font-size: 12px; color: #65add7; }
-        .wallet-input { width: 100%; background: #050B14; border: 1px solid #3A4E6C; color: #65add7; padding: 10px 12px; border-radius: 8px; font-size: 12px; margin-top: 8px; outline: none; }
-        .address-display-box { display: flex; justify-content: space-between; align-items: center; background: #050B14; border: 1px solid #65add7; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
-        .addr-text { font-family: monospace; font-size: 12px; color: #65add7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
-        .edit-addr-btn { background: rgba(255,255,255,0.05); border: 1px solid #3A4E6C; color: #A0AEC0; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }
-        .balance-summary-card { background: linear-gradient(135deg, rgba(101, 173, 215, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%); border: 1px solid rgba(101, 173, 215, 0.3); border-radius: 14px; padding: 16px; margin-bottom: 20px; text-align: center; }
-        .balance-val { font-size: 24px; font-weight: 800; color: #65add7; margin: 4px 0; }
-        .claim-dapp-btn { background: linear-gradient(135deg, #65add7 0%, #4facfe 100%); color: #050B14; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; }
-        .store-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 14px; margin-top: 15px; margin-bottom: 25px; }
-        .chest-card { background-color: #121C2B; border: 1px solid #233550; border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .chest-left { display: flex; align-items: center; gap: 14px; }
-        .chest-icon-img { width: 44px; height: 44px; object-fit: contain; }
-        .chest-info h4 { margin: 0; font-size: 16px; color: #E2E8F0; }
-        .chest-info p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
-        .chest-price { background: rgba(101, 173, 215, 0.1); border: 1px solid rgba(101, 173, 215, 0.3); color: #65add7; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; }
-        .terms-link-btn { background: transparent; border: none; color: #A0AEC0; font-size: 12px; text-decoration: underline; cursor: pointer; width: 100%; text-align: center; padding: 10px 0; }
-
-        /* Missions Screen Specific Styling */
-        .mission-tabs {
-            display: flex; gap: 8px; margin-bottom: 16px; background: #121C2B;
-            padding: 4px; border-radius: 12px; border: 1px solid #233550;
-        }
-        .mission-tab-btn {
-            flex: 1; padding: 10px 0; text-align: center; font-size: 12px; font-weight: 700;
-            color: #A0AEC0; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-        }
-        .mission-tab-btn.active {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #050B14; font-weight: 800;
+        /* Top Right Keys Pill Navigation Button */
+        .keys-nav-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.25));
+            border: 1px solid #00F2FE;
+            color: #00F2FE;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+            transition: all 0.2s ease;
         }
 
-        .mission-item-card {
+        .keys-nav-pill:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* ---------------- COMMON CARD STYLES ---------------- */
+        .card-box {
             background: #121C2B;
             border: 1px solid #233550;
             border-radius: 14px;
-            padding: 14px 16px;
+            padding: 14px;
             margin-bottom: 12px;
         }
-        .mission-item-card.apex-card {
-            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(79, 172, 254, 0.08) 100%);
-            border: 1px solid #00f2fe;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
-        }
-        .mission-item-header {
-            display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;
-        }
-        .mission-item-title {
-            font-size: 14px; font-weight: 700; color: #E2E8F0;
-        }
-        .mission-item-desc {
-            font-size: 11px; color: #A0AEC0; margin-top: 2px;
-        }
-        .mission-progress-bar {
-            width: 100%; background: #050B14; border: 1px solid #233550;
-            border-radius: 6px; height: 8px; overflow: hidden; margin: 10px 0 6px 0;
-        }
-        .mission-progress-fill {
-            height: 100%; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
-            border-radius: 6px; transition: width 0.3s ease;
-        }
-        .mission-item-footer {
-            display: flex; justify-content: space-between; align-items: center; margin-top: 8px;
-        }
-        .mission-progress-text {
-            font-size: 11px; font-weight: 700; color: #65add7;
-        }
-        .mission-claim-btn {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #050B14; border: none; padding: 6px 14px; border-radius: 8px;
-            font-size: 12px; font-weight: 800; cursor: pointer;
-        }
-        .mission-claim-btn.claimed {
-            background: #233550; color: #A0AEC0; cursor: default;
-        }
-        .mission-claim-btn.locked {
-            background: #1A2639; color: #4A5D78; cursor: default; border: 1px solid #233550;
+
+        .card-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #38BDF8;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
-        /* Modals */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px; }
-        .modal-card { background: #121C2B; border: 1px solid #233550; border-radius: 18px; padding: 24px; max-width: 420px; width: 100%; max-height: 85vh; overflow-y: auto; }
-        .reveal-chest-img { width: 130px; height: 130px; object-fit: contain; margin: 16px auto; display: block; filter: drop-shadow(0 0 15px rgba(101, 173, 215, 0.5)); }
-        .submit-form-group { text-align: left; margin-bottom: 12px; }
-        .submit-form-group label { display: block; font-size: 11px; font-weight: 700; color: #A0AEC0; margin-bottom: 4px; }
-        .submit-form-input { width: 100%; background: #050B14; border: 1px solid #3A4E6C; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; outline: none; }
-        .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #CBD5E1; margin-bottom: 6px; text-align: left; }
+        /* ---------------- HUB VIEW ---------------- */
+        .hub-banner {
+            text-align: center;
+            padding: 10px 0 16px 0;
+        }
+
+        .hub-logo {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 6px;
+        }
+
+        .quick-nav-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .quick-nav-card {
+            background: linear-gradient(135deg, rgba(18, 28, 43, 0.9), rgba(11, 22, 38, 0.9));
+            border: 1px solid #233550;
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-nav-card:active {
+            transform: scale(0.97);
+            border-color: #00F2FE;
+        }
+
+        .quick-nav-title {
+            font-size: 12px;
+            font-weight: 900;
+            color: #00F2FE;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .quick-nav-sub {
+            font-size: 10px;
+            color: #94A3B8;
+            margin-top: 2px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .game-thumb-box {
+            background: #121C2B;
+            border: 1px solid #233550;
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .game-img-placeholder {
+            width: 100%;
+            height: 90px;
+            background: #0B1626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #38BDF8;
+            border-bottom: 1px solid #1E2D42;
+        }
+
+        .game-title {
+            font-size: 11px;
+            font-weight: 800;
+            margin-top: 8px;
+            color: #FFFFFF;
+        }
+
+        /* ---------------- MISSIONS & IMPACT VIEW ---------------- */
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: #050B14;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #1E2D42;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00F2FE, #4FACFE);
+            width: 64%;
+            border-radius: 6px;
+            transition: width 0.4s ease;
+        }
+
+        .impact-stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #94A3B8;
+            font-weight: 600;
+        }
+
+        .user-contrib-box {
+            display: flex;
+            justify-content: space-between;
+            background: #0B1626;
+            border: 1px solid #1E2D42;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 18px;
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            text-transform: uppercase;
+        }
+
+        .section-subtitle {
+            font-size: 11px;
+            color: #94A3B8;
+            margin-top: 3px;
+        }
+
+        .vault-pill-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .stat-pill {
+            flex: 1;
+            background: #121C2B;
+            border: 1px solid #233550;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            color: #64748B;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 13px;
+            font-weight: 900;
+            color: #00F2FE;
+            margin-top: 2px;
+        }
+
+        .tab-bar {
+            display: flex;
+            background: #0B1626;
+            border: 1px solid #1E2D42;
+            border-radius: 12px;
+            padding: 3px;
+            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #64748B;
+            padding: 8px 0;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00F2FE, #4FACFE);
+            color: #050B14;
+            box-shadow: 0 2px 8px rgba(0, 242, 254, 0.25);
+        }
+
+        .timer-banner {
+            text-align: center;
+            font-size: 11px;
+            color: #38BDF8;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .meta-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08), rgba(18, 28, 43, 0.95));
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.08);
+        }
+
+        .meta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .meta-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: #00F2FE;
+            text-transform: uppercase;
+        }
+
+        .meta-badge {
+            background: rgba(0, 242, 254, 0.15);
+            border: 1px solid #00F2FE;
+            color: #00F2FE;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+
+        .meta-desc {
+            font-size: 11px;
+            color: #94A3B8;
+            margin-bottom: 10px;
+        }
+
+        .mission-card {
+            background: #121C2B;
+            border: 1px solid #233550;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mission-info {
+            flex: 1;
+            padding-right: 12px;
+        }
+
+        .mission-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-bottom: 3px;
+        }
+
+        .mission-sub {
+            font-size: 10px;
+            color: #64748B;
+            margin-bottom: 8px;
+        }
+
+        .mini-track {
+            width: 100%;
+            height: 6px;
+            background: #050B14;
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid #1E2D42;
+        }
+
+        .mini-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00F2FE, #4FACFE);
+            border-radius: 3px;
+        }
+
+        .action-btn {
+            min-width: 90px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-progress {
+            background: #0B1626;
+            border: 1px solid #233550;
+            color: #38BDF8;
+            cursor: default;
+        }
+
+        .btn-claim {
+            background: linear-gradient(135deg, #00F2FE, #4FACFE);
+            color: #050B14;
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+        }
+
+        .btn-claim:active {
+            transform: scale(0.95);
+        }
+
+        .btn-claimed {
+            background: #0B1626;
+            border: 1px solid #1E2D42;
+            color: #64748B;
+            cursor: default;
+        }
+
+        .btn-locked {
+            background: #0B1626;
+            border: 1px solid #1E2D42;
+            color: #475569;
+            cursor: default;
+        }
+
+        /* ---------------- REWARDS VIEW ---------------- */
+        .chest-card {
+            background: #121C2B;
+            border: 1px solid #233550;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chest-icon {
+            font-size: 32px;
+            margin-right: 12px;
+        }
+
+        .chest-details {
+            flex: 1;
+        }
+
+        .chest-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #FFFFFF;
+        }
+
+        .chest-sub {
+            font-size: 11px;
+            color: #38BDF8;
+            margin-top: 2px;
+        }
+
+        .wallet-input-box {
+            width: 100%;
+            background: #050B14;
+            border: 1px solid #1E2D42;
+            border-radius: 10px;
+            padding: 10px;
+            color: #FFFFFF;
+            font-size: 11px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        .wallet-input-box:focus {
+            border-color: #00F2FE;
+        }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <video id="splashVideo" autoplay muted playsinline onerror="handleVideoError()">
-            <source src="Glacier Play loading screen.mp4" type="video/mp4">
-            <source src="Glacier%20Play%20loading%20screen.mp4" type="video/mp4">
+        <video id="splashVideo" autoplay muted playsinline>
+            <source src="splash.mp4" type="video/mp4">
         </video>
-        <div id="splash-fallback" style="display:none; text-align:center;">
-            <img src="header-logo.png" alt="GlacierPlay" style="width: 150px; margin-bottom: 20px;" onerror="this.style.display='none'">
-            <div style="font-weight: 700; color: #65add7; letter-spacing: 1px;">GLACIERPLAY HUB</div>
+        <div class="splash-fallback-text">GlacierPlay Loading...</div>
+    </div>
+
+    <div class="app-container active" id="hub-view">
+        <div class="header-bar">
+            <div class="header-title">GlacierPlay Arcade</div>
+            <button class="keys-nav-pill" onclick="showView('rewards-view')">
+                <span>🗝️</span>
+                <span class="keys-val-display">14</span> Keys
+            </button>
+        </div>
+
+        <div class="hub-banner">
+            <img src="1786404293997.png" alt="GlacierPlay Logo" class="hub-logo" onerror="this.style.display='none'; document.getElementById('hub-fallback-title').style.display='block';">
+            <h1 id="hub-fallback-title" style="display:none; color:#00F2FE; font-size:20px; font-weight:900;">GLACIERPLAY</h1>
+            <p style="font-size: 11px; color: #94A3B8; margin-top: 4px;">Play Arcade Games • Melt Ice • Earn Rewards</p>
+        </div>
+
+        <div class="quick-nav-grid">
+            <div class="quick-nav-card" onclick="showView('impact-view')">
+                <div style="font-size: 22px;">🏆</div>
+                <div class="quick-nav-title">Missions</div>
+                <div class="quick-nav-sub">Earn Keys &amp; Badges</div>
+            </div>
+            <div class="quick-nav-card" onclick="showView('rewards-view')">
+                <div style="font-size: 22px;">🗝️</div>
+                <div class="quick-nav-title">Key Vault</div>
+                <div class="quick-nav-sub">Unlock Chests</div>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <div class="card-label">Daily Check-In</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-size: 12px; font-weight: 800; color: #FFFFFF;">Streak: <span id="hub-streak-display">12</span> Days 🔥</div>
+                    <div style="font-size: 10px; color: #64748B; margin-top: 2px;">Resets at midnight UTC</div>
+                </div>
+                <button class="action-btn btn-claim" id="dailyCheckInBtn" onclick="doDailyCheckIn()">+1 KEY</button>
+            </div>
+        </div>
+
+        <div class="card-label" style="margin-top: 14px;">Featured Arcade Games</div>
+        <div class="games-grid">
+            <div class="game-thumb-box" onclick="alert('Launching 8-Bit Track...')">
+                <div class="game-img-placeholder">🏎️</div>
+                <div class="game-title">8-Bit Track</div>
+            </div>
+            <div class="game-thumb-box" onclick="alert('Launching Shattered...')">
+                <div class="game-img-placeholder">💎</div>
+                <div class="game-title">Shattered</div>
+            </div>
         </div>
     </div>
 
-    <div id="hub-container" class="app-view">
-        <header>
-            <img src="header-logo.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'38\'><rect width=\'140\' height=\'38\' rx=\'6\' fill=\'%23121C2B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
-            <div class="header-pills-group">
-                <div class="nav-pill" onclick="openMissionsPage()">
-                    Missions
-                </div>
-                <div class="nav-pill" onclick="openRewardsPage()">
-                    🗝️ <span id="keys-balance">0</span>
-                </div>
+    <div class="app-container" id="impact-view">
+        
+        <div class="header-bar">
+            <button class="nav-btn" onclick="showView('hub-view')">&lt; BACK</button>
+            <div class="header-title">Impact &amp; Missions</div>
+            
+            <button class="keys-nav-pill" onclick="showView('rewards-view')" title="Open Rewards Vault">
+                <span>🗝️</span>
+                <span class="keys-val-display">14</span> Keys
+            </button>
+        </div>
+
+        <div class="card-box">
+            <div class="card-label">Global Impact Progress</div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: 64%;"></div>
             </div>
-        </header>
-
-        <div class="daily-wrapper-card" id="daily-wrapper-card">
-            <div class="daily-summary-header" onclick="toggleDailyCard()">
-                <div class="daily-summary-title">
-                    <span>Daily Check-in</span>
-                    <span id="daily-status-badge" class="daily-status-badge">Ready to Claim!</span>
-                </div>
-                <span id="daily-toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
-            </div>
-
-            <div id="daily-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
-                <div class="mission-card">
-                    <div class="mission-text">
-                        <h4>Claim Keys Daily</h4>
-                        <p id="mission-timer">Reward available now</p>
-                    </div>
-                    <button id="checkInBtn" class="mission-btn" onclick="claimDailyCheckIn()">Claim +1 Key</button>
-                </div>
-
-                <div class="streak-timeline" id="streak-timeline"></div>
-
-                <div class="streak-banner">
-                    <div class="streak-info">
-                        <h3><span id="streak-count">0</span> Day Streak!</h3>
-                        <p>Keep the flame alive daily.</p>
-                    </div>
-                    <div style="font-size:28px;">🔥</div>
-                </div>
+            <div class="impact-stats-row">
+                <span>640,000 / 1,000,000 kg Ice Melted</span>
+                <span>64%</span>
             </div>
         </div>
 
-        <div class="mission-card boost-card">
-            <div class="mission-text">
-                <h4 id="boost-card-title" style="color: #00f2fe;">⚡ Quick Thermal Boost</h4>
-                <p id="boost-ad-timer">Watch a rewarded ad (+5 Energy)</p>
-            </div>
-            <button id="boostAdBtn" class="mission-btn" onclick="watchBoostAd()">Watch Ad (+5 ⚡)</button>
+        <div class="user-contrib-box">
+            <span><strong>Your Ice Melted:</strong> 1,450 kg</span>
+            <span><strong>Completed Operations:</strong> 12</span>
         </div>
 
         <div class="section-header">
-            <div class="section-title">Arcade Library</div>
+            <div class="section-title">Missions Engine</div>
+            <div class="section-subtitle">Earn Keys to unlock chests of $ICED.</div>
         </div>
 
-        <input type="text" id="arcadeSearchInput" class="arcade-search-box" placeholder="🔍 Search games or creators..." oninput="handleSearchInput(this.value)">
-
-        <div class="category-pills" id="categoryPills">
-            <div class="pill active" onclick="selectCategory('All', this)">All</div>
-            <div class="pill" onclick="selectCategory('Sports', this)">Sports</div>
-            <div class="pill" onclick="selectCategory('Action', this)">Action</div>
-            <div class="pill" onclick="selectCategory('Puzzle', this)">Puzzle</div>
-            <div class="pill" onclick="selectCategory('Community', this)">Community</div>
+        <div class="vault-pill-bar">
+            <div class="stat-pill">
+                <div class="stat-label">Key Vault</div>
+                <div class="stat-value">🗝️ <span class="keys-val-display">14</span> KEYS</div>
+            </div>
+            <div class="stat-pill">
+                <div class="stat-label">Check-In Streak</div>
+                <div class="stat-value">🔥 <span id="missions-streak-display">12</span> DAYS</div>
+            </div>
         </div>
 
-        <div class="game-grid" id="gameGrid"></div>
-
-        <div class="submit-game-banner" onclick="openSubmitModal()">
-            <div style="font-size: 14px; font-weight: 800; color: #65add7;">🚀 Game Developer?</div>
-            <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Submit your HTML5 game to the GlacierPlay Hub</div>
+        <div class="tab-bar">
+            <button class="tab-btn" onclick="switchTab('daily')">DAILY (2/2)</button>
+            <button class="tab-btn active" onclick="switchTab('weekly')">WEEKLY (2/5) ★</button>
+            <button class="tab-btn" onclick="switchTab('lifetime')">LIFETIME</button>
         </div>
+
+        <div class="timer-banner" id="tab-timer">
+            ⏱️ Weekly Operations Reset in: <span id="countdown-text">3d 12h 45m</span>
+        </div>
+
+        <div class="meta-card">
+            <div class="meta-header">
+                <div class="meta-title">Glacier Clean Sweep</div>
+                <div class="meta-badge">META BONUS</div>
+            </div>
+            <div class="meta-desc">Complete all 5 Weekly Operations</div>
+            <div class="progress-track" style="margin-bottom: 10px;">
+                <div class="progress-fill" style="width: 40%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; color: #CBD5E1; font-weight: 700;">Reward: +7 Bonus Keys</span>
+                <button class="action-btn btn-locked">[ 🔒 LOCKED ]</button>
+            </div>
+        </div>
+
+        <div id="missions-list">
+            <div class="mission-card">
+                <div class="mission-info">
+                    <div class="mission-title">Thermal Overdrive II</div>
+                    <div class="mission-sub">Trigger Thermal Boosts 15 times</div>
+                    <div class="mini-track">
+                        <div class="mini-fill" style="width: 73%;"></div>
+                    </div>
+                </div>
+                <button class="action-btn btn-progress">[ +3 KEYS ]</button>
+            </div>
+
+            <div class="mission-card" id="mission-arcade">
+                <div class="mission-info">
+                    <div class="mission-title">Arcade Marathon</div>
+                    <div class="mission-sub">Complete 35 game sessions</div>
+                    <div class="mini-track">
+                        <div class="mini-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <button class="action-btn btn-claim" onclick="claimMissionReward('mission-arcade', 4)">[ CLAIM +4 ]</button>
+            </div>
+
+            <div class="mission-card">
+                <div class="mission-info">
+                    <div class="mission-title">Streak Sentinel</div>
+                    <div class="mission-sub">Maintain a 5-day check-in streak</div>
+                    <div class="mini-track">
+                        <div class="mini-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <button class="action-btn btn-claimed">[ CLAIMED ✓ ]</button>
+            </div>
+        </div>
+
     </div>
 
-    <div id="missions-container" class="app-view">
-        <button class="back-nav-btn" onclick="closeMissionsPage()">← Back to Hub</button>
-
-        <div style="text-align: center; margin-bottom: 20px;">
-            <div style="font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px;">MISSIONS</div>
-            <div style="font-size: 12px; color: #65add7; margin-top: 4px; font-weight: 600;">Earn Keys to unlock chests of $ICED.</div>
+    <div class="app-container" id="rewards-view">
+        <div class="header-bar">
+            <button class="nav-btn" onclick="showView('hub-view')">&lt; BACK</button>
+            <div class="header-title">Rewards Vault</div>
+            <button class="keys-nav-pill" style="cursor: default;">
+                <span>🗝️</span>
+                <span class="keys-val-display">14</span> Keys
+            </button>
         </div>
 
-        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 16px;">
-            <div class="nav-pill" style="flex: 1; justify-content: center;">
-                🗝️ Vault: <span id="missions-keys-balance">0</span> Keys
-            </div>
-            <div class="nav-pill" style="flex: 1; justify-content: center;">
-                🔥 Streak: <span id="missions-streak-count">0</span> Days
-            </div>
+        <div class="card-box" style="text-align: center; background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(18, 28, 43, 0.9));">
+            <div class="card-label">Available Vault Keys</div>
+            <div style="font-size: 24px; font-weight: 900; color: #00F2FE; margin: 4px 0;">🗝️ <span class="keys-val-display">14</span> KEYS</div>
+            <div style="font-size: 10px; color: #94A3B8;">Accumulate keys to open mystery chests and earn off-chain token payouts.</div>
         </div>
 
-        <div class="mission-tabs">
-            <div id="tab-btn-daily" class="mission-tab-btn active" onclick="switchMissionSubTab('daily')">Daily</div>
-            <div id="tab-btn-weekly" class="mission-tab-btn" onclick="switchMissionSubTab('weekly')">Weekly</div>
-            <div id="tab-btn-lifetime" class="mission-tab-btn" onclick="switchMissionSubTab('lifetime')">Lifetime</div>
+        <div class="card-label" style="margin-top: 14px;">Mystery Chest Tiers</div>
+
+        <div class="chest-card">
+            <div class="chest-icon">📦</div>
+            <div class="chest-details">
+                <div class="chest-title">Common Ice Chest</div>
+                <div class="chest-sub">Cost: 20 Keys</div>
+            </div>
+            <button class="action-btn btn-claim" onclick="openChest('Common', 20)">OPEN</button>
         </div>
 
-        <div id="tab-daily-missions">
-            <div class="section-header" style="margin-top:0;">
-                <div class="section-title" style="font-size:15px;">Daily Quests</div>
-                <div class="section-subtitle">Resets in 14h 22m</div>
+        <div class="chest-card">
+            <div class="chest-icon">🔮</div>
+            <div class="chest-details">
+                <div class="chest-title">Rare Glacial Chest</div>
+                <div class="chest-sub">Cost: 50 Keys</div>
             </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Quick Surge</div>
-                        <div class="mission-item-desc">Trigger 1 Thermal Boost</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 0%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">0/1 Complete</span>
-                    <button class="mission-claim-btn">+1 Key</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Daily Arcade Warmup</div>
-                        <div class="mission-item-desc">Play 3 game sessions</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 33%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">1/3 Complete</span>
-                    <button class="mission-claim-btn">+1 Key</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card apex-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title" style="color:#00f2fe;">Daily Completionist</div>
-                        <div class="mission-item-desc">Complete all daily quests</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 0%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">0/2 Completed</span>
-                    <button class="mission-claim-btn locked">Locked</button>
-                </div>
-            </div>
+            <button class="action-btn btn-claim" onclick="openChest('Rare', 50)">OPEN</button>
         </div>
 
-        <div id="tab-weekly-missions" style="display: none;">
-            <div class="section-header" style="margin-top:0;">
-                <div class="section-title" style="font-size:15px;">Weekly Operations</div>
-                <div class="section-subtitle">Resets in 4d 12h</div>
+        <div class="chest-card">
+            <div class="chest-icon">👑</div>
+            <div class="chest-details">
+                <div class="chest-title">Legendary Frost Chest</div>
+                <div class="chest-sub">Cost: 100 Keys</div>
             </div>
-
-            <div class="mission-item-card apex-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title" style="color:#00f2fe; font-size: 15px;">Glacier Clean Sweep</div>
-                        <div class="mission-item-desc">Complete all 5 Weekly Operations</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 40%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">2/5 Operations Complete</span>
-                    <button class="mission-claim-btn locked">Locked</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Thermal Overdrive</div>
-                        <div class="mission-item-desc">Trigger Thermal Boosts 15 times</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 73%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">11/15 Complete</span>
-                    <button class="mission-claim-btn">+3 Keys</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Arcade Marathon</div>
-                        <div class="mission-item-desc">Complete 35 game sessions</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 100%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">35/35 Complete</span>
-                    <button class="mission-claim-btn">Claim +4 Keys</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Multi-Game Explorer</div>
-                        <div class="mission-item-desc">Play 3 different games in the hub</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 100%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">3/3 Complete</span>
-                    <button class="mission-claim-btn">Claim +2 Keys</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Daily Regular</div>
-                        <div class="mission-item-desc">Complete all Daily Quests on at least 4 days</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 50%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">2/4 Days</span>
-                    <button class="mission-claim-btn">+3 Keys</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Session Streak</div>
-                        <div class="mission-item-desc">Log into the hub on 5 distinct days</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 60%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">3/5 Days</span>
-                    <button class="mission-claim-btn">+2 Keys</button>
-                </div>
-            </div>
+            <button class="action-btn btn-claim" onclick="openChest('Legendary', 100)">OPEN</button>
         </div>
 
-        <div id="tab-lifetime-missions" style="display: none;">
-            <div class="section-header" style="margin-top:0;">
-                <div class="section-title" style="font-size:15px;">Lifetime Milestones</div>
-                <div class="section-subtitle">Permanent Achievements</div>
+        <div class="card-box" style="margin-top: 16px;">
+            <div class="card-label">Payout Wallet Registration (Zero-PII)</div>
+            <div style="font-size: 11px; color: #CBD5E1; line-height: 1.4;">
+                Enter your EVM receiving address to link off-chain chest payouts to your Polar Portal claim dApp:
             </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Thermal Pioneer</div>
-                        <div class="mission-item-desc">Cumulative Thermal Boosts (Tier I)</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 60%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">6/10 Boosts</span>
-                    <button class="mission-claim-btn">+3 Keys</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Glacial Veteran</div>
-                        <div class="mission-item-desc">Cumulative Game Sessions (Tier I)</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 48%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">12/25 Games</span>
-                    <button class="mission-claim-btn">+3 Keys</button>
-                </div>
-            </div>
-
-            <div class="mission-item-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title">Chest Hunter</div>
-                        <div class="mission-item-desc">Cumulative Mystery Chests Unlocked (Tier I)</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 20%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">1/5 Chests</span>
-                    <button class="mission-claim-btn">+5 Keys</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="rewards-container" class="app-view">
-        <button class="back-nav-btn" onclick="closeRewardsPage()">← Back to Hub</button>
-
-        <header>
-            <div class="section-title" style="font-size: 22px;">Rewards</div>
-            <div class="nav-pill">
-                🗝️ <span id="rewards-keys-balance">0</span>
-            </div>
-        </header>
-
-        <div class="wallet-card" id="wallet-card">
-            <div class="wallet-summary-header" onclick="toggleWalletCard()">
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">
-                    <span>Rewards Receive Address:</span>
-                    <span id="collapsed-address-text" class="wallet-summary-addr">Not Set</span>
-                </div>
-                <span id="toggle-arrow" style="font-size:12px; color:#65add7;">▼</span>
-            </div>
-
-            <div id="wallet-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
-                <div style="font-size: 11px; color: #A0AEC0; margin-bottom: 8px;">Saved to your profile to map off-chain rewards & NFT permits.</div>
-                
-                <div id="wallet-input-section">
-                    <input type="text" id="walletInput" class="wallet-input" placeholder="Paste 0x... EVM Address" onchange="saveWalletAddress()">
-                </div>
-
-                <div id="wallet-display-section" style="display:none;">
-                    <div class="address-display-box">
-                        <span id="registered-address-text" class="addr-text">0x000...0000</span>
-                        <button class="edit-addr-btn" onclick="enableAddressEdit(event)">✏️ Edit</button>
-                    </div>
-                </div>
-
-                <div style="font-size: 10px; color: #FFD700; margin-top: 8px; line-height: 1.3;">
-                    ⚠️ <strong>Sync Delay Notice:</strong> When you add/change your receive address, please wait 24 hours to allow the change to reflect on our on-chain claim dashboard.
-                </div>
-            </div>
-        </div>
-
-        <div class="balance-summary-card">
-            <div style="font-size: 12px; color: #A0AEC0; text-transform: uppercase; font-weight: 700;">Unclaimed Balance</div>
-            <div class="balance-val"><span id="unclaimed-iced-balance">0.00</span> $ICED</div>
-            <div style="font-size: 11px; color: #94a3b8;">Redeemable via external smart contract claim.</div>
-            <button class="claim-dapp-btn" onclick="redirectToClaimDapp()">Claim on Polar Portal dApp ↗</button>
-        </div>
-
-        <div class="section-header">
-            <div class="section-title">Mystery Chest</div>
-            <div class="section-subtitle">20 Keys Trade-In</div>
-        </div>
-
-        <div class="store-grid">
-            <div class="chest-card" onclick="openMysteryChest()">
-                <div class="chest-left">
-                    <img src="MysteryChest.png" alt="Mystery Chest" class="chest-icon-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'44\' height=\'44\' rx=\'8\' fill=\'%23233550\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'22\'>🎁</text></svg>';">
-                    <div class="chest-info">
-                        <h4>Mystery Chest</h4>
-                        <p>Reveal Common, Rare, or Legendary Tiers</p>
-                    </div>
-                </div>
-                <div class="chest-price">20 Keys</div>
-            </div>
-        </div>
-
-        <div class="section-header">
-            <div class="section-title">NFT Redemptions</div>
-            <div class="section-subtitle">Reserve On-Chain Permits</div>
-        </div>
-
-        <div class="store-grid">
-            <div class="chest-card" onclick="reserveNFT('arcade_badge', 'Glacier Arcade Badge', 50)">
-                <div class="chest-left">
-                    <div style="font-size: 32px;">🛡️</div>
-                    <div class="chest-info">
-                        <h4>Glacier Arcade Badge</h4>
-                        <p>Commemorative Player Holder NFT</p>
-                    </div>
-                </div>
-                <div class="chest-price">50 Keys</div>
-            </div>
-
-            <div class="chest-card" onclick="reserveNFT('iceberg_key', 'Iceberg Access Key', 100)">
-                <div class="chest-left">
-                    <div style="font-size: 32px;">🔑</div>
-                    <div class="chest-info">
-                        <h4>Iceberg Access Key NFT</h4>
-                        <p>Unlocks Staking Boosts on dApp</p>
-                    </div>
-                </div>
-                <div class="chest-price">100 Keys</div>
-            </div>
-        </div>
-
-        <button class="terms-link-btn" onclick="openTermsModal()">📜 View Rewards Program Terms & Conditions</button>
-    </div>
-
-    <div id="chest-reveal-modal" class="modal-overlay">
-        <div class="modal-card" style="text-align: center;">
-            <h3 style="margin: 0; color: #65add7; font-size: 18px;">✨ CHEST UNLOCKED! ✨</h3>
-            <img id="reveal-chest-img" src="CommonChest.png" alt="Chest Revealed" class="reveal-chest-img" onerror="this.onerror=null; this.src='MysteryChest.png';">
-            <h2 id="reveal-tier-title" style="margin: 0; font-size: 20px; color: #fff;">COMMON CHEST</h2>
-            <div style="font-size: 26px; font-weight: 800; color: #65add7; margin: 12px 0;">+<span id="reveal-payout-amount">0.0314</span> $ICED</div>
-            <p style="font-size: 12px; color: #A0AEC0; margin-bottom: 20px;">Your off-chain unclaimed $ICED balance has been credited!</p>
-            <button class="claim-dapp-btn" onclick="closeChestModal()">Collect & Continue</button>
-        </div>
-    </div>
-
-    <div id="terms-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="margin-top: 0; color: #65add7; text-align: center;">GlacierPlay Rewards Program<br><span style="font-size: 13px; color: #A0AEC0;">Terms & Conditions</span></h3>
-            <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5; max-height: 280px; overflow-y: auto; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding: 10px 0;">
-                <p><strong>1. PROGRAM OVERVIEW</strong><br>The GlacierPlay Rewards Program is a promotional engagement feature operating within the GlacierPlay application. Users accumulate promotional "Keys" through daily ad-gated check-ins and spend Keys to unlock virtual Mystery Chests or reserve NFT mint permits.</p>
-                <p><strong>2. VIRTUAL ASSET STATUS</strong><br>Keys, streak counters, and opened chest allocations are virtual off-chain ledger points only. They hold no fiat value, cannot be purchased, and cannot be exchanged for cash within the mobile application.</p>
-                <p><strong>3. RECEIVE ADDRESS & PRIVACY</strong><br>Users register an Ethereum Virtual Machine (EVM) public receive address ("0x...") to bind reward allocations off-chain. GlacierPlay collects zero Personally Identifiable Information (PII).</p>
-                <p><strong>4. EXTERNAL CLAIMING & GAS FEES</strong><br>Cryptographic token claims ($ICED) and NFT minting are executed strictly outside the mobile application on the external Polar Portal dApp. Users are strictly responsible for all network transaction gas fees.</p>
-                <p><strong>5. ANTI-EXPLOIT POLICY</strong><br>Bypassing daily limits, using automated scripts, or attempting rapid address-cycling exploits will result in immediate forfeiture of key balances and blacklisting of the registered address.</p>
-            </div>
-            <button class="claim-dapp-btn" style="margin-top: 16px;" onclick="closeTermsModal()">Close Terms</button>
-        </div>
-    </div>
-
-    <div id="submit-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="margin-top: 0; color: #65add7; text-align: center;">🎮 Submit Your Game</h3>
-            <p style="font-size: 11px; color: #A0AEC0; margin-top: -8px; margin-bottom: 16px; text-align: center;">Submit your HTML5 game for review to join the GlacierPlay Arcade.</p>
-
-            <div class="submit-form-group">
-                <label>Game Title</label>
-                <input type="text" id="subGameTitle" class="submit-form-input" placeholder="e.g. Frost Runner">
-            </div>
-
-            <div class="submit-form-group">
-                <label>Developer / Studio Name</label>
-                <input type="text" id="subDevName" class="submit-form-input" placeholder="e.g. Yeti Studios">
-            </div>
-
-            <div class="submit-form-group">
-                <label>Category</label>
-                <select id="subCategory" class="submit-form-input">
-                    <option value="Action">Action</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Puzzle">Puzzle</option>
-                    <option value="Community">Community</option>
-                </select>
-            </div>
-
-            <div class="submit-form-group">
-                <label>Hosted Game URL / File Link (.zip)</label>
-                <input type="text" id="subGameUrl" class="submit-form-input" placeholder="https://...">
-            </div>
-
-            <div style="margin-top: 14px; margin-bottom: 16px;">
-                <div style="font-size: 11px; font-weight: 700; color: #E2E8F0; margin-bottom: 8px; text-align: left;">Developer Vetting Checklist</div>
-                <label class="checklist-item"><input type="checkbox" id="chk1"> 100% Mobile HTML5 / Touch Responsive</label>
-                <label class="checklist-item"><input type="checkbox" id="chk2"> Contains natural Game Over / Pause ad states</label>
-                <label class="checklist-item"><input type="checkbox" id="chk3"> Lightweight performance (&lt; 15MB package)</label>
-            </div>
-
-            <button class="claim-dapp-btn" onclick="submitDeveloperGame()">Submit Game for Approval</button>
-            <button class="terms-link-btn" onclick="closeSubmitModal()">Cancel</button>
+            <input type="text" class="wallet-input-box" id="evmWalletInput" placeholder="0x..." onchange="saveWalletAddress(this.value)">
+            <button class="action-btn btn-claim" style="width: 100%;" onclick="saveWalletAddress(document.getElementById('evmWalletInput').value)">Save Wallet Address</button>
         </div>
     </div>
 
     <script>
-        function handleVideoError() {
-            document.getElementById('splashVideo').style.display = 'none';
-            document.getElementById('splash-fallback').style.display = 'block';
-        }
-
-        let gamesCatalog = [
-            { id: 'track', title: '8-Bit Track', category: 'Sports', thumb: 'track-thumb.png', url: 'track.html', dev: 'GlacierPlay Studio' },
-            { id: 'dash', title: 'Glacier Dash', category: 'Action', thumb: 'game2-thumb.png', url: '#', dev: 'Yeti Interactive' },
-            { id: 'climb', title: 'Frost Climb', category: 'Action', thumb: 'game3-thumb.png', url: '#', dev: 'Community Studio' },
-            { id: 'breaker', title: 'Ice Breaker', category: 'Puzzle', thumb: 'game4-thumb.png', url: '#', dev: 'Polar Games' }
-        ];
-
-        let selectedCategoryFilter = 'All';
-        let currentSearchTerm = '';
-        let isEditingAddress = false;
-        const BOOST_AD_COOLDOWN_MS = 2 * 60 * 1000;
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const splashScreen = document.getElementById('splash-screen');
-            const hubContainer = document.getElementById('hub-container');
-
-            loadVaultState();
-            renderGameGrid();
-
-            setTimeout(() => {
-                splashScreen.style.opacity = '0';
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                    hubContainer.style.display = 'block';
-                }, 500);
-            }, 4500); 
-
-            setInterval(updateCheckInUI, 1000);
-        });
-
-        function renderGameGrid() {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
-
-            const filtered = gamesCatalog.filter(game => {
-                const matchesCategory = (selectedCategoryFilter === 'All') || (game.category === selectedCategoryFilter);
-                const matchesSearch = game.title.toLowerCase().includes(currentSearchTerm.toLowerCase()) || 
-                                      game.dev.toLowerCase().includes(currentSearchTerm.toLowerCase());
-                return matchesCategory && matchesSearch;
-            });
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-search-state">
-                        <div style="font-size:28px; margin-bottom:6px;">🧊</div>
-                        <div style="font-size:14px; font-weight:700; color:#E2E8F0;">No games found</div>
-                        <div style="font-size:11px; color:#A0AEC0; margin-top:4px;">Try searching another keyword or category.</div>
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach(game => {
-                const card = document.createElement('a');
-                card.href = game.url;
-                card.className = 'game-card';
-                card.onclick = (e) => {
-                    if (game.url === '#') {
-                        e.preventDefault();
-                        recordGameplayAdView(game.title);
-                    }
-                };
-                card.innerHTML = `
-                    <img src="${game.thumb}" alt="${game.title}" class="game-thumb" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'200\\' height=\\'200\\'><rect width=\\'200\\' height=\\'200\\' fill=\\'%23233550\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%2365add7\\' font-family=\\'sans-serif\\' font-size=\\'14\\' font-weight=\\'bold\\'>${game.title.toUpperCase()}</text></svg>';">
-                    <div class="game-info">
-                        <div class="game-title">${game.title}</div>
-                        <div class="game-dev">by ${game.dev}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function recordGameplayAdView(gameTitle) {
-            vaultData.personalThermalEnergy = (vaultData.personalThermalEnergy || 140) + 5;
-            saveVaultState();
-            updateCheckInUI();
-            alert(`🎮 Played ${gameTitle}!\n⚡ +5 Thermal Energy awarded for watching the gameplay ad!`);
-        }
-
-        function selectCategory(cat, el) {
-            selectedCategoryFilter = cat;
-            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            if(el) el.classList.add('active');
-            renderGameGrid();
-        }
-
-        function handleSearchInput(val) {
-            currentSearchTerm = val.trim();
-            renderGameGrid();
-        }
-
-        function openMissionsPage() {
-            document.getElementById('hub-container').style.display = 'none';
-            document.getElementById('rewards-container').style.display = 'none';
-            document.getElementById('missions-container').style.display = 'block';
-            updateMissionsUI();
-        }
-
-        function closeMissionsPage() {
-            document.getElementById('missions-container').style.display = 'none';
-            document.getElementById('hub-container').style.display = 'block';
-            updateCheckInUI();
-        }
-
-        function switchMissionSubTab(subTab) {
-            const tabs = ['daily', 'weekly', 'lifetime'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`tab-btn-${t}`);
-                const view = document.getElementById(`tab-${t}-missions`);
-                if (t === subTab) {
-                    if (btn) btn.classList.add('active');
-                    if (view) view.style.display = 'block';
-                } else {
-                    if (btn) btn.classList.remove('active');
-                    if (view) view.style.display = 'none';
-                }
-            });
-        }
-
-        function updateMissionsUI() {
-            const keysEl = document.getElementById('missions-keys-balance');
-            const streakEl = document.getElementById('missions-streak-count');
-            if (keysEl) keysEl.innerText = vaultData.keys;
-            if (streakEl) streakEl.innerText = vaultData.streakCount || 0;
-        }
-
-        function openRewardsPage() {
-            document.getElementById('hub-container').style.display = 'none';
-            document.getElementById('missions-container').style.display = 'none';
-            document.getElementById('rewards-container').style.display = 'block';
-            updateCheckInUI();
-        }
-
-        function closeRewardsPage() {
-            document.getElementById('rewards-container').style.display = 'none';
-            document.getElementById('hub-container').style.display = 'block';
-            updateCheckInUI();
-        }
-
-        function openSubmitModal() { document.getElementById('submit-modal').style.display = 'flex'; }
-        function closeSubmitModal() { document.getElementById('submit-modal').style.display = 'none'; }
-        function openTermsModal() { document.getElementById('terms-modal').style.display = 'flex'; }
-        function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; }
-        function closeChestModal() { document.getElementById('chest-reveal-modal').style.display = 'none'; }
-
-        function submitDeveloperGame() {
-            const title = document.getElementById('subGameTitle').value.trim();
-            const dev = document.getElementById('subDevName').value.trim();
-            const url = document.getElementById('subGameUrl').value.trim();
-            const chk1 = document.getElementById('chk1').checked;
-            const chk2 = document.getElementById('chk2').checked;
-
-            if(!title || !dev || !url) {
-                alert("Please fill in all game details!");
-                return;
-            }
-            if(!chk1 || !chk2) {
-                alert("Please confirm the developer vetting checklist before submitting!");
-                return;
-            }
-
-            alert(`🚀 SUBMISSION RECEIVED!\n\nThank you ${dev}! Your game "${title}" has been staged for review. Upon verification, it will go live on the Arcade Library.`);
-            closeSubmitModal();
-            document.getElementById('subGameTitle').value = '';
-            document.getElementById('subDevName').value = '';
-            document.getElementById('subGameUrl').value = '';
-        }
-
-        let vaultData = {
-            keys: 0, streakCount: 0, lastCheckInDate: "",
-            walletAddress: "", lastAddressChangeTimestamp: 0,
-            unclaimedIced: 0.0, reservedNFTs: [],
-            personalThermalEnergy: 140,
-            lastBoostAdTimestamp: 0
+        // LocalStorage State Initialization
+        let state = {
+            keys: parseInt(localStorage.getItem('gp_keys')) || 14,
+            streak: parseInt(localStorage.getItem('gp_streak')) || 12,
+            wallet: localStorage.getItem('gp_wallet') || ''
         };
 
-        let isDailyCardCollapsed = true;
-        let isWalletCardCollapsed = true;
-
-        function toggleDailyCard() {
-            isDailyCardCollapsed = !isDailyCardCollapsed;
-            renderDailyCardState();
-        }
-
-        function renderDailyCardState() {
-            const body = document.getElementById('daily-card-body');
-            const arrow = document.getElementById('daily-toggle-arrow');
-            const badge = document.getElementById('daily-status-badge');
-            const est = getESTDetails();
-            const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
-
-            if (hasClaimedToday) {
-                badge.innerText = "Claimed ✓"; badge.className = "daily-status-badge claimed";
-                if (arrow) arrow.style.color = '#A0AEC0';
-            } else {
-                badge.innerText = "Ready to Claim!"; badge.className = "daily-status-badge";
-                if (arrow) arrow.style.color = '#00f2fe';
+        // Initialize UI on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAllDisplays();
+            setupSplashTimer();
+            if (state.wallet) {
+                document.getElementById('evmWalletInput').value = state.wallet;
             }
+        });
 
-            if (isDailyCardCollapsed) { body.style.display = 'none'; arrow.innerText = '▼'; } 
-            else { body.style.display = 'block'; arrow.innerText = '▲'; }
+        // Splash Screen Timer / Dismiss
+        function setupSplashTimer() {
+            const video = document.getElementById('splashVideo');
+            const splash = document.getElementById('splash-screen');
+
+            const dismissSplash = () => {
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 500);
+            };
+
+            if (video) {
+                video.onended = dismissSplash;
+            }
+            // Fallback 4.5 second timer
+            setTimeout(dismissSplash, 4500);
         }
 
-        function formatAbbreviatedAddress(addr) {
-            if (!addr || addr.length < 10) return "Not Set";
-            return addr.substring(0, 4) + "....." + addr.substring(addr.length - 5);
+        // View Switcher Engine
+        function showView(viewId) {
+            const containers = document.querySelectorAll('.app-container');
+            containers.forEach(c => c.classList.remove('active'));
+
+            const target = document.getElementById(viewId);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
+            }
         }
 
-        function toggleWalletCard() {
-            isWalletCardCollapsed = !isWalletCardCollapsed;
-            renderWalletCardState();
+        // Global State Display Updater
+        function updateAllDisplays() {
+            // Keys
+            document.querySelectorAll('.keys-val-display').forEach(el => {
+                el.innerText = state.keys;
+            });
+            localStorage.setItem('gp_keys', state.keys);
+
+            // Streak
+            document.getElementById('hub-streak-display').innerText = state.streak;
+            document.getElementById('missions-streak-display').innerText = state.streak;
+            localStorage.setItem('gp_streak', state.streak);
         }
 
-        function renderWalletCardState() {
-            const body = document.getElementById('wallet-card-body');
-            const arrow = document.getElementById('toggle-arrow');
-            const summaryText = document.getElementById('collapsed-address-text');
+        // Daily Check-In Action
+        function doDailyCheckIn() {
+            const btn = document.getElementById('dailyCheckInBtn');
+            if (btn.classList.contains('btn-claimed')) return;
 
-            summaryText.innerText = vaultData.walletAddress ? formatAbbreviatedAddress(vaultData.walletAddress) : "Not Set";
-            if (isWalletCardCollapsed) { body.style.display = 'none'; arrow.innerText = '▼'; } 
-            else { body.style.display = 'block'; arrow.innerText = '▲'; }
+            state.keys += 1;
+            state.streak += 1;
+            updateAllDisplays();
+
+            btn.className = 'action-btn btn-claimed';
+            btn.innerText = 'CLAIMED ✓';
+            btn.onclick = null;
         }
 
-        function getESTDetails() {
-            const now = new Date();
-            const estString = new Intl.DateTimeFormat('en-US', {
-                timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
-                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-            }).format(now);
+        // Mission Reward Claim Handler
+        function claimMissionReward(cardId, keyReward) {
+            state.keys += keyReward;
+            updateAllDisplays();
 
-            const parts = estString.match(/(\d+)\/(\d+)\/(\d+),\s*(\d+):(\d+):(\d+)/);
-            if (!parts) return { dateStr: "", msToMidnight: 0 };
-
-            const month = parts[1], day = parts[2], year = parts[3];
-            const hour = parseInt(parts[4], 10), minute = parseInt(parts[5], 10), second = parseInt(parts[6], 10);
-            const currentDateStr = `${year}-${month}-${day}`;
-            const currentSecondsInDay = (hour * 3600) + (minute * 60) + second;
-            const msToMidnight = (86400 - currentSecondsInDay) * 1000;
-
-            return { dateStr: currentDateStr, msToMidnight: msToMidnight };
+            const card = document.getElementById(cardId);
+            if (card) {
+                const btn = card.querySelector('.action-btn');
+                btn.className = 'action-btn btn-claimed';
+                btn.innerText = '[ CLAIMED ✓ ]';
+                btn.onclick = null;
+            }
         }
 
-        function loadVaultState() {
-            const saved = localStorage.getItem('glacier_vault_v3');
-            if (saved) { try { vaultData = JSON.parse(saved); } catch(e) {} }
-            if(!vaultData.personalThermalEnergy) vaultData.personalThermalEnergy = 140;
-            if(!vaultData.lastBoostAdTimestamp) vaultData.lastBoostAdTimestamp = 0;
-            updateCheckInUI();
+        // Mission Tab Switcher
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const timerEl = document.getElementById('tab-timer');
+            if (tabName === 'daily') {
+                timerEl.innerHTML = '⏱️ Daily Quests Reset in: 14h 22m 08s';
+            } else if (tabName === 'weekly') {
+                timerEl.innerHTML = '⏱️ Weekly Operations Reset in: <span id="countdown-text">3d 12h 45m</span>';
+            } else if (tabName === 'lifetime') {
+                timerEl.innerHTML = '⭐ Permanent Progression Milestones';
+            }
         }
 
-        function saveVaultState() { localStorage.setItem('glacier_vault_v3', JSON.stringify(vaultData)); }
-
-        function saveWalletAddress() {
-            const input = document.getElementById('walletInput').value.trim();
-            if(input && !/^0x[a-fA-F0-9]{40}$/.test(input)) {
-                alert("Please enter a valid 42-character EVM address (0x...)");
-                document.getElementById('walletInput').value = vaultData.walletAddress || "";
+        // Chest Opening
+        function openChest(tier, cost) {
+            if (state.keys < cost) {
+                alert(`⚠️ You need ${cost} Keys to open the ${tier} Chest! Keep completing missions.`);
                 return;
             }
 
-            if (input === vaultData.walletAddress) {
-                isEditingAddress = false;
-                updateCheckInUI();
+            state.keys -= cost;
+            updateAllDisplays();
+            alert(`✨ ${tier} Chest Opened! Your rewards will accumulate under your linked wallet.`);
+        }
+
+        // Save Zero-PII Wallet Address
+        function saveWalletAddress(addr) {
+            const trimmed = addr.trim();
+            if (!trimmed.startsWith('0x') || trimmed.length !== 42) {
+                alert('⚠️ Please enter a valid EVM wallet address (0x...)');
                 return;
             }
-
-            const COOLDOWN_MS = 24 * 60 * 60 * 1000;
-            const now = Date.now();
-
-            if (vaultData.lastAddressChangeTimestamp && (now - vaultData.lastAddressChangeTimestamp < COOLDOWN_MS)) {
-                const hoursLeft = Math.ceil((COOLDOWN_MS - (now - vaultData.lastAddressChangeTimestamp)) / (1000 * 60 * 60));
-                alert(`Address updates are rate-limited to prevent exploits. Please wait ${hoursLeft} hour(s) before changing your receive address again.`);
-                document.getElementById('walletInput').value = vaultData.walletAddress || "";
-                isEditingAddress = false;
-                updateCheckInUI();
-                return;
-            }
-
-            vaultData.walletAddress = input;
-            vaultData.lastAddressChangeTimestamp = now;
-            isEditingAddress = false;
-            saveVaultState();
-            isWalletCardCollapsed = true;
-            updateCheckInUI();
-            alert("Receive Address saved to your profile!\n\nNote: A 24-hour sync period is required before rewards can be claimed on the dApp for this updated address.");
-        }
-
-        function enableAddressEdit(event) {
-            if (event) event.stopPropagation();
-            isEditingAddress = true;
-            isWalletCardCollapsed = false;
-            renderWalletCardState();
-            document.getElementById('wallet-display-section').style.display = 'none';
-            document.getElementById('wallet-input-section').style.display = 'block';
-            document.getElementById('walletInput').value = vaultData.walletAddress || "";
-            document.getElementById('walletInput').focus();
-        }
-
-        function watchBoostAd() {
-            const now = Date.now();
-            const lastBoost = vaultData.lastBoostAdTimestamp || 0;
-            const diff = now - lastBoost;
-
-            if (diff < BOOST_AD_COOLDOWN_MS) {
-                const secsLeft = Math.ceil((BOOST_AD_COOLDOWN_MS - diff) / 1000);
-                alert(`⏳ Ad cooldown active! Please wait ${secsLeft}s before watching another boost ad.`);
-                return;
-            }
-
-            vaultData.personalThermalEnergy = (vaultData.personalThermalEnergy || 140) + 5;
-            vaultData.lastBoostAdTimestamp = now;
-            saveVaultState();
-            updateCheckInUI();
-
-            alert("⚡ +5 Thermal Energy Generated! Thank you for supporting the Glacier Reserve Pool.");
-        }
-
-        function updateBoostAdUI() {
-            const btn = document.getElementById('boostAdBtn');
-            const timerText = document.getElementById('boost-ad-timer');
-            const title = document.getElementById('boost-card-title');
-            if (!btn || !timerText) return;
-
-            const now = Date.now();
-            const lastBoost = vaultData.lastBoostAdTimestamp || 0;
-            const diff = now - lastBoost;
-
-            if (diff < BOOST_AD_COOLDOWN_MS) {
-                const remainingSecs = Math.ceil((BOOST_AD_COOLDOWN_MS - diff) / 1000);
-                const mins = Math.floor(remainingSecs / 60);
-                const secs = remainingSecs % 60;
-                btn.classList.add('claimed');
-                btn.innerText = `⏳ ${mins}:${secs < 10 ? '0' : ''}${secs}`;
-                timerText.innerText = "Ad cooldown active";
-                if (title) title.style.color = "#A0AEC0";
-            } else {
-                btn.classList.remove('claimed');
-                btn.innerText = "Watch Ad (+5 ⚡)";
-                timerText.innerText = "Watch a rewarded ad (+5 Energy)";
-                if (title) title.style.color = "#00f2fe";
-            }
-        }
-
-        function getCalculatedNextStreak(est) {
-            let nextStreak = 1;
-            if (vaultData.lastCheckInDate) {
-                const lastDate = new Date(vaultData.lastCheckInDate);
-                const currDate = new Date(est.dateStr);
-                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
-                if (diffDays <= 2) nextStreak = vaultData.streakCount + 1;
-            }
-            return nextStreak;
-        }
-
-        function claimDailyCheckIn() {
-            const est = getESTDetails();
-            if (vaultData.lastCheckInDate === est.dateStr) return;
-
-            const newStreak = getCalculatedNextStreak(est);
-            const isSeventhDay = (newStreak % 7 === 0);
-            const keysToAward = isSeventhDay ? 2 : 1;
-
-            vaultData.streakCount = newStreak;
-            vaultData.keys += keysToAward;
-            vaultData.personalThermalEnergy += 10;
-            vaultData.lastCheckInDate = est.dateStr;
-
-            alert(`✨ +${keysToAward} Key${keysToAward > 1 ? 's' : ''} Added to Vault!\n⚡ +10 Thermal Energy Generated (Daily Check-in Ad)!\n🔥 Streak is now ${vaultData.streakCount} Days!`);
-            saveVaultState();
-            updateCheckInUI();
-        }
-
-        function renderTimeline(est) {
-            const timelineEl = document.getElementById('streak-timeline');
-            if (!timelineEl) return;
-            timelineEl.innerHTML = '';
-
-            const hasClaimedToday = (vaultData.lastCheckInDate === est.dateStr);
-            let cycleDay = vaultData.streakCount % 7;
-            let completedDays = cycleDay;
-            if (hasClaimedToday && cycleDay === 0 && vaultData.streakCount > 0) completedDays = 7;
-            else if (!hasClaimedToday && cycleDay === 0) completedDays = 0;
-
-            for (let i = 1; i <= 7; i++) {
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'streak-day';
-                if (i === 7) dayDiv.classList.add('day-7');
-
-                if (i <= completedDays) dayDiv.classList.add('completed');
-                else if (i === completedDays + 1 && !hasClaimedToday) dayDiv.classList.add('active');
-
-                const valDiv = document.createElement('div');
-                valDiv.className = 'streak-val';
-                valDiv.innerText = (i === 7) ? '+2' : '+1';
-
-                const iconDiv = document.createElement('div');
-                iconDiv.innerText = (i <= completedDays) ? '✓' : '🗝️';
-
-                dayDiv.appendChild(valDiv);
-                dayDiv.appendChild(iconDiv);
-                timelineEl.appendChild(dayDiv);
-            }
-        }
-
-        function openMysteryChest() {
-            const CHEST_COST = 20;
-            if (vaultData.keys < CHEST_COST) {
-                alert(`Not enough Keys! You need ${CHEST_COST} Keys to trade for a Mystery Chest.`);
-                return;
-            }
-
-            if (confirm(`Spend ${CHEST_COST} Keys to trade for a Mystery Chest?`)) {
-                vaultData.keys -= CHEST_COST;
-                const roll = Math.random() * 100;
-                let tierTitle = ""; let chestImageSrc = ""; let icedAward = 0.0;
-
-                if (roll < 88.0) { tierTitle = "COMMON CHEST"; chestImageSrc = "CommonChest.png"; icedAward = 0.0314; } 
-                else if (roll < 99.0) { tierTitle = "RARE CHEST"; chestImageSrc = "RareChest.png"; icedAward = 0.3140; } 
-                else { tierTitle = "LEGENDARY CHEST"; chestImageSrc = "LegendaryChest.png"; icedAward = 3.1400; }
-
-                vaultData.unclaimedIced += icedAward;
-                saveVaultState();
-                updateCheckInUI();
-
-                document.getElementById('reveal-chest-img').src = chestImageSrc;
-                document.getElementById('reveal-tier-title').innerText = tierTitle;
-                document.getElementById('reveal-payout-amount').innerText = icedAward.toFixed(4);
-                document.getElementById('chest-reveal-modal').style.display = 'flex';
-            }
-        }
-
-        function reserveNFT(itemKey, itemName, cost) {
-            if (vaultData.keys < cost) { alert(`Not enough Keys! You need ${cost} Keys to reserve the ${itemName}.`); return; }
-            if(!vaultData.walletAddress) { alert("Please save your EVM Receive Address (0x...) above before reserving an NFT!"); return; }
-
-            if (confirm(`Spend ${cost} Keys to reserve an on-chain permit for [${itemName}]?`)) {
-                vaultData.keys -= cost;
-                if(!vaultData.reservedNFTs.includes(itemKey)) vaultData.reservedNFTs.push(itemKey);
-                saveVaultState();
-                updateCheckInUI();
-                alert(`🎟️ PERMIT RESERVED!\n\nYour registered wallet (${vaultData.walletAddress.substring(0,6)}...${vaultData.walletAddress.substring(38)}) has been flagged eligible to mint [${itemName}] on the Polar Portal dApp!`);
-            }
-        }
-
-        function redirectToClaimDapp() {
-            if(!vaultData.walletAddress) { alert("Please enter and save your EVM Receive Address first!"); return; }
-
-            const COOLDOWN_MS = 24 * 60 * 60 * 1000;
-            const now = Date.now();
-            if (vaultData.lastAddressChangeTimestamp && (now - vaultData.lastAddressChangeTimestamp < COOLDOWN_MS)) {
-                const hoursLeft = Math.ceil((COOLDOWN_MS - (now - vaultData.lastAddressChangeTimestamp)) / (1000 * 60 * 60));
-                alert(`Your receive address was updated recently. To prevent sync exploits, please wait ${hoursLeft} hour(s) before executing claims on the dApp.`);
-                return;
-            }
-
-            window.open(`https://claim.icedether.com?address=${vaultData.walletAddress}`, '_blank');
-        }
-
-        function updateCheckInUI() {
-            document.getElementById('keys-balance').innerText = vaultData.keys;
-            document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
-            document.getElementById('unclaimed-iced-balance').innerText = vaultData.unclaimedIced.toFixed(4);
-
-            renderDailyCardState();
-            renderWalletCardState();
-            updateBoostAdUI();
-            updateMissionsUI();
-
-            if (!isEditingAddress) {
-                if (vaultData.walletAddress) {
-                    document.getElementById('wallet-input-section').style.display = 'none';
-                    document.getElementById('wallet-display-section').style.display = 'block';
-                    document.getElementById('registered-address-text').innerText = vaultData.walletAddress;
-                } else {
-                    document.getElementById('wallet-input-section').style.display = 'block';
-                    document.getElementById('wallet-display-section').style.display = 'none';
-                }
-            }
-
-            const est = getESTDetails();
-            let displayStreak = vaultData.streakCount || 0;
-
-            if (vaultData.lastCheckInDate && vaultData.lastCheckInDate !== est.dateStr) {
-                const lastDate = new Date(vaultData.lastCheckInDate);
-                const currDate = new Date(est.dateStr);
-                const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
-                if (diffDays > 2) displayStreak = 0;
-            }
-            document.getElementById('streak-count').innerText = displayStreak;
-
-            const btn = document.getElementById('checkInBtn');
-            const timerText = document.getElementById('mission-timer');
-            renderTimeline(est);
-
-            if (vaultData.lastCheckInDate === est.dateStr) {
-                if (btn) { btn.classList.add('claimed'); btn.innerText = "Claimed ✓"; }
-                const remainingMs = est.msToMidnight;
-                const hoursLeft = Math.floor(remainingMs / (1000 * 60 * 60));
-                const minsLeft = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-                const secsLeft = Math.floor((remainingMs % (1000 * 60)) / 1000);
-                if (timerText) timerText.innerText = `Resets in ${hoursLeft}h ${minsLeft}m ${secsLeft}s`;
-            } else {
-                if (btn) {
-                    btn.classList.remove('claimed');
-                    const nextStreak = getCalculatedNextStreak(est);
-                    btn.innerText = (nextStreak % 7 === 0) ? "Claim +2 Keys" : "Claim +1 Key";
-                }
-                if (timerText) timerText.innerText = "Reward available now";
-            }
+            state.wallet = trimmed;
+            localStorage.setItem('gp_wallet', trimmed);
+            alert('✅ Wallet address saved! Off-chain rewards will link to this address for Polar Portal claiming.');
         }
     </script>
 </body>
