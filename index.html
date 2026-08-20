@@ -34,7 +34,7 @@
 
         #hub-container { display: none; }
         #rewards-container { display: none; }
-        #impact-container { display: none; }
+        #missions-container { display: none; }
 
         /* App Header & Navigation Pills */
         header {
@@ -211,77 +211,66 @@
         .chest-price { background: rgba(101, 173, 215, 0.1); border: 1px solid rgba(101, 173, 215, 0.3); color: #65add7; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; }
         .terms-link-btn { background: transparent; border: none; color: #A0AEC0; font-size: 12px; text-decoration: underline; cursor: pointer; width: 100%; text-align: center; padding: 10px 0; }
 
-        /* Impact Screen Specific Styling */
-        .impact-hero-card {
-            position: relative;
-            background: linear-gradient(135deg, #121C2B 0%, #1A293E 100%);
-            border: 1px solid #233550; border-radius: 18px; padding: 20px;
-            text-align: center; margin-bottom: 20px;
-            box-shadow: 0 6px 20px rgba(101, 173, 215, 0.08);
+        /* Missions Screen Specific Styling */
+        .mission-tabs {
+            display: flex; gap: 8px; margin-bottom: 16px; background: #121C2B;
+            padding: 4px; border-radius: 12px; border: 1px solid #233550;
         }
-        .hero-info-btn {
-            position: absolute; top: 14px; right: 14px;
-            cursor: pointer; font-size: 16px; opacity: 0.85; transition: transform 0.1s;
+        .mission-tab-btn {
+            flex: 1; padding: 10px 0; text-align: center; font-size: 12px; font-weight: 700;
+            color: #A0AEC0; border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
-        .hero-info-btn:active { transform: scale(0.9); }
+        .mission-tab-btn.active {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #050B14; font-weight: 800;
+        }
 
-        .impact-stat-number { font-size: 32px; font-weight: 800; color: #65add7; letter-spacing: -0.5px; }
-        .impact-subtext { font-size: 11px; color: #A0AEC0; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
-        
-        .progress-bar-container {
+        .mission-item-card {
+            background: #121C2B;
+            border: 1px solid #233550;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+        }
+        .mission-item-card.apex-card {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(79, 172, 254, 0.08) 100%);
+            border: 1px solid #00f2fe;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+        }
+        .mission-item-header {
+            display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;
+        }
+        .mission-item-title {
+            font-size: 14px; font-weight: 700; color: #E2E8F0;
+        }
+        .mission-item-desc {
+            font-size: 11px; color: #A0AEC0; margin-top: 2px;
+        }
+        .mission-progress-bar {
             width: 100%; background: #050B14; border: 1px solid #233550;
-            border-radius: 10px; height: 14px; overflow: hidden; margin: 12px 0 6px 0;
+            border-radius: 6px; height: 8px; overflow: hidden; margin: 10px 0 6px 0;
         }
-        .progress-bar-fill {
-            height: 100%; width: 0%;
-            background: linear-gradient(90deg, #65add7 0%, #4facfe 100%);
-            border-radius: 10px; transition: width 0.5s ease;
+        .mission-progress-fill {
+            height: 100%; background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+            border-radius: 6px; transition: width 0.3s ease;
         }
-
-        .phase-badge {
-            display: inline-block; padding: 4px 10px; border-radius: 6px;
-            font-size: 10px; font-weight: 800; background: rgba(101, 173, 215, 0.15);
-            color: #65add7; border: 1px solid rgba(101, 173, 215, 0.3); margin-top: 6px;
+        .mission-item-footer {
+            display: flex; justify-content: space-between; align-items: center; margin-top: 8px;
         }
-
-        .personal-impact-card {
-            background: #121C2B; border: 1px solid #233550; border-radius: 14px;
-            padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;
-            cursor: pointer; transition: transform 0.1s, border-color 0.2s;
+        .mission-progress-text {
+            font-size: 11px; font-weight: 700; color: #65add7;
         }
-        .personal-impact-card:active { transform: scale(0.98); border-color: #65add7; }
-
-        .tier-badge-pill {
-            background: linear-gradient(135deg, #FF4B2B 0%, #FF416C 100%);
-            color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;
+        .mission-claim-btn {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            color: #050B14; border: none; padding: 6px 14px; border-radius: 8px;
+            font-size: 12px; font-weight: 800; cursor: pointer;
         }
-
-        .badge-tier-item {
-            background: #050B14; border: 1px solid #233550; border-radius: 12px;
-            padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
+        .mission-claim-btn.claimed {
+            background: #233550; color: #A0AEC0; cursor: default;
         }
-        .badge-tier-item.current {
-            border-color: #65add7; background: rgba(101, 173, 215, 0.08);
-            box-shadow: 0 0 12px rgba(101, 173, 215, 0.25);
+        .mission-claim-btn.locked {
+            background: #1A2639; color: #4A5D78; cursor: default; border: 1px solid #233550;
         }
-        .badge-tier-item.unlocked { border-color: #233550; opacity: 0.95; }
-        .badge-tier-item.locked { opacity: 0.5; filter: grayscale(0.5); }
-
-        .milestone-item {
-            background: #121C2B; border: 1px solid #233550; border-radius: 12px;
-            padding: 12px 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .supporter-list {
-            background: #121C2B; border: 1px solid #233550; border-radius: 14px;
-            padding: 8px 14px; margin-bottom: 20px;
-        }
-        .supporter-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 12px;
-        }
-        .supporter-row:last-child { border-bottom: none; }
-        .supporter-rank { font-weight: 800; color: #65add7; width: 24px; }
 
         /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px; }
@@ -295,7 +284,6 @@
 </head>
 <body>
 
-    <!-- Splash Screen Loader -->
     <div id="splash-screen">
         <video id="splashVideo" autoplay muted playsinline onerror="handleVideoError()">
             <source src="Glacier Play loading screen.mp4" type="video/mp4">
@@ -307,13 +295,12 @@
         </div>
     </div>
 
-    <!-- Main Game Hub View -->
     <div id="hub-container" class="app-view">
         <header>
             <img src="header-logo.png" alt="GlacierPlay" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'140\' height=\'38\'><rect width=\'140\' height=\'38\' rx=\'6\' fill=\'%23121C2B\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>GLACIERPLAY</text></svg>'">
             <div class="header-pills-group">
-                <div class="nav-pill" onclick="openImpactPage()">
-                    🌐 Impact
+                <div class="nav-pill" onclick="openMissionsPage()">
+                    Missions
                 </div>
                 <div class="nav-pill" onclick="openRewardsPage()">
                     🗝️ <span id="keys-balance">0</span>
@@ -321,7 +308,6 @@
             </div>
         </header>
 
-        <!-- Collapsible Daily Check-In Box -->
         <div class="daily-wrapper-card" id="daily-wrapper-card">
             <div class="daily-summary-header" onclick="toggleDailyCard()">
                 <div class="daily-summary-title">
@@ -352,7 +338,6 @@
             </div>
         </div>
 
-        <!-- Quick Voluntary Ad Boost Card -->
         <div class="mission-card boost-card">
             <div class="mission-text">
                 <h4 id="boost-card-title" style="color: #00f2fe;">⚡ Quick Thermal Boost</h4>
@@ -361,15 +346,12 @@
             <button id="boostAdBtn" class="mission-btn" onclick="watchBoostAd()">Watch Ad (+5 ⚡)</button>
         </div>
 
-        <!-- Arcade Library Section -->
         <div class="section-header">
             <div class="section-title">Arcade Library</div>
         </div>
 
-        <!-- Search Bar -->
         <input type="text" id="arcadeSearchInput" class="arcade-search-box" placeholder="🔍 Search games or creators..." oninput="handleSearchInput(this.value)">
 
-        <!-- Category Filter Pills -->
         <div class="category-pills" id="categoryPills">
             <div class="pill active" onclick="selectCategory('All', this)">All</div>
             <div class="pill" onclick="selectCategory('Sports', this)">Sports</div>
@@ -378,122 +360,227 @@
             <div class="pill" onclick="selectCategory('Community', this)">Community</div>
         </div>
 
-        <!-- Dynamic Game Grid -->
         <div class="game-grid" id="gameGrid"></div>
 
-        <!-- Developer Submission Callout Banner -->
         <div class="submit-game-banner" onclick="openSubmitModal()">
             <div style="font-size: 14px; font-weight: 800; color: #65add7;">🚀 Game Developer?</div>
             <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Submit your HTML5 game to the GlacierPlay Hub</div>
         </div>
     </div>
 
-    <!-- Glacier Impact Screen View -->
-    <div id="impact-container" class="app-view">
-        <button class="back-nav-btn" onclick="closeImpactPage()">← Back to Hub</button>
+    <div id="missions-container" class="app-view">
+        <button class="back-nav-btn" onclick="closeMissionsPage()">← Back to Hub</button>
 
-        <header>
-            <div class="section-title" style="font-size: 22px;">Glacier Impact</div>
-            <div class="nav-pill" onclick="openRewardsPage()">
-                🗝️ <span id="impact-keys-balance">5000</span>
-            </div>
-        </header>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px;">MISSIONS</div>
+            <div style="font-size: 12px; color: #65add7; margin-top: 4px; font-weight: 600;">Earn Keys to unlock chests of $ICED.</div>
+        </div>
 
-        <!-- Global Glacier Meter Hero Card with Info Icon -->
-        <div class="impact-hero-card">
-            <span class="hero-info-btn" onclick="openImpactInfoModal()">ℹ️</span>
-            <div class="impact-subtext">Total Thermal Energy Generated</div>
-            <div class="impact-stat-number" id="global-thermal-energy">1,245,800</div>
-            
-            <div class="progress-bar-container">
-                <div class="progress-bar-fill" id="batch-progress-bar" style="width: 0%;"></div>
+        <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 16px;">
+            <div class="nav-pill" style="flex: 1; justify-content: center;">
+                🗝️ Vault: <span id="missions-keys-balance">0</span> Keys
             </div>
-            
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #A0AEC0; margin-top: 6px;">
-                <span id="surge-goal-title">Glacial Surge #5 Goal</span>
-                <span id="progress-percent-text" style="color: #65add7; font-weight: 700;">0% Complete</span>
-            </div>
-
-            <div style="margin-top: 12px;">
-                <span class="phase-badge" id="surge-phase-badge">⚡ SURGE PHASE: GATHERING MOMENTUM</span>
+            <div class="nav-pill" style="flex: 1; justify-content: center;">
+                🔥 Streak: <span id="missions-streak-count">0</span> Days
             </div>
         </div>
 
-        <!-- Personal Contribution Card (Interactive Modal Trigger) -->
-        <div class="section-header">
-            <div class="section-title">Your Personal Impact</div>
+        <div class="mission-tabs">
+            <div id="tab-btn-daily" class="mission-tab-btn active" onclick="switchMissionSubTab('daily')">Daily</div>
+            <div id="tab-btn-weekly" class="mission-tab-btn" onclick="switchMissionSubTab('weekly')">Weekly</div>
+            <div id="tab-btn-lifetime" class="mission-tab-btn" onclick="switchMissionSubTab('lifetime')">Lifetime</div>
         </div>
 
-        <div class="personal-impact-card" onclick="openBadgeProgressionModal()">
-            <div>
-                <div style="font-size: 16px; font-weight: 800; color: #E2E8F0;"><span id="personal-thermal-energy">140</span> Thermal Energy</div>
-                <div style="font-size: 11px; color: #65add7; font-weight: 700; margin-top: 4px;" id="next-tier-hint">⚡ 60 Energy to Glacial Warden ➔</div>
+        <div id="tab-daily-missions">
+            <div class="section-header" style="margin-top:0;">
+                <div class="section-title" style="font-size:15px;">Daily Quests</div>
+                <div class="section-subtitle">Resets in 14h 22m</div>
             </div>
-            <div class="tier-badge-pill" id="personal-tier-badge">🧊 Ice Scout</div>
-        </div>
 
-        <!-- Top Community Supporters -->
-        <div class="section-header">
-            <div class="section-title">Top Surge Supporters</div>
-            <div class="section-subtitle">Surge #5 Leaders</div>
-        </div>
-
-        <div class="supporter-list">
-            <div class="supporter-row">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="supporter-rank">1.</span>
-                    <span style="font-weight:700; color:#fff;">FrostKing_99</span>
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Quick Surge</div>
+                        <div class="mission-item-desc">Trigger 1 Thermal Boost</div>
+                    </div>
                 </div>
-                <span style="color:#65add7; font-weight:800;">4,820 Energy</span>
-            </div>
-            <div class="supporter-row">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="supporter-rank">2.</span>
-                    <span style="font-weight:700; color:#fff;">YetiMaster</span>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 0%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">0/1 Complete</span>
+                    <button class="mission-claim-btn">+1 Key</button>
                 </div>
-                <span style="color:#65add7; font-weight:800;">3,910 Energy</span>
             </div>
-            <div class="supporter-row">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="supporter-rank">3.</span>
-                    <span style="font-weight:700; color:#fff;">PolarGamer</span>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Daily Arcade Warmup</div>
+                        <div class="mission-item-desc">Play 3 game sessions</div>
+                    </div>
                 </div>
-                <span style="color:#65add7; font-weight:800;">3,150 Energy</span>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 33%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">1/3 Complete</span>
+                    <button class="mission-claim-btn">+1 Key</button>
+                </div>
+            </div>
+
+            <div class="mission-item-card apex-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title" style="color:#00f2fe;">Daily Completionist</div>
+                        <div class="mission-item-desc">Complete all daily quests</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 0%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">0/2 Completed</span>
+                    <button class="mission-claim-btn locked">Locked</button>
+                </div>
             </div>
         </div>
 
-        <!-- Community Milestones -->
-        <div class="section-header">
-            <div class="section-title">Community Milestones</div>
-            <div class="section-subtitle">Surge History</div>
+        <div id="tab-weekly-missions" style="display: none;">
+            <div class="section-header" style="margin-top:0;">
+                <div class="section-title" style="font-size:15px;">Weekly Operations</div>
+                <div class="section-subtitle">Resets in 4d 12h</div>
+            </div>
+
+            <div class="mission-item-card apex-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title" style="color:#00f2fe; font-size: 15px;">Glacier Clean Sweep</div>
+                        <div class="mission-item-desc">Complete all 5 Weekly Operations</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 40%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">2/5 Operations Complete</span>
+                    <button class="mission-claim-btn locked">Locked</button>
+                </div>
+            </div>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Thermal Overdrive</div>
+                        <div class="mission-item-desc">Trigger Thermal Boosts 15 times</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 73%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">11/15 Complete</span>
+                    <button class="mission-claim-btn">+3 Keys</button>
+                </div>
+            </div>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Arcade Marathon</div>
+                        <div class="mission-item-desc">Complete 35 game sessions</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 100%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">35/35 Complete</span>
+                    <button class="mission-claim-btn">Claim +4 Keys</button>
+                </div>
+            </div>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Multi-Game Explorer</div>
+                        <div class="mission-item-desc">Play 3 different games in the hub</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 100%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">3/3 Complete</span>
+                    <button class="mission-claim-btn">Claim +2 Keys</button>
+                </div>
+            </div>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Daily Regular</div>
+                        <div class="mission-item-desc">Complete all Daily Quests on at least 4 days</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 50%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">2/4 Days</span>
+                    <button class="mission-claim-btn">+3 Keys</button>
+                </div>
+            </div>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Session Streak</div>
+                        <div class="mission-item-desc">Log into the hub on 5 distinct days</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 60%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">3/5 Days</span>
+                    <button class="mission-claim-btn">+2 Keys</button>
+                </div>
+            </div>
         </div>
 
-        <div class="milestone-item">
-            <div>
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Glacial Surge #4</div>
-                <div style="font-size: 10px; color: #A0AEC0;">250,000 Thermal Energy Reached</div>
+        <div id="tab-lifetime-missions" style="display: none;">
+            <div class="section-header" style="margin-top:0;">
+                <div class="section-title" style="font-size:15px;">Lifetime Milestones</div>
+                <div class="section-subtitle">Permanent Achievements</div>
             </div>
-            <span style="font-size: 11px; font-weight: 800; color: #65add7;">Completed ✓</span>
-        </div>
 
-        <div class="milestone-item">
-            <div>
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Glacial Surge #3</div>
-                <div style="font-size: 10px; color: #A0AEC0;">200,000 Thermal Energy Reached</div>
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Thermal Pioneer</div>
+                        <div class="mission-item-desc">Cumulative Thermal Boosts (Tier I)</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 60%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">6/10 Boosts</span>
+                    <button class="mission-claim-btn">+3 Keys</button>
+                </div>
             </div>
-            <span style="font-size: 11px; font-weight: 800; color: #65add7;">Completed ✓</span>
-        </div>
 
-        <div class="milestone-item">
-            <div>
-                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">Glacial Surge #2</div>
-                <div style="font-size: 10px; color: #A0AEC0;">150,000 Thermal Energy Reached</div>
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Glacial Veteran</div>
+                        <div class="mission-item-desc">Cumulative Game Sessions (Tier I)</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 48%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">12/25 Games</span>
+                    <button class="mission-claim-btn">+3 Keys</button>
+                </div>
             </div>
-            <span style="font-size: 11px; font-weight: 800; color: #65add7;">Completed ✓</span>
+
+            <div class="mission-item-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title">Chest Hunter</div>
+                        <div class="mission-item-desc">Cumulative Mystery Chests Unlocked (Tier I)</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 20%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">1/5 Chests</span>
+                    <button class="mission-claim-btn">+5 Keys</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Rewards Page View -->
     <div id="rewards-container" class="app-view">
         <button class="back-nav-btn" onclick="closeRewardsPage()">← Back to Hub</button>
 
@@ -504,7 +591,6 @@
             </div>
         </header>
 
-        <!-- Collapsible Profile Container -->
         <div class="wallet-card" id="wallet-card">
             <div class="wallet-summary-header" onclick="toggleWalletCard()">
                 <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">
@@ -534,7 +620,6 @@
             </div>
         </div>
 
-        <!-- Pending Unclaimed Balance Card -->
         <div class="balance-summary-card">
             <div style="font-size: 12px; color: #A0AEC0; text-transform: uppercase; font-weight: 700;">Unclaimed Balance</div>
             <div class="balance-val"><span id="unclaimed-iced-balance">0.00</span> $ICED</div>
@@ -592,35 +677,6 @@
         <button class="terms-link-btn" onclick="openTermsModal()">📜 View Rewards Program Terms & Conditions</button>
     </div>
 
-    <!-- Impact Screen Info Modal -->
-    <div id="impact-info-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="margin-top: 0; color: #65add7; text-align: center;">🌐 How Glacier Impact Works</h3>
-            <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding: 14px 0; margin-bottom: 16px;">
-                <p style="margin-top: 0; font-weight: 700; color: #65add7;">Generating Thermal Energy:</p>
-                <p>📅 <strong>Daily Check-ins:</strong> Earn +10 Thermal Energy per daily check-in ad.</p>
-                <p>📺 <strong>Watching Ads:</strong> Earn +5 Thermal Energy per ad watched during or after gameplay.</p>
-                <p>🏔️ <strong>Powering Glacial Surges:</strong> All player energy feeds into a global progress bar. When the community hits 100%, the active Glacial Surge cycle completes.</p>
-                <p>💎 <strong>Fueling the Ecosystem Reserve:</strong> Completed surges route ad revenue directly into the community reserve pool.</p>
-                <p style="margin-bottom: 0;">🛡️ <strong>Unlocking Supporter Ranks:</strong> Personal Thermal Energy levels up your profile badge across 10 supporter tiers—all the way to Glacial Titan!</p>
-            </div>
-            <button class="claim-dapp-btn" onclick="closeImpactInfoModal()">Got It!</button>
-        </div>
-    </div>
-
-    <!-- Supporter Badge Progression Modal (10-Tier Scale) -->
-    <div id="badge-progression-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="margin-top: 0; color: #65add7; text-align: center;">🛡️ Supporter Badges</h3>
-            <p style="font-size: 11px; color: #A0AEC0; text-align: center; margin-top: -8px; margin-bottom: 16px;">Earn Thermal Energy through ad views to unlock all 10 ranks.</p>
-
-            <div id="badge-tiers-list"></div>
-
-            <button class="claim-dapp-btn" style="margin-top: 16px;" onclick="closeBadgeProgressionModal()">Close Ranks</button>
-        </div>
-    </div>
-
-    <!-- Chest Reveal Modal -->
     <div id="chest-reveal-modal" class="modal-overlay">
         <div class="modal-card" style="text-align: center;">
             <h3 style="margin: 0; color: #65add7; font-size: 18px;">✨ CHEST UNLOCKED! ✨</h3>
@@ -632,7 +688,6 @@
         </div>
     </div>
 
-    <!-- Terms Modal -->
     <div id="terms-modal" class="modal-overlay">
         <div class="modal-card">
             <h3 style="margin-top: 0; color: #65add7; text-align: center;">GlacierPlay Rewards Program<br><span style="font-size: 13px; color: #A0AEC0;">Terms & Conditions</span></h3>
@@ -647,7 +702,6 @@
         </div>
     </div>
 
-    <!-- Developer Submission Modal -->
     <div id="submit-modal" class="modal-overlay">
         <div class="modal-card">
             <h3 style="margin-top: 0; color: #65add7; text-align: center;">🎮 Submit Your Game</h3>
@@ -788,22 +842,44 @@
             renderGameGrid();
         }
 
-        function openImpactPage() {
+        function openMissionsPage() {
             document.getElementById('hub-container').style.display = 'none';
             document.getElementById('rewards-container').style.display = 'none';
-            document.getElementById('impact-container').style.display = 'block';
-            updateImpactUI();
+            document.getElementById('missions-container').style.display = 'block';
+            updateMissionsUI();
         }
 
-        function closeImpactPage() {
-            document.getElementById('impact-container').style.display = 'none';
+        function closeMissionsPage() {
+            document.getElementById('missions-container').style.display = 'none';
             document.getElementById('hub-container').style.display = 'block';
             updateCheckInUI();
         }
 
+        function switchMissionSubTab(subTab) {
+            const tabs = ['daily', 'weekly', 'lifetime'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                const view = document.getElementById(`tab-${t}-missions`);
+                if (t === subTab) {
+                    if (btn) btn.classList.add('active');
+                    if (view) view.style.display = 'block';
+                } else {
+                    if (btn) btn.classList.remove('active');
+                    if (view) view.style.display = 'none';
+                }
+            });
+        }
+
+        function updateMissionsUI() {
+            const keysEl = document.getElementById('missions-keys-balance');
+            const streakEl = document.getElementById('missions-streak-count');
+            if (keysEl) keysEl.innerText = vaultData.keys;
+            if (streakEl) streakEl.innerText = vaultData.streakCount || 0;
+        }
+
         function openRewardsPage() {
             document.getElementById('hub-container').style.display = 'none';
-            document.getElementById('impact-container').style.display = 'none';
+            document.getElementById('missions-container').style.display = 'none';
             document.getElementById('rewards-container').style.display = 'block';
             updateCheckInUI();
         }
@@ -819,15 +895,6 @@
         function openTermsModal() { document.getElementById('terms-modal').style.display = 'flex'; }
         function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; }
         function closeChestModal() { document.getElementById('chest-reveal-modal').style.display = 'none'; }
-
-        function openImpactInfoModal() { document.getElementById('impact-info-modal').style.display = 'flex'; }
-        function closeImpactInfoModal() { document.getElementById('impact-info-modal').style.display = 'none'; }
-
-        function openBadgeProgressionModal() {
-            renderBadgeProgressionModal();
-            document.getElementById('badge-progression-modal').style.display = 'flex';
-        }
-        function closeBadgeProgressionModal() { document.getElementById('badge-progression-modal').style.display = 'none'; }
 
         function submitDeveloperGame() {
             const title = document.getElementById('subGameTitle').value.trim();
@@ -858,12 +925,6 @@
             unclaimedIced: 0.0, reservedNFTs: [],
             personalThermalEnergy: 140,
             lastBoostAdTimestamp: 0
-        };
-
-        let surgeConfig = {
-            surgeNumber: 5,
-            currentGlobalEnergy: 1245800,
-            targetSurgeEnergy: 1800000
         };
 
         let isDailyCardCollapsed = true;
@@ -1148,107 +1209,6 @@
             window.open(`https://claim.icedether.com?address=${vaultData.walletAddress}`, '_blank');
         }
 
-        function getTierBadgeData(energy) {
-            if (energy >= 10000) return { name: "⚡ Glacial Titan", nextName: null, target: 10000 };
-            if (energy >= 9000) return { name: "💠 Cryo Master", nextName: "Glacial Titan", target: 10000 };
-            if (energy >= 7500) return { name: "👑 Polar Sovereign", nextName: "Cryo Master", target: 9000 };
-            if (energy >= 5000) return { name: "🐉 Avalanche Overlord", nextName: "Polar Sovereign", target: 7500 };
-            if (energy >= 2500) return { name: "🌌 Sub-Zero Sentinel", nextName: "Avalanche Overlord", target: 5000 };
-            if (energy >= 1000) return { name: "⚔️ Frost Champion", nextName: "Sub-Zero Sentinel", target: 2500 };
-            if (energy >= 500) return { name: "🏔️ Glacial Warden", nextName: "Frost Champion", target: 1000 };
-            if (energy >= 200) return { name: "🛡️ Ice Breaker", nextName: "Glacial Warden", target: 500 };
-            if (energy >= 50) return { name: "❄️ Glacier Guard", nextName: "Ice Breaker", target: 200 };
-            return { name: "🧊 Ice Scout", nextName: "Glacier Guard", target: 50 };
-        }
-
-        function renderBadgeProgressionModal() {
-            const energy = vaultData.personalThermalEnergy || 140;
-            const container = document.getElementById('badge-tiers-list');
-            
-            const tiers = [
-                { name: 'Ice Scout', icon: '🧊', min: 0, max: 49 },
-                { name: 'Glacier Guard', icon: '❄️', min: 50, max: 199 },
-                { name: 'Ice Breaker', icon: '🛡️', min: 200, max: 499 },
-                { name: 'Glacial Warden', icon: '🏔️', min: 500, max: 999 },
-                { name: 'Frost Champion', icon: '⚔️', min: 1000, max: 2499 },
-                { name: 'Sub-Zero Sentinel', icon: '🌌', min: 2500, max: 4999 },
-                { name: 'Avalanche Overlord', icon: '🐉', min: 5000, max: 7499 },
-                { name: 'Polar Sovereign', icon: '👑', min: 7500, max: 8999 },
-                { name: 'Cryo Master', icon: '💠', min: 9000, max: 9999 },
-                { name: 'Glacial Titan', icon: '⚡', min: 10000, max: Infinity }
-            ];
-
-            let html = '';
-            tiers.forEach(t => {
-                let statusClass = 'locked';
-                let statusLabel = `<span style="font-size: 10px; color: #A0AEC0;">🔒 ${t.min.toLocaleString()} Energy</span>`;
-                
-                if (energy >= t.min) {
-                    if (energy <= t.max || t.max === Infinity) {
-                        statusClass = 'current';
-                        statusLabel = `<span style="font-size: 10px; font-weight: 800; color: #65add7; background: rgba(101, 173, 215, 0.15); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(101, 173, 215, 0.3);">CURRENT RANK</span>`;
-                    } else {
-                        statusClass = 'unlocked';
-                        statusLabel = `<span style="font-size: 10px; color: #65add7; font-weight: 700;">✓ Unlocked</span>`;
-                    }
-                }
-
-                const rangeText = (t.max === Infinity) ? `${t.min.toLocaleString()}+ Thermal Energy` : `${t.min.toLocaleString()} – ${t.max.toLocaleString()} Energy`;
-
-                html += `
-                    <div class="badge-tier-item ${statusClass}">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="font-size: 24px;">${t.icon}</div>
-                            <div>
-                                <div style="font-size: 13px; font-weight: 700; color: #E2E8F0;">${t.name}</div>
-                                <div style="font-size: 10px; color: #A0AEC0;">${rangeText}</div>
-                            </div>
-                        </div>
-                        ${statusLabel}
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function updateImpactUI() {
-            document.getElementById('impact-keys-balance').innerText = vaultData.keys;
-            document.getElementById('personal-thermal-energy').innerText = (vaultData.personalThermalEnergy || 140).toLocaleString();
-
-            const currentEnergy = surgeConfig.currentGlobalEnergy;
-            const targetEnergy = surgeConfig.targetSurgeEnergy;
-            const progressPercent = Math.min(100, Math.round((currentEnergy / targetEnergy) * 100));
-
-            document.getElementById('global-thermal-energy').innerText = currentEnergy.toLocaleString();
-            document.getElementById('batch-progress-bar').style.width = `${progressPercent}%`;
-            document.getElementById('progress-percent-text').innerText = `${progressPercent}% Complete`;
-            document.getElementById('surge-goal-title').innerText = `Glacial Surge #${surgeConfig.surgeNumber} Goal`;
-
-            const phaseBadge = document.getElementById('surge-phase-badge');
-            if (progressPercent >= 100) {
-                phaseBadge.innerText = "⌛ SURGE PHASE: SETTLEMENT IN PROGRESS";
-                phaseBadge.style.color = "#FFD700";
-                phaseBadge.style.borderColor = "rgba(255, 215, 0, 0.4)";
-            } else {
-                phaseBadge.innerText = "⚡ SURGE PHASE: GATHERING MOMENTUM";
-                phaseBadge.style.color = "#65add7";
-                phaseBadge.style.borderColor = "rgba(101, 173, 215, 0.3)";
-            }
-
-            const energy = vaultData.personalThermalEnergy || 140;
-            const badgeData = getTierBadgeData(energy);
-
-            document.getElementById('personal-tier-badge').innerText = badgeData.name;
-            const hintEl = document.getElementById('next-tier-hint');
-
-            if (badgeData.nextName) {
-                const diff = badgeData.target - energy;
-                hintEl.innerText = `⚡ ${diff.toLocaleString()} Energy to ${badgeData.nextName} ➔`;
-            } else {
-                hintEl.innerText = `⚡ Max Rank Reached! ➔`;
-            }
-        }
-
         function updateCheckInUI() {
             document.getElementById('keys-balance').innerText = vaultData.keys;
             document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
@@ -1257,6 +1217,7 @@
             renderDailyCardState();
             renderWalletCardState();
             updateBoostAdUI();
+            updateMissionsUI();
 
             if (!isEditingAddress) {
                 if (vaultData.walletAddress) {
