@@ -393,7 +393,7 @@
         </div>
     </div>
 
-    <!-- MISSIONS VIEW (Keys Pill Added to Header) -->
+    <!-- MISSIONS VIEW -->
     <div id="missions-container" class="app-view">
         <header>
             <button class="back-nav-btn" onclick="closeMissionsPage()">← Back to Hub</button>
@@ -430,6 +430,21 @@
                 <div class="section-subtitle">Resets in 14h 22m</div>
             </div>
 
+            <!-- Moved Daily Completionist to top with 1 Key reward -->
+            <div class="mission-item-card apex-card">
+                <div class="mission-item-header">
+                    <div>
+                        <div class="mission-item-title" style="color:#65add7;">Daily Completionist</div>
+                        <div class="mission-item-desc">Complete all daily quests</div>
+                    </div>
+                </div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 0%;"></div></div>
+                <div class="mission-item-footer">
+                    <span class="mission-progress-text">0/2 Completed</span>
+                    <button class="mission-claim-btn locked">+1 Key</button>
+                </div>
+            </div>
+
             <div class="mission-item-card">
                 <div class="mission-item-header">
                     <div>
@@ -457,20 +472,6 @@
                     <button class="mission-claim-btn">+1 Key</button>
                 </div>
             </div>
-
-            <div class="mission-item-card apex-card">
-                <div class="mission-item-header">
-                    <div>
-                        <div class="mission-item-title" style="color:#65add7;">Daily Completionist</div>
-                        <div class="mission-item-desc">Complete all daily quests</div>
-                    </div>
-                </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 0%;"></div></div>
-                <div class="mission-item-footer">
-                    <span class="mission-progress-text">0/2 Completed</span>
-                    <button class="mission-claim-btn locked">Locked</button>
-                </div>
-            </div>
         </div>
 
         <div id="tab-weekly-missions" style="display: none;">
@@ -493,17 +494,18 @@
                 </div>
             </div>
 
+            <!-- Thermal Overdrive updated to 20 times & 4 Keys -->
             <div class="mission-item-card">
                 <div class="mission-item-header">
                     <div>
                         <div class="mission-item-title">Thermal Overdrive</div>
-                        <div class="mission-item-desc">Trigger Thermal Boosts 15 times</div>
+                        <div class="mission-item-desc">Trigger Thermal Boosts 20 times</div>
                     </div>
                 </div>
-                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 73%;"></div></div>
+                <div class="mission-progress-bar"><div class="mission-progress-fill" style="width: 55%;"></div></div>
                 <div class="mission-item-footer">
-                    <span class="mission-progress-text">11/15 Complete</span>
-                    <button class="mission-claim-btn">+3 Keys</button>
+                    <span class="mission-progress-text">11/20 Complete</span>
+                    <button class="mission-claim-btn">+4 Keys</button>
                 </div>
             </div>
 
@@ -614,7 +616,7 @@
         </div>
     </div>
 
-    <!-- REWARDS VIEW (Missions Pill Added to Header) -->
+    <!-- REWARDS VIEW -->
     <div id="rewards-container" class="app-view">
         <header>
             <button class="back-nav-btn" onclick="closeRewardsPage()">← Back to Hub</button>
@@ -628,8 +630,9 @@
             </div>
         </header>
 
+        <!-- Updated title to strictly 'Rewards' -->
         <div style="text-align: left; margin-bottom: 20px;">
-            <div class="section-title" style="font-size: 22px;">Rewards Store</div>
+            <div class="section-title" style="font-size: 22px;">Rewards</div>
             <div style="font-size: 12px; color: #A0AEC0; margin-top: 2px;">Redeem keys for tokens & on-chain permits.</div>
         </div>
 
@@ -674,7 +677,6 @@
             <div class="section-subtitle">20 Keys Trade-In</div>
         </div>
 
-        <!-- Mystery Chest Card (Single-Row Price Badge Formatted) -->
         <div class="store-grid">
             <div class="chest-card" onclick="openMysteryChest()">
                 <div class="chest-left">
@@ -981,7 +983,6 @@
             renderDailyCardState();
         }
 
-        /* Dynamic Border Update: Cyan glow on Ready, Dull Blue (#233550) on Cooldown/Claimed */
         function renderDailyCardState() {
             const body = document.getElementById('daily-card-body');
             const arrow = document.getElementById('daily-toggle-arrow');
@@ -1124,7 +1125,6 @@
             alert("⚡ +5 Thermal Energy Generated! Thank you for supporting the Glacier Reserve Pool.");
         }
 
-        /* Dynamic Border Update: Cyan glow on Ready, Dull Blue (#233550) on Cooldown */
         function updateBoostAdUI() {
             const btn = document.getElementById('boostAdBtn');
             const timerText = document.getElementById('boost-ad-timer');
