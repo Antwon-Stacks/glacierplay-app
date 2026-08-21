@@ -46,19 +46,18 @@
         .header-pills-group { display: flex; gap: 8px; align-items: center; }
 
         .nav-pill {
-            background: linear-gradient(90deg, #1A2639 0%, #233550 100%);
-            border: 1px solid #3A4E6C;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(35, 53, 80, 0.9) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3);
             padding: 8px 12px;
             border-radius: 20px;
             font-weight: 800;
             font-size: 13px;
             display: flex; align-items: center; gap: 6px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            cursor: pointer; transition: transform 0.1s, border-color 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 242, 254, 0.15);
+            cursor: pointer; transition: transform 0.1s;
         }
         .nav-pill:active { transform: scale(0.95); }
-        .nav-pill span { color: #65add7; }
-        .nav-pill.active-pill { border-color: #00f2fe; color: #00f2fe; }
+        .nav-pill span { color: #00f2fe; }
 
         /* Section Headers */
         .section-header {
@@ -68,14 +67,14 @@
         .section-title { font-size: 18px; font-weight: 700; color: #E2E8F0; }
         .section-subtitle { font-size: 12px; color: #A0AEC0; font-weight: 600; }
 
-        /* Collapsible Daily Check-in & Global Impact Cards */
+        /* Collapsible Daily Check-in Box (Cyan Fade Applied) */
         .daily-wrapper-card {
-            background-color: #121C2B;
-            border: 1px solid #233550;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.06) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.25);
             border-radius: 16px;
             padding: 14px 16px;
             margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.08);
             transition: all 0.2s ease;
         }
         .daily-summary-header {
@@ -90,8 +89,9 @@
             font-size: 11px; font-weight: 800; color: #050B14;
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             padding: 3px 8px; border-radius: 6px;
+            box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
         }
-        .daily-status-badge.claimed { background: #233550; color: #A0AEC0; }
+        .daily-status-badge.claimed { background: #233550; color: #A0AEC0; box-shadow: none; }
 
         /* 7-Day Timeline Visuals */
         .streak-timeline { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 16px; }
@@ -111,18 +111,19 @@
         }
         .streak-val { font-weight: 800; font-size: 13px; }
 
-        /* Mission Cards & Voluntary Ad Boost Card */
+        /* Mission Cards & Voluntary Ad Boost Card (Cyan Fade Applied) */
         .mission-card {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.05) 0%, rgba(18, 28, 43, 0.9) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.2);
             border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;
         }
         .mission-card.boost-card {
-            background-color: #121C2B;
-            border: 1px solid #233550;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3);
             border-radius: 16px;
             padding: 14px 16px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.1);
             transition: all 0.2s ease;
         }
         .mission-text h4 { margin: 0; font-size: 15px; color: #fff; }
@@ -130,8 +131,9 @@
         .mission-btn {
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             color: #050B14; border: none; padding: 10px 16px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 242, 254, 0.25);
         }
-        .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; }
+        .mission-btn.claimed { background: #233550; color: #A0AEC0; cursor: not-allowed; box-shadow: none; }
 
         /* Streak Banner */
         .streak-banner {
@@ -143,10 +145,10 @@
 
         /* Search & Category Filter Section */
         .arcade-search-box {
-            width: 100%; background: #121C2B; border: 1px solid #233550; color: #fff;
+            width: 100%; background: #121C2B; border: 1px solid rgba(0, 242, 254, 0.25); color: #fff;
             padding: 10px 14px; border-radius: 10px; font-size: 13px; outline: none; margin-bottom: 10px;
         }
-        .arcade-search-box:focus { border-color: #65add7; }
+        .arcade-search-box:focus { border-color: #00f2fe; box-shadow: 0 0 10px rgba(0, 242, 254, 0.2); }
 
         .category-pills {
             display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 16px; scrollbar-width: none;
@@ -156,67 +158,79 @@
             background: #121C2B; border: 1px solid #233550; color: #A0AEC0; padding: 6px 14px;
             border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: all 0.2s;
         }
-        .pill.active { background: linear-gradient(135deg, #65add7 0%, #4facfe 100%); color: #050B14; border-color: #65add7; }
+        .pill.active { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #050B14; border-color: #00f2fe; box-shadow: 0 0 8px rgba(0, 242, 254, 0.3); }
 
-        /* Game Grid Styling */
+        /* Game Grid Styling (Cyan Fade Applied) */
         .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
         .game-card {
-            background-color: #121C2B; border-radius: 16px; overflow: hidden;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.04) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border-radius: 16px; overflow: hidden;
             text-decoration: none; color: white; display: flex; flex-direction: column;
-            border: 1px solid #233550; transition: transform 0.1s;
+            border: 1px solid rgba(0, 242, 254, 0.2); transition: transform 0.1s, border-color 0.2s;
         }
-        .game-card:active { transform: scale(0.95); }
-        .game-thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-bottom: 1px solid #233550; }
+        .game-card:active { transform: scale(0.95); border-color: #00f2fe; }
+        .game-thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-bottom: 1px solid rgba(0, 242, 254, 0.2); }
         .game-info { padding: 10px; text-align: center; }
         .game-title { font-size: 13px; font-weight: 700; color: #E2E8F0; }
-        .game-dev { font-size: 10px; color: #65add7; margin-top: 2px; }
+        .game-dev { font-size: 10px; color: #00f2fe; margin-top: 2px; }
 
         /* Empty Search State */
         .empty-search-state {
             text-align: center; padding: 30px 10px; background: #121C2B;
-            border: 1px dashed #233550; border-radius: 14px; grid-column: span 2;
+            border: 1px dashed rgba(0, 242, 254, 0.3); border-radius: 14px; grid-column: span 2;
         }
 
-        /* Submit Game Banner Button */
+        /* Submit Game Banner Button (Cyan Fade Applied) */
         .submit-game-banner {
-            background: linear-gradient(135deg, rgba(101, 173, 215, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
-            border: 1px dashed #3A4E6C; border-radius: 14px; padding: 14px; text-align: center;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px dashed rgba(0, 242, 254, 0.4); border-radius: 14px; padding: 14px; text-align: center;
             margin-top: 20px; cursor: pointer; transition: border-color 0.2s;
         }
-        .submit-game-banner:hover { border-color: #65add7; }
+        .submit-game-banner:hover { border-color: #00f2fe; }
 
         /* Common Back Button */
         .back-nav-btn {
-            background: #121C2B; border: 1px solid #233550; color: #65add7;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe;
             padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer;
-            transition: all 0.2s;
+            margin-bottom: 20px;
         }
-        .back-nav-btn:hover { border-color: #65add7; color: #fff; }
 
-        /* Rewards Page Styling */
-        .wallet-card { background: #121C2B; border: 1px solid #233550; border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; }
+        /* Rewards Page Styling (Cyan Fade Applied) */
+        .wallet-card { 
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.06) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; 
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.08);
+        }
         .wallet-summary-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .wallet-summary-addr { font-family: monospace; font-size: 12px; color: #65add7; }
-        .wallet-input { width: 100%; background: #050B14; border: 1px solid #3A4E6C; color: #65add7; padding: 10px 12px; border-radius: 8px; font-size: 12px; margin-top: 8px; outline: none; }
-        .address-display-box { display: flex; justify-content: space-between; align-items: center; background: #050B14; border: 1px solid #65add7; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
-        .addr-text { font-family: monospace; font-size: 12px; color: #65add7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
+        .wallet-summary-addr { font-family: monospace; font-size: 12px; color: #00f2fe; }
+        .wallet-input { width: 100%; background: #050B14; border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 10px 12px; border-radius: 8px; font-size: 12px; margin-top: 8px; outline: none; }
+        .address-display-box { display: flex; justify-content: space-between; align-items: center; background: #050B14; border: 1px solid #00f2fe; border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+        .addr-text { font-family: monospace; font-size: 12px; color: #00f2fe; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 250px; }
         .edit-addr-btn { background: rgba(255,255,255,0.05); border: 1px solid #3A4E6C; color: #A0AEC0; padding: 4px 10px; border-radius: 6px; font-size: 11px; cursor: pointer; }
-        .balance-summary-card { background: linear-gradient(135deg, rgba(101, 173, 215, 0.1) 0%, rgba(79, 172, 254, 0.1) 100%); border: 1px solid rgba(101, 173, 215, 0.3); border-radius: 14px; padding: 16px; margin-bottom: 20px; text-align: center; }
-        .balance-val { font-size: 24px; font-weight: 800; color: #65add7; margin: 4px 0; }
-        .claim-dapp-btn { background: linear-gradient(135deg, #65add7 0%, #4facfe 100%); color: #050B14; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; }
+        .balance-summary-card { 
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.35); border-radius: 14px; padding: 16px; margin-bottom: 20px; text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.1);
+        }
+        .balance-val { font-size: 24px; font-weight: 800; color: #00f2fe; margin: 4px 0; }
+        .claim-dapp-btn { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #050B14; border: none; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px; box-shadow: 0 0 12px rgba(0, 242, 254, 0.25); }
         .store-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 14px; margin-top: 15px; margin-bottom: 25px; }
-        .chest-card { background-color: #121C2B; border: 1px solid #233550; border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .chest-card { 
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.05) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; 
+        }
         .chest-left { display: flex; align-items: center; gap: 14px; }
         .chest-icon-img { width: 44px; height: 44px; object-fit: contain; }
         .chest-info h4 { margin: 0; font-size: 16px; color: #E2E8F0; }
         .chest-info p { margin: 4px 0 0 0; font-size: 12px; color: #A0AEC0; }
-        .chest-price { background: rgba(101, 173, 215, 0.1); border: 1px solid rgba(101, 173, 215, 0.3); color: #65add7; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; }
+        .chest-price { background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: #00f2fe; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; }
         .terms-link-btn { background: transparent; border: none; color: #A0AEC0; font-size: 12px; text-decoration: underline; cursor: pointer; width: 100%; text-align: center; padding: 10px 0; }
 
-        /* Missions Screen Specific Styling */
+        /* Missions Screen Specific Styling (Cyan Fade Standardized) */
         .mission-tabs {
             display: flex; gap: 8px; margin-bottom: 16px; background: #121C2B;
-            padding: 4px; border-radius: 12px; border: 1px solid #233550;
+            padding: 4px; border-radius: 12px; border: 1px solid rgba(0, 242, 254, 0.25);
         }
         .mission-tab-btn {
             flex: 1; padding: 10px 0; text-align: center; font-size: 12px; font-weight: 700;
@@ -228,16 +242,17 @@
         }
 
         .mission-item-card {
-            background: #121C2B;
-            border: 1px solid #233550;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.05) 0%, rgba(18, 28, 43, 0.95) 100%);
+            border: 1px solid rgba(0, 242, 254, 0.25);
             border-radius: 14px;
             padding: 14px 16px;
             margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 242, 254, 0.05);
         }
         .mission-item-card.apex-card {
-            background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(79, 172, 254, 0.08) 100%);
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.12) 0%, rgba(79, 172, 254, 0.12) 100%);
             border: 1px solid #00f2fe;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.18);
         }
         .mission-item-header {
             display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;
@@ -249,7 +264,7 @@
             font-size: 11px; color: #A0AEC0; margin-top: 2px;
         }
         .mission-progress-bar {
-            width: 100%; background: #050B14; border: 1px solid #233550;
+            width: 100%; background: #050B14; border: 1px solid rgba(0, 242, 254, 0.2);
             border-radius: 6px; height: 8px; overflow: hidden; margin: 10px 0 6px 0;
         }
         .mission-progress-fill {
@@ -260,7 +275,7 @@
             display: flex; justify-content: space-between; align-items: center; margin-top: 8px;
         }
         .mission-progress-text {
-            font-size: 11px; font-weight: 700; color: #65add7;
+            font-size: 11px; font-weight: 700; color: #00f2fe;
         }
         .mission-claim-btn {
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
@@ -276,11 +291,11 @@
 
         /* Modals */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 11, 20, 0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 10000; padding: 20px; }
-        .modal-card { background: #121C2B; border: 1px solid #233550; border-radius: 18px; padding: 24px; max-width: 420px; width: 100%; max-height: 85vh; overflow-y: auto; }
-        .reveal-chest-img { width: 130px; height: 130px; object-fit: contain; margin: 16px auto; display: block; filter: drop-shadow(0 0 15px rgba(101, 173, 215, 0.5)); }
+        .modal-card { background: linear-gradient(135deg, rgba(0, 242, 254, 0.08) 0%, rgba(18, 28, 43, 0.98) 100%); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 18px; padding: 24px; max-width: 420px; width: 100%; max-height: 85vh; overflow-y: auto; }
+        .reveal-chest-img { width: 130px; height: 130px; object-fit: contain; margin: 16px auto; display: block; filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.5)); }
         .submit-form-group { text-align: left; margin-bottom: 12px; }
         .submit-form-group label { display: block; font-size: 11px; font-weight: 700; color: #A0AEC0; margin-bottom: 4px; }
-        .submit-form-input { width: 100%; background: #050B14; border: 1px solid #3A4E6C; color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; outline: none; }
+        .submit-form-input { width: 100%; background: #050B14; border: 1px solid rgba(0, 242, 254, 0.3); color: #fff; padding: 10px; border-radius: 8px; font-size: 12px; outline: none; }
         .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #CBD5E1; margin-bottom: 6px; text-align: left; }
     </style>
 </head>
@@ -293,7 +308,7 @@
         </video>
         <div id="splash-fallback" style="display:none; text-align:center;">
             <img src="header-logo.png" alt="GlacierPlay" style="width: 150px; margin-bottom: 20px;" onerror="this.style.display='none'">
-            <div style="font-weight: 700; color: #65add7; letter-spacing: 1px;">GLACIERPLAY HUB</div>
+            <div style="font-weight: 700; color: #00f2fe; letter-spacing: 1px;">GLACIERPLAY HUB</div>
         </div>
     </div>
 
@@ -319,7 +334,7 @@
                 <span id="daily-toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
             </div>
 
-            <div id="daily-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
+            <div id="daily-card-body" style="display: none; margin-top: 12px; border-top: 1px solid rgba(0, 242, 254, 0.2); padding-top: 12px;">
                 <div class="mission-card">
                     <div class="mission-text">
                         <h4>Claim Keys Daily</h4>
@@ -365,27 +380,17 @@
         <div class="game-grid" id="gameGrid"></div>
 
         <div class="submit-game-banner" onclick="openSubmitModal()">
-            <div style="font-size: 14px; font-weight: 800; color: #65add7;">🚀 Game Developer?</div>
+            <div style="font-size: 14px; font-weight: 800; color: #00f2fe;">🚀 Game Developer?</div>
             <div style="font-size: 11px; color: #A0AEC0; margin-top: 2px;">Submit your HTML5 game to the GlacierPlay Hub</div>
         </div>
     </div>
 
     <div id="missions-container" class="app-view">
-        <header>
-            <button class="back-nav-btn" onclick="closeMissionsPage()">← Hub</button>
-            <div class="header-pills-group">
-                <div class="nav-pill active-pill" onclick="openMissionsPage()">
-                    Missions
-                </div>
-                <div class="nav-pill" onclick="openRewardsPage()">
-                    🗝️ <span id="header-missions-keys-balance">0</span>
-                </div>
-            </div>
-        </header>
+        <button class="back-nav-btn" onclick="closeMissionsPage()">← Back to Hub</button>
 
         <div style="text-align: center; margin-bottom: 20px;">
             <div style="font-size: 22px; font-weight: 800; color: #fff; letter-spacing: 1px;">MISSIONS</div>
-            <div style="font-size: 12px; color: #65add7; margin-top: 4px; font-weight: 600;">Earn Keys to unlock chests of $ICED.</div>
+            <div style="font-size: 12px; color: #00f2fe; margin-top: 4px; font-weight: 600;">Earn Keys to unlock chests of $ICED.</div>
         </div>
 
         <div style="display: flex; justify-content: space-between; gap: 10px; margin-bottom: 16px;">
@@ -591,61 +596,15 @@
                 </div>
             </div>
         </div>
-
-        <div class="daily-wrapper-card" id="global-impact-card" style="margin-top: 24px;">
-            <div class="daily-summary-header" onclick="toggleGlobalImpactCard()">
-                <div class="daily-summary-title">
-                    <span>🌐 Global Impact</span>
-                    <span class="daily-status-badge" style="background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); color: #050B14;">Iceberg Treasury Active</span>
-                </div>
-                <span id="global-impact-toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
-            </div>
-
-            <div id="global-impact-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
-                <div style="font-size: 12px; color: #A0AEC0; margin-bottom: 14px; line-height: 1.4;">
-                    GlacierPlay Arcade ad revenue is converted into ETH and deposited directly into the Iceberg Treasury to back $ICED token value and fund community rewards.
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;">
-                    <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 10px; padding: 10px; text-align: center;">
-                        <div style="font-size: 10px; color: #A0AEC0; font-weight: 700; text-transform: uppercase;">Global Energy</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #00f2fe; margin-top: 2px;">1,425,850 ⚡</div>
-                    </div>
-                    <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 10px; padding: 10px; text-align: center;">
-                        <div style="font-size: 10px; color: #A0AEC0; font-weight: 700; text-transform: uppercase;">Iceberg Backing</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #65add7; margin-top: 2px;">12.45 ETH</div>
-                    </div>
-                    <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 10px; padding: 10px; text-align: center;">
-                        <div style="font-size: 10px; color: #A0AEC0; font-weight: 700; text-transform: uppercase;">Arcade Sessions</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #fff; margin-top: 2px;">84,200+</div>
-                    </div>
-                    <div style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 10px; padding: 10px; text-align: center;">
-                        <div style="font-size: 10px; color: #A0AEC0; font-weight: 700; text-transform: uppercase;">Keys Minted</div>
-                        <div style="font-size: 16px; font-weight: 800; color: #FFD700; margin-top: 2px;">125,400 🗝️</div>
-                    </div>
-                </div>
-
-                <div style="background: #050B14; border: 1px solid #233550; border-radius: 10px; padding: 10px; text-align: center;">
-                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: #A0AEC0; margin-bottom: 6px;">
-                        <span>Treasury Backing Progress</span>
-                        <span style="color: #00f2fe; font-weight: 700;">83% Target</span>
-                    </div>
-                    <div class="mission-progress-bar" style="margin: 0;"><div class="mission-progress-fill" style="width: 83%;"></div></div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div id="rewards-container" class="app-view">
+        <button class="back-nav-btn" onclick="closeRewardsPage()">← Back to Hub</button>
+
         <header>
-            <button class="back-nav-btn" onclick="closeRewardsPage()">← Hub</button>
-            <div class="header-pills-group">
-                <div class="nav-pill" onclick="openMissionsPage()">
-                    Missions
-                </div>
-                <div class="nav-pill active-pill" onclick="openRewardsPage()">
-                    🗝️ <span id="header-rewards-keys-balance">0</span>
-                </div>
+            <div class="section-title" style="font-size: 22px;">Rewards</div>
+            <div class="nav-pill">
+                🗝️ <span id="rewards-keys-balance">0</span>
             </div>
         </header>
 
@@ -655,10 +614,10 @@
                     <span>Rewards Receive Address:</span>
                     <span id="collapsed-address-text" class="wallet-summary-addr">Not Set</span>
                 </div>
-                <span id="toggle-arrow" style="font-size:12px; color:#65add7;">▼</span>
+                <span id="toggle-arrow" style="font-size:12px; color:#00f2fe;">▼</span>
             </div>
 
-            <div id="wallet-card-body" style="display: none; margin-top: 12px; border-top: 1px solid #233550; padding-top: 12px;">
+            <div id="wallet-card-body" style="display: none; margin-top: 12px; border-top: 1px solid rgba(0, 242, 254, 0.2); padding-top: 12px;">
                 <div style="font-size: 11px; color: #A0AEC0; margin-bottom: 8px;">Saved to your profile to map off-chain rewards & NFT permits.</div>
                 
                 <div id="wallet-input-section">
@@ -737,10 +696,10 @@
 
     <div id="chest-reveal-modal" class="modal-overlay">
         <div class="modal-card" style="text-align: center;">
-            <h3 style="margin: 0; color: #65add7; font-size: 18px;">✨ CHEST UNLOCKED! ✨</h3>
+            <h3 style="margin: 0; color: #00f2fe; font-size: 18px;">✨ CHEST UNLOCKED! ✨</h3>
             <img id="reveal-chest-img" src="CommonChest.png" alt="Chest Revealed" class="reveal-chest-img" onerror="this.onerror=null; this.src='MysteryChest.png';">
             <h2 id="reveal-tier-title" style="margin: 0; font-size: 20px; color: #fff;">COMMON CHEST</h2>
-            <div style="font-size: 26px; font-weight: 800; color: #65add7; margin: 12px 0;">+<span id="reveal-payout-amount">0.0314</span> $ICED</div>
+            <div style="font-size: 26px; font-weight: 800; color: #00f2fe; margin: 12px 0;">+<span id="reveal-payout-amount">0.0314</span> $ICED</div>
             <p style="font-size: 12px; color: #A0AEC0; margin-bottom: 20px;">Your off-chain unclaimed $ICED balance has been credited!</p>
             <button class="claim-dapp-btn" onclick="closeChestModal()">Collect & Continue</button>
         </div>
@@ -748,8 +707,8 @@
 
     <div id="terms-modal" class="modal-overlay">
         <div class="modal-card">
-            <h3 style="margin-top: 0; color: #65add7; text-align: center;">GlacierPlay Rewards Program<br><span style="font-size: 13px; color: #A0AEC0;">Terms & Conditions</span></h3>
-            <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5; max-height: 280px; overflow-y: auto; border-top: 1px solid #233550; border-bottom: 1px solid #233550; padding: 10px 0;">
+            <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">GlacierPlay Rewards Program<br><span style="font-size: 13px; color: #A0AEC0;">Terms & Conditions</span></h3>
+            <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5; max-height: 280px; overflow-y: auto; border-top: 1px solid rgba(0, 242, 254, 0.2); border-bottom: 1px solid rgba(0, 242, 254, 0.2); padding: 10px 0;">
                 <p><strong>1. PROGRAM OVERVIEW</strong><br>The GlacierPlay Rewards Program is a promotional engagement feature operating within the GlacierPlay application. Users accumulate promotional "Keys" through daily ad-gated check-ins and spend Keys to unlock virtual Mystery Chests or reserve NFT mint permits.</p>
                 <p><strong>2. VIRTUAL ASSET STATUS</strong><br>Keys, streak counters, and opened chest allocations are virtual off-chain ledger points only. They hold no fiat value, cannot be purchased, and cannot be exchanged for cash within the mobile application.</p>
                 <p><strong>3. RECEIVE ADDRESS & PRIVACY</strong><br>Users register an Ethereum Virtual Machine (EVM) public receive address ("0x...") to bind reward allocations off-chain. GlacierPlay collects zero Personally Identifiable Information (PII).</p>
@@ -762,7 +721,7 @@
 
     <div id="submit-modal" class="modal-overlay">
         <div class="modal-card">
-            <h3 style="margin-top: 0; color: #65add7; text-align: center;">🎮 Submit Your Game</h3>
+            <h3 style="margin-top: 0; color: #00f2fe; text-align: center;">🎮 Submit Your Game</h3>
             <p style="font-size: 11px; color: #A0AEC0; margin-top: -8px; margin-bottom: 16px; text-align: center;">Submit your HTML5 game for review to join the GlacierPlay Arcade.</p>
 
             <div class="submit-form-group">
@@ -820,18 +779,6 @@
         let isEditingAddress = false;
         const BOOST_AD_COOLDOWN_MS = 2 * 60 * 1000;
 
-        let isDailyCardCollapsed = true;
-        let isWalletCardCollapsed = true;
-        let isGlobalImpactCollapsed = true;
-
-        let vaultData = {
-            keys: 0, streakCount: 0, lastCheckInDate: "",
-            walletAddress: "", lastAddressChangeTimestamp: 0,
-            unclaimedIced: 0.0, reservedNFTs: [],
-            personalThermalEnergy: 140,
-            lastBoostAdTimestamp: 0
-        };
-
         document.addEventListener('DOMContentLoaded', () => {
             const splashScreen = document.getElementById('splash-screen');
             const hubContainer = document.getElementById('hub-container');
@@ -883,7 +830,7 @@
                     }
                 };
                 card.innerHTML = `
-                    <img src="${game.thumb}" alt="${game.title}" class="game-thumb" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'200\\' height=\\'200\\'><rect width=\\'200\\' height=\\'200\\' fill=\\'%23233550\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%2365add7\\' font-family=\\'sans-serif\\' font-size=\\'14\\' font-weight=\\'bold\\'>${game.title.toUpperCase()}</text></svg>';">
+                    <img src="${game.thumb}" alt="${game.title}" class="game-thumb" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'200\\' height=\\'200\\'><rect width=\\'200\\' height=\\'200\\' fill=\\'%23233550\\'/><text x=\\'50%\\' y=\\'50%\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' fill=\\'%2300f2fe\\' font-family=\\'sans-serif\\' font-size=\\'14\\' font-weight=\\'bold\\'>${game.title.toUpperCase()}</text></svg>';">
                     <div class="game-info">
                         <div class="game-title">${game.title}</div>
                         <div class="game-dev">by ${game.dev}</div>
@@ -941,9 +888,10 @@
         }
 
         function updateMissionsUI() {
+            const keysEl = document.getElementById('missions-keys-balance');
             const streakEl = document.getElementById('missions-streak-count');
+            if (keysEl) keysEl.innerText = vaultData.keys;
             if (streakEl) streakEl.innerText = vaultData.streakCount || 0;
-            updateCheckInUI();
         }
 
         function openRewardsPage() {
@@ -957,25 +905,6 @@
             document.getElementById('rewards-container').style.display = 'none';
             document.getElementById('hub-container').style.display = 'block';
             updateCheckInUI();
-        }
-
-        function toggleGlobalImpactCard() {
-            isGlobalImpactCollapsed = !isGlobalImpactCollapsed;
-            renderGlobalImpactCardState();
-        }
-
-        function renderGlobalImpactCardState() {
-            const body = document.getElementById('global-impact-body');
-            const arrow = document.getElementById('global-impact-toggle-arrow');
-            if (!body || !arrow) return;
-
-            if (isGlobalImpactCollapsed) {
-                body.style.display = 'none';
-                arrow.innerText = '▼';
-            } else {
-                body.style.display = 'block';
-                arrow.innerText = '▲';
-            }
         }
 
         function openSubmitModal() { document.getElementById('submit-modal').style.display = 'flex'; }
@@ -1007,6 +936,17 @@
             document.getElementById('subGameUrl').value = '';
         }
 
+        let vaultData = {
+            keys: 0, streakCount: 0, lastCheckInDate: "",
+            walletAddress: "", lastAddressChangeTimestamp: 0,
+            unclaimedIced: 0.0, reservedNFTs: [],
+            personalThermalEnergy: 140,
+            lastBoostAdTimestamp: 0
+        };
+
+        let isDailyCardCollapsed = true;
+        let isWalletCardCollapsed = true;
+
         function toggleDailyCard() {
             isDailyCardCollapsed = !isDailyCardCollapsed;
             renderDailyCardState();
@@ -1021,10 +961,8 @@
 
             if (hasClaimedToday) {
                 badge.innerText = "Claimed ✓"; badge.className = "daily-status-badge claimed";
-                if (arrow) arrow.style.color = '#A0AEC0';
             } else {
                 badge.innerText = "Ready to Claim!"; badge.className = "daily-status-badge";
-                if (arrow) arrow.style.color = '#00f2fe';
             }
 
             if (isDailyCardCollapsed) { body.style.display = 'none'; arrow.innerText = '▼'; } 
@@ -1287,26 +1225,14 @@
         }
 
         function updateCheckInUI() {
-            const keyElementIds = [
-                'keys-balance',
-                'missions-keys-balance',
-                'rewards-keys-balance',
-                'header-missions-keys-balance',
-                'header-rewards-keys-balance'
-            ];
-
-            keyElementIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerText = vaultData.keys;
-            });
-
-            const unclaimedEl = document.getElementById('unclaimed-iced-balance');
-            if (unclaimedEl) unclaimedEl.innerText = vaultData.unclaimedIced.toFixed(4);
+            document.getElementById('keys-balance').innerText = vaultData.keys;
+            document.getElementById('rewards-keys-balance').innerText = vaultData.keys;
+            document.getElementById('unclaimed-iced-balance').innerText = vaultData.unclaimedIced.toFixed(4);
 
             renderDailyCardState();
             renderWalletCardState();
-            renderGlobalImpactCardState();
             updateBoostAdUI();
+            updateMissionsUI();
 
             if (!isEditingAddress) {
                 if (vaultData.walletAddress) {
@@ -1328,9 +1254,7 @@
                 const diffDays = Math.round((currDate - lastDate) / (1000 * 60 * 60 * 24));
                 if (diffDays > 2) displayStreak = 0;
             }
-            
-            const streakCountEl = document.getElementById('streak-count');
-            if (streakCountEl) streakCountEl.innerText = displayStreak;
+            document.getElementById('streak-count').innerText = displayStreak;
 
             const btn = document.getElementById('checkInBtn');
             const timerText = document.getElementById('mission-timer');
